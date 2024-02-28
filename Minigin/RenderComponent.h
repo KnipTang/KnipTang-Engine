@@ -21,8 +21,8 @@ namespace dae
 		void SetTexture(const std::string& filename);
 		//void SetTexture(std::shared_ptr<Texture2D> filename) { m_texture = filename; };
 
-		RenderComponent() = default;
-		virtual ~RenderComponent() {};
+		explicit RenderComponent(GameObject* pParent) : Component(pParent) {};
+		~RenderComponent() override = default;
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;
 		RenderComponent& operator=(const RenderComponent& other) = delete;

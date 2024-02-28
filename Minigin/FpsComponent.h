@@ -21,8 +21,8 @@ namespace dae
 
 		float GetFps() const { return m_CurrentFps; };
 
-		FpsComponent(TextObject* textObject);
-		virtual ~FpsComponent() { m_TextObject = nullptr; delete m_TextObject; };
+		explicit FpsComponent(GameObject* pParent, TextObject* textObject);
+		~FpsComponent() override { m_TextObject = nullptr; delete m_TextObject; };
 		FpsComponent(const FpsComponent& other) = delete;
 		FpsComponent(FpsComponent&& other) = delete;
 		FpsComponent& operator=(const FpsComponent& other) = delete;

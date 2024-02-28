@@ -8,8 +8,8 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-dae::FpsComponent::FpsComponent(TextObject* textObject)
-	: m_TextObject(textObject)
+dae::FpsComponent::FpsComponent(GameObject* pParent, TextObject* textObject)
+	: Component(pParent), m_TextObject(textObject)
 {
 }
 

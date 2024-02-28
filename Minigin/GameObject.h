@@ -1,8 +1,10 @@
 #pragma once
 #include <memory>
-#include "Transform.h"
 #include <vector>
+#include <glm/vec3.hpp>
+
 #include "Component.h"
+#include "Transform.h"
 
 namespace dae
 {
@@ -35,6 +37,15 @@ namespace dae
 			return GetComponent<T>() != nullptr;
 		}
 
+		GameObject* GetParent() const { return m_pParent.get(); }
+		void SetParent(GameObject* parent, bool keepWorldPosition);
+		size_t GetChildCount() const { return m_pChildren.size(); }
+		GameObject* GetChildAt(unsigned int index) const { return m_pChildren.at(index).get(); }
+
+		bool IsChild(GameObject* potentialChild) const;
+
+		const glm::vec3 GetWorldPosition() const { return m_Transform.GetWorldPosition(); };
+
 		GameObject() = default;
 		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
@@ -42,6 +53,15 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 	private:
+		void AddChild(GameObject* child);
+		void RemoveChild(GameObject* child);
+
+		Transform m_Transform;
+
 		std::vector<std::unique_ptr<Component>> m_pComponents;
+
+		std::unique_ptr<GameObject> m_pParent;
+		std::vector<std::unique_ptr<GameObject>> m_pChildren;
+
 	};
 }

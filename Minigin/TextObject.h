@@ -20,8 +20,8 @@ namespace dae
 
 		//std::shared_ptr<Texture2D> GetTexture() const { return m_textTexture; };
 
-		TextObject(const std::string& text, std::shared_ptr<Font> font);
-		virtual ~TextObject() = default;
+		explicit TextObject(GameObject* pParent, const std::string& text, std::shared_ptr<Font> font);
+		~TextObject() override = default;
 		TextObject(const TextObject& other) = delete;
 		TextObject(TextObject&& other) = delete;
 		TextObject& operator=(const TextObject& other) = delete;
