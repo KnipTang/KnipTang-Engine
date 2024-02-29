@@ -13,7 +13,7 @@ dae::FpsComponent::FpsComponent(GameObject* pParent, TextObject* textObject)
 {
 }
 
-void dae::FpsComponent::Update(const GameObject& /*gameObject*/, float deltaTime)
+void dae::FpsComponent::Update(float deltaTime)
 {
 	m_FpsTimer += deltaTime;
 	m_FrameCount++;

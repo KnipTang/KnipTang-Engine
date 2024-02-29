@@ -1,20 +1,19 @@
 #pragma once
 #include <string>
 #include <memory>
-#include "GameObject.h"
-#include "Transform.h"
 #include "Component.h"
 namespace dae
 {
 	class Font;
 	class Texture2D;
+	class GameObject;
 	class TextObject final : public Component
 	{
 	public:
-		void Update(const GameObject& gameObject, float deltaTime) override;
-		void LateUpdate(const GameObject& /*gameObject*/, float /*deltaTime*/) override {};
+		void Update(float deltaTime) override;
+		void LateUpdate(float /*deltaTime*/) override {};
 		void FixedUpdate(float /*fixedTimeStep*/) override {};
-		void Render(const GameObject& gameObject) const override;
+		void Render() const override;
 
 		void SetText(const std::string& text);
 

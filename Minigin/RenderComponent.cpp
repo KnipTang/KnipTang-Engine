@@ -1,14 +1,15 @@
 #include "RenderComponent.h"
+
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "TextObject.h"
 
-void dae::RenderComponent::Render(const GameObject& gameObject) const
+void dae::RenderComponent::Render() const
 {
-	if(gameObject.HasComponent<dae::Transform>())
-		Renderer::GetInstance().RenderTexture(*m_texture, gameObject.GetComponent<dae::Transform>()->GetPosition().x, gameObject.GetComponent<dae::Transform>()->GetPosition().y);
+	if(GetOwner()->GetParent()->HasComponent<dae::Transform>())
+		Renderer::GetInstance().RenderTexture(*m_texture, GetOwner()->GetParent()->GetComponent<dae::Transform>()->GetWorldPosition().x, GetOwner()->GetParent()->GetComponent<dae::Transform>()->GetWorldPosition().y);
 	else
 		Renderer::GetInstance().RenderTexture(*m_texture, 0, 0);
 }

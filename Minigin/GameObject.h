@@ -44,9 +44,10 @@ namespace dae
 
 		bool IsChild(GameObject* potentialChild) const;
 
-		const glm::vec3 GetWorldPosition() const { return m_Transform.GetWorldPosition(); };
+		const glm::vec3 GetGameObjectWorldPosition() { return m_Transform.GetWorldPosition(); }
 
-		GameObject() = default;
+		GameObject() {}
+		explicit GameObject(GameObject* parent) : m_pParent(std::make_unique<GameObject>(parent)) {}
 		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -56,7 +57,7 @@ namespace dae
 		void AddChild(GameObject* child);
 		void RemoveChild(GameObject* child);
 
-		Transform m_Transform;
+		Transform m_Transform; //Local transform
 
 		std::vector<std::unique_ptr<Component>> m_pComponents;
 

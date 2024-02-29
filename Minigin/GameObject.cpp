@@ -5,7 +5,7 @@ void dae::GameObject::Update(float deltaTime)
 {
 	for (const auto& component : m_pComponents)
 	{
-		component->Update(*this, deltaTime);
+		component->Update(deltaTime);
 	}
 }
 
@@ -13,7 +13,7 @@ void dae::GameObject::LateUpdate(float deltaTime)
 {
 	for (const auto& component : m_pComponents)
 	{
-		component->LateUpdate(*this, deltaTime);
+		component->LateUpdate(deltaTime);
 	}
 }
 
@@ -27,10 +27,9 @@ void dae::GameObject::FixedUpdate(float fixedTimeStep)
 
 void dae::GameObject::Render() const
 {
-	//const auto& pos = m_transform.GetPosition();
 	for (const auto& component : m_pComponents)
 	{
-		component->Render(*this);
+		component->Render();
 	}
 }
 
@@ -51,6 +50,7 @@ void dae::GameObject::RemoveComponent(Component* component)
 
 void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 {
+	//Check if the new parent is valid (not itself or one of its children)
 	if (IsChild(parent) || parent == this || m_pParent.get() == parent)
 		return;
 	if (parent == nullptr)
@@ -61,12 +61,26 @@ void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 			m_Transform.SetLocalPosition(m_Transform.GetWorldPosition() - parent->m_Transform.GetWorldPosition());
 		m_Transform.SetPositionDirty();
 	}
-	if (m_pParent.get()) m_pParent.get()->RemoveChild(this);
 
-	m_pParent.reset(parent);
+	//Remove itself from the previous parent
+	if (m_pParent) m_pParent->RemoveChild(this);
 
-	if (m_pParent.get()) m_pParent.get()->AddChild(this);
+	//Set the given parent on itself.  // Not sure if the way of assigning the parent is correct
+	m_pParent = std::unique_ptr<GameObject>(parent);
 
+	//Add itself as a child to the given parent
+	if (m_pParent) m_pParent->AddChild(this);
+}
+
+void dae::GameObject::AddChild(GameObject* child)
+{
+	m_pChildren.emplace_back(child);
+}
+
+void dae::GameObject::RemoveChild(GameObject* child)
+{
+	child->SetParent(nullptr, false);
+	//m_pChildren.erase(std::remove(m_pChildren.begin(), m_pChildren.end(), child), m_pChildren.end());
 }
 
 bool dae::GameObject::IsChild(GameObject* potentialChild) const
@@ -82,12 +96,3 @@ bool dae::GameObject::IsChild(GameObject* potentialChild) const
 	return it != m_pChildren.end();
 }
 
-void dae::GameObject::AddChild(GameObject* child)
-{
-	m_pChildren.emplace_back(child);
-}
-
-void dae::GameObject::RemoveChild(GameObject* child)
-{
-	m_pChildren.erase(std::remove(m_pChildren.begin(), m_pChildren.end(), child), m_pChildren.end());
-}

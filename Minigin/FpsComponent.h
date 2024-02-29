@@ -14,10 +14,10 @@ namespace dae
 	class FpsComponent final: public Component
 	{
 	public:
-		void Update(const GameObject& gameObject, float deltaTime) override;
-		void LateUpdate(const GameObject& /*gameObject*/, float /*deltaTime*/) override {};
-		void FixedUpdate(float /*fixedTimeStep*/) override {};
-		void Render(const GameObject& /* gameObject */) const override {};
+		void Update(float deltaTime) override;
+		void LateUpdate(float /*deltaTime*/) override {}
+		void FixedUpdate(float /*fixedTimeStep*/) override {}
+		void Render() const override {}
 
 		float GetFps() const { return m_CurrentFps; };
 
