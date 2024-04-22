@@ -214,21 +214,14 @@
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imstb_rectpack.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui-1.90.4\imstb_truetype.h" />
-    <ClInclude Include="Achievement.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionObserver.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="Exercise1_ImGui_Component.h" />
-    <ClInclude Include="Exercise2_ImGui_Component.h" />
     <ClInclude Include="Font.h" />
-    <ClInclude Include="FpsComponent.h" />
-    <ClInclude Include="HealthComponent.h" />
-    <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Observer.h" />
-    <ClInclude Include="RotationComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Minigin.h" />
@@ -240,7 +233,6 @@
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Transform.h" />
-    <ClInclude Include="StateDisplay.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\backends\imgui_impl_opengl3.cpp" />
@@ -254,24 +246,16 @@
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.90.4\imgui_widgets.cpp" />
-    <ClCompile Include="Achievement.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="CollisionObserver.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="Exercise1_ImGui_Component.cpp" />
-    <ClCompile Include="Exercise2_ImGui_Component.cpp" />
     <ClCompile Include="Font.cpp" />
-    <ClCompile Include="FpsComponent.cpp" />
-    <ClCompile Include="HealthComponent.cpp" />
-    <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Observer.cpp" />
-    <ClCompile Include="RotationComponent.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -280,7 +264,6 @@
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="StateDisplay.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
