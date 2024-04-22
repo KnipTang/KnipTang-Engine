@@ -11,7 +11,7 @@ namespace dae
 	class GameObject;
 	class Renderer;
 
-	class FpsComponent final: public Component
+	class FpsComponent final : public Component
 	{
 	public:
 		void Update(float deltaTime) override;
@@ -19,10 +19,10 @@ namespace dae
 		void FixedUpdate(float /*fixedTimeStep*/) override {}
 		void Render() const override {}
 
-		float GetFps() const { return m_CurrentFps; };
+		float GetFps() const { return m_CurrentFps; }
 
-		explicit FpsComponent(GameObject* pParent, TextObject* textObject);
-		~FpsComponent() override { m_TextObject = nullptr; delete m_TextObject; };
+		FpsComponent(GameObject* gameObject, TextObject* textObject);
+		virtual ~FpsComponent() { m_TextObject = nullptr; delete m_TextObject; }
 		FpsComponent(const FpsComponent& other) = delete;
 		FpsComponent(FpsComponent&& other) = delete;
 		FpsComponent& operator=(const FpsComponent& other) = delete;

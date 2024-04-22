@@ -1,26 +1,27 @@
 #pragma once
 #include <string>
 #include <memory>
+#include "GameObject.h"
+#include "Transform.h"
 #include "Component.h"
+#include "Texture2D.h"
+#include "Font.h"
 namespace dae
 {
 	class Font;
 	class Texture2D;
-	class GameObject;
 	class TextObject final : public Component
 	{
 	public:
 		void Update(float deltaTime) override;
-		void LateUpdate(float /*deltaTime*/) override {};
-		void FixedUpdate(float /*fixedTimeStep*/) override {};
+		void LateUpdate(float /*deltaTime*/) override {}
+		void FixedUpdate(float /*fixedTimeStep*/) override {}
 		void Render() const override;
 
 		void SetText(const std::string& text);
 
-		//std::shared_ptr<Texture2D> GetTexture() const { return m_textTexture; };
-
-		explicit TextObject(GameObject* pParent, const std::string& text, std::shared_ptr<Font> font);
-		~TextObject() override = default;
+		TextObject(GameObject* gameObject, const std::string& text, std::unique_ptr<Font> font);
+		virtual ~TextObject() = default;
 		TextObject(const TextObject& other) = delete;
 		TextObject(TextObject&& other) = delete;
 		TextObject& operator=(const TextObject& other) = delete;
@@ -28,7 +29,7 @@ namespace dae
 	private:
 		bool m_needsUpdate;
 		std::string m_text;
-		std::shared_ptr<Font> m_font;
-		std::shared_ptr<Texture2D> m_textTexture;
+		std::unique_ptr<Font> m_font;
+		std::unique_ptr<Texture2D> m_textTexture;
 	};
 }

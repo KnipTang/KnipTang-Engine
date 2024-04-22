@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include "Singleton.h"
-
+#include "GameObject.h"
 namespace dae
 {
 	class Texture2D;
@@ -18,8 +18,11 @@ namespace dae
 		void Render() const;
 		void Destroy();
 
-		void RenderTexture(const Texture2D& texture, float x, float y) const;
+		//void RenderTexture(const Texture2D& texture, float x, float y) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, SDL_Rect srcRect = { 0,0,-1,-1 }) const;
+
+		void generate_data();
 
 		SDL_Renderer* GetSDLRenderer() const;
 

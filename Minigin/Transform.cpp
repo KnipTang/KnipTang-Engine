@@ -2,13 +2,13 @@
 
 #include "GameObject.h"
 
-void dae::Transform::SetPosition(const float x, const float y, const float z)
+void dae::Transform::SetWorldPosition(const float x, const float y, const float z)
 {
 	m_WorldPosition.x = x;
 	m_WorldPosition.y = y;
 	m_WorldPosition.z = z;
 }
-void dae::Transform::SetPosition(const float x, const float y)
+void dae::Transform::SetWorldPosition(const float x, const float y)
 {
 	m_WorldPosition.x = x;
 	m_WorldPosition.y = y;
@@ -19,6 +19,15 @@ void dae::Transform::SetLocalPosition(const glm::vec3& pos)
 {
 	m_LocalPosition = pos;
 	SetPositionDirty();
+}
+
+void dae::Transform::SetPositionDirty()
+{
+	m_PositionIsDirty = true;
+	for (int i = 0; i < GetOwner()->GetChildCount(); i++)
+	{
+		GetOwner()->GetChildAt(i)->GetTransform()->SetPositionDirty();
+	}
 }
 
 const glm::vec3 dae::Transform::GetWorldPosition()
@@ -32,11 +41,10 @@ void dae::Transform::UpdateWorldPosition()
 {
 	if (m_PositionIsDirty)
 	{
-		if (GetOwner()->GetParent() == nullptr)
+		m_PositionIsDirty = false;
+		if (GetOwner() == nullptr)
 			m_WorldPosition = m_LocalPosition;
 		else
-			m_WorldPosition = GetOwner()->GetParent()->GetGameObjectWorldPosition() + m_LocalPosition;
+			m_WorldPosition = GetOwner()->GetParent()->GetGameObjectPosition() + m_LocalPosition;
 	}
-	m_PositionIsDirty = false;
-
 }

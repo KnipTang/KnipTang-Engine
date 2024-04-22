@@ -8,13 +8,16 @@
 
 #include <chrono>
 #include <thread>
+#include <vector>
+#include <steam_api.h>
 
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <iostream>
-
+#include <memory>
+#include <Xinput.h>
 #define MS_PER_FRAME(fps) (1000.0f / (fps))
 #define FPS 120
 SDL_Window* g_window{};
@@ -89,6 +92,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
 
+	// Bind controller button X to jump command
+
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
@@ -99,13 +104,17 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 	const float fixedTimeStep = 1.0f / FPS;
 
+	constexpr auto targetFrameTime = std::chrono::milliseconds(static_cast<long long>(MS_PER_FRAME(FPS)));
+
 	while (doContinue)
 	{
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		lastTime = currentTime;
 		lag += deltaTime;
-		doContinue = input.ProcessInput();
+
+
+		doContinue = input.ProcessInput(deltaTime);
 
 		while (lag >= fixedTimeStep)
 		{
@@ -118,8 +127,10 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 		renderer.Render();
 
-		const auto sleep_time = currentTime + std::chrono::milliseconds(static_cast<long long>(MS_PER_FRAME(FPS))) - std::chrono::high_resolution_clock::now();
+		SteamAPI_RunCallbacks();
+		// Calculate the sleep time until the next frame
+		const auto sleepTime = currentTime + targetFrameTime - std::chrono::high_resolution_clock::now();
 		
-		std::this_thread::sleep_for(sleep_time);
+		std::this_thread::sleep_for(sleepTime);
 	}
 }

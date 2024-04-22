@@ -1,5 +1,5 @@
 #include "SceneManager.h"
-#include "Scene.h"
+
 
 void dae::SceneManager::Update(float deltaTime)
 {
@@ -35,7 +35,7 @@ void dae::SceneManager::Render()
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
-	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
-	m_scenes.push_back(scene);
-	return *scene;
+	std::unique_ptr<Scene> scene = std::unique_ptr<Scene>(new Scene(name));
+	m_scenes.emplace_back(std::move(scene));
+	return *m_scenes[m_scenes.size() - 1];
 }

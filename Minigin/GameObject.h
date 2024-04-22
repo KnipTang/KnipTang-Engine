@@ -1,11 +1,9 @@
 #pragma once
 #include <memory>
-#include <vector>
-#include <glm/vec3.hpp>
-
-#include "Component.h"
 #include "Transform.h"
-
+#include <vector>
+#include "Component.h"
+#include <string>
 namespace dae
 {
 	class Texture2D;
@@ -22,6 +20,8 @@ namespace dae
 
 		void RemoveComponent(Component* component);
 
+		void RemoveAllComponent();
+
 		template<typename T>
 		T* GetComponent() const {
 			for (const auto& component : m_pComponents) {
@@ -37,17 +37,26 @@ namespace dae
 			return GetComponent<T>() != nullptr;
 		}
 
-		GameObject* GetParent() const { return m_pParent.get(); }
+		GameObject* GetParent() const { return m_pParent; }
 		void SetParent(GameObject* parent, bool keepWorldPosition);
 		size_t GetChildCount() const { return m_pChildren.size(); }
-		GameObject* GetChildAt(unsigned int index) const { return m_pChildren.at(index).get(); }
+		GameObject* GetChildAt(unsigned int index) const { return m_pChildren.at(index); }
 
-		bool IsChild(GameObject* potentialChild) const;
+		void RemoveAllChildren();
 
-		const glm::vec3 GetGameObjectWorldPosition() { return m_Transform.GetWorldPosition(); }
+		void RemoveGameObject() { m_RemoveGameObject = true; }
+		bool IsRemoveGameObjectTrue() { return m_RemoveGameObject; }
+		//void RemoveParent(GameObject* parent, bool keepWorldPosition)
 
-		GameObject() {}
-		explicit GameObject(GameObject* parent) : m_pParent(std::make_unique<GameObject>(parent)) {}
+		void SetGameObjectPosition(float posX, float posY) { return m_Transform.SetWorldPosition(posX, posY); }
+		glm::vec3 GetGameObjectPosition() { return m_Transform.GetWorldPosition(); }
+
+		Transform* GetTransform() { return &m_Transform; }
+
+		void SetTag(std::string tag) { m_Tag = tag; }
+		std::string GetTag() { return m_Tag; }
+
+		GameObject() = default;
 		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -57,12 +66,17 @@ namespace dae
 		void AddChild(GameObject* child);
 		void RemoveChild(GameObject* child);
 
-		Transform m_Transform; //Local transform
+		bool IsChild(GameObject* potentialChild) const;
 
 		std::vector<std::unique_ptr<Component>> m_pComponents;
 
-		std::unique_ptr<GameObject> m_pParent;
-		std::vector<std::unique_ptr<GameObject>> m_pChildren;
+		Transform m_Transform{this}; //Local transform
 
+		GameObject* m_pParent;
+		std::vector<GameObject*> m_pChildren;
+
+		bool m_RemoveGameObject = false;
+
+		std::string m_Tag = "None";
 	};
 }
