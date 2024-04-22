@@ -127,7 +127,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 		renderer.Render();
 
-		SteamAPI_RunCallbacks();
+		//SteamAPI_RunCallbacks();
 		// Calculate the sleep time until the next frame
 		const auto sleepTime = currentTime + targetFrameTime - std::chrono::high_resolution_clock::now();
 		

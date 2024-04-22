@@ -24,7 +24,7 @@ void dae::Transform::SetLocalPosition(const glm::vec3& pos)
 void dae::Transform::SetPositionDirty()
 {
 	m_PositionIsDirty = true;
-	for (int i = 0; i < GetOwner()->GetChildCount(); i++)
+	for (unsigned int i = 0; i < static_cast<unsigned int>(GetOwner()->GetChildCount()); i++)
 	{
 		GetOwner()->GetChildAt(i)->GetTransform()->SetPositionDirty();
 	}
