@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#define NOMINMAX
 #include <windows.h>
 #include <windef.h>
 #include <glm/vec2.hpp>

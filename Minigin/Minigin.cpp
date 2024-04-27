@@ -1,9 +1,11 @@
 #include <stdexcept>
-#define WIN32_LEAN_AND_MEAN 
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <windows.h>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include "Minigin.h"
 
 #include <chrono>
@@ -18,9 +20,14 @@
 #include <iostream>
 #include <memory>
 #include <Xinput.h>
+
+#include "LoggingSoundSystem.h"
+#include "SDLSoundSystem.h"
+#include "SoundServiceLocator.h"
 #define MS_PER_FRAME(fps) (1000.0f / (fps))
 #define FPS 120
 SDL_Window* g_window{};
+
 
 void PrintSDLVersion()
 {
@@ -47,6 +54,14 @@ void PrintSDLVersion()
 
 	version = *TTF_Linked_Version();
 	printf("We are linking against SDL_ttf version %u.%u.%u.\n",
+		version.major, version.minor, version.patch);
+
+	SDL_MIXER_VERSION(&version)
+		printf("We compiled against SDL_mixer version %u.%u.%u ...\n",
+			version.major, version.minor, version.patch);
+	
+	version = *Mix_Linked_Version();
+	printf("We are linking against SDL_mixer version %u.%u.%u.\n",
 		version.major, version.minor, version.patch);
 }
 
@@ -75,6 +90,13 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	//VSYNC
 	//SDL_RenderSetVSync(Renderer::GetInstance().GetSDLRenderer(), true);
 
+	#if NDEBUG
+	servicelocator::register_sound_system(std::make_unique<sdl_sound_system>());
+	#else
+	dae::SoundServiceLocator::register_sound_system(
+		std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SDLSoundSystem>()));
+	#endif
+
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
@@ -91,6 +113,7 @@ dae::Minigin::~Minigin()
 void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
+
 
 	// Bind controller button X to jump command
 
@@ -113,7 +136,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		lastTime = currentTime;
 		lag += deltaTime;
 
-
 		doContinue = input.ProcessInput(deltaTime);
 
 		while (lag >= fixedTimeStep)
@@ -124,6 +146,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 		sceneManager.Update(deltaTime);
 		sceneManager.LateUpdate(deltaTime);
+
+		SoundServiceLocator::get_sound_system().Update();
 
 		renderer.Render();
 

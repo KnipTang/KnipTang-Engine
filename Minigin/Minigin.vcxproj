@@ -219,6 +219,11 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="LoggingSoundSystem.h" />
+    <ClInclude Include="NullSoundSystem.h" />
+    <ClInclude Include="SDLSoundSystem.h" />
+    <ClInclude Include="SoundServiceLocator.h" />
+    <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="Subject.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Observer.h" />
@@ -251,6 +256,11 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="LoggingSoundSystem.cpp" />
+    <ClCompile Include="NullSoundSystem.cpp" />
+    <ClCompile Include="SDLSoundSystem.cpp" />
+    <ClCompile Include="SoundServiceLocator.cpp" />
+    <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Observer.cpp" />

@@ -32,6 +32,11 @@
 #include "ScoreComponent.h"
 #include "CollisionComponent.h"
 #include "CollisionObserver.h"
+#include "SDLSoundSystem.h"
+#include "SoundServiceLocator.h"
+#include "LoggingSoundSystem.h"
+#include "SoundCommands.h"
+#include <SDL_mixer.h>
 
 // Global access to Achievements object
 //dae::CSteamAchievements* g_SteamAchievements = NULL;
@@ -162,6 +167,10 @@ void load()
 	//scene.Add(go);
 	*/
 
+	//auto& ss = dae::SoundServiceLocator::get_sound_system();
+	//ss.play("PinkPanther60.wav", 100);
+	//ss.play("test.mp3", 100);
+
 	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
 	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_A), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
 	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_X), dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P1.get(), P1.get()->GetComponent<dae::HealthComponent>()));
@@ -176,6 +185,7 @@ void load()
 	dae::InputManager::GetInstance().BindCommand(SDLK_z, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P2.get(), P2.get()->GetComponent<dae::ScoreComponent>()));
 	dae::InputManager::GetInstance().BindCommand(SDLK_x, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P2.get(), P2.get()->GetComponent<dae::ScoreComponent>()));
 	dae::InputManager::GetInstance().BindCommand(SDLK_c, dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P2.get(), P2.get()->GetComponent<dae::HealthComponent>()));
+	dae::InputManager::GetInstance().BindCommand(SDLK_p, dae::InputActionType::IsUp, std::make_unique<dae::SoundCommand>());
 
 	scene.Add(std::move(backGround));
 	scene.Add(std::move(DAElogo));
