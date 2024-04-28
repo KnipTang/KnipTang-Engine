@@ -1,7 +1,7 @@
 #pragma once
 #include "Command.h"
 #include "SoundServiceLocator.h"
-
+#include <chrono>
 namespace dae
 {
 	class SoundCommand final : public Command {
@@ -13,7 +13,7 @@ namespace dae
 
 		void Execute(float /*deltaTime*/) override
 		{
-			ss->play("Death.wav", 10);
+			ss->play("slash.mp3", 10);
 		}
 	private:
 		SoundSystem* ss;

@@ -12,5 +12,10 @@ namespace dae
 		static void register_sound_system(std::unique_ptr<SoundSystem>&& ss) {
 			_ss_instance = ss == nullptr ? std::make_unique<NullSoundSystem>() : std::move(ss);
 		}
+
+		SoundServiceLocator(const SoundServiceLocator& other) = delete;
+		SoundServiceLocator(SoundServiceLocator&& other) = delete;
+		SoundServiceLocator& operator=(const SoundServiceLocator& other) = delete;
+		SoundServiceLocator& operator=(SoundServiceLocator&& other) = delete;
 	};
 }

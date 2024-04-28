@@ -94,7 +94,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	servicelocator::register_sound_system(std::make_unique<sdl_sound_system>());
 	#else
 	dae::SoundServiceLocator::register_sound_system(
-		std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SDLSoundSystem>()));
+		std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SDLSoundSystem>(dataPath)));
 	#endif
 
 	Renderer::GetInstance().Init(g_window);
@@ -114,9 +114,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
 
-
-	// Bind controller button X to jump command
-
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
@@ -128,6 +125,12 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	const float fixedTimeStep = 1.0f / FPS;
 
 	constexpr auto targetFrameTime = std::chrono::milliseconds(static_cast<long long>(MS_PER_FRAME(FPS)));
+
+	std::thread soundThread([&]() {
+		while (doContinue) {
+			SoundServiceLocator::get_sound_system().Update();
+		}
+	});
 
 	while (doContinue)
 	{
@@ -147,7 +150,9 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		sceneManager.Update(deltaTime);
 		sceneManager.LateUpdate(deltaTime);
 
-		SoundServiceLocator::get_sound_system().Update();
+
+		//SoundServiceLocator::get_sound_system().Update();
+
 
 		renderer.Render();
 
@@ -157,4 +162,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		
 		std::this_thread::sleep_for(sleepTime);
 	}
+
+	SoundServiceLocator::get_sound_system().Stop();
+	soundThread.join();
 }

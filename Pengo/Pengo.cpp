@@ -80,18 +80,22 @@ void load()
 	//scene.Add(go);
 	//scene.Add(secondGo);
 
-	/*
+	
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
-	auto P1_Explain = std::make_shared<dae::GameObject>();
+	auto P1_Explain = std::make_unique<dae::GameObject>();
 	P1_Explain.get()->SetGameObjectPosition(0, 100);
-	P1_Explain.get()->AddComponent(new dae::TextObject(P1_Explain.get(), "Use the D-Pad to move player 1, X to inflict damage, A and B to pick up pellets", font));
-	scene.Add(P1_Explain);
+	P1_Explain.get()->AddComponent(new dae::TextObject(P1_Explain.get(), "Use the D-Pad to move player 1, X to inflict damage, A and B to pick up pellets", std::move(font)));
 
-	auto P2_Explain = std::make_shared<dae::GameObject>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
+	auto P2_Explain = std::make_unique<dae::GameObject>();
 	P2_Explain.get()->SetGameObjectPosition(0, 120);
-	P2_Explain.get()->AddComponent(new dae::TextObject(P2_Explain.get(), "Use WASD to move player 2, C to inflict damage, Z and X to pick up pellets", font));
-	scene.Add(P2_Explain);
-	*/
+	P2_Explain.get()->AddComponent(new dae::TextObject(P2_Explain.get(), "Use WASD to move player 2, C to inflict damage, Z and X to pick up pellets", std::move(font)));
+
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
+	auto Sound_Explain = std::make_unique<dae::GameObject>();
+	Sound_Explain.get()->SetGameObjectPosition(50, 200);
+	Sound_Explain.get()->AddComponent(new dae::TextObject(Sound_Explain.get(), "Press P to play sound", std::move(font)));
+
 
 	//P1
 	auto P1 = std::make_unique<dae::GameObject>();
@@ -193,6 +197,9 @@ void load()
 	scene.Add(std::move(FPS));
 	scene.Add(std::move(P1));
 	scene.Add(std::move(P2));
+	scene.Add(std::move(P1_Explain));
+	scene.Add(std::move(P2_Explain));
+	scene.Add(std::move(Sound_Explain));
 	//dae::InputManager::GetInstance().BindCommand(SDLK_t, dae::InputActionType::IsDown, std::make_unique<dae::Damage>(go.get(), go.get()->GetComponent<dae::HealthComponent>()));
 	//dae::InputManager::GetInstance().BindCommand(SDLK_x, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(go.get(), go.get()->GetComponent<dae::ScoreComponent>()));
 
