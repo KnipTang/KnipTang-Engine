@@ -8,7 +8,7 @@ void dae::StateDisplay::Notify(GameEvent event, Subject* actor)
 	if (event == GameEvent::PlayerDied)
 	{
 		// Update the display or take appropriate action
-		std::string text = m_StateName + ": " + std::to_string(actor->GetGameObject()->GetComponent<HealthComponent>()->GetLives());
+		std::string text = m_StateName + ": " + std::to_string(actor->GetGameObject()->GetComponent<dae::HealthComponent>()->GetLives());
 		m_TextObject->SetText(text);
 	}
 	if (event == GameEvent::PointsChanged)

@@ -91,7 +91,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	//SDL_RenderSetVSync(Renderer::GetInstance().GetSDLRenderer(), true);
 
 	#if NDEBUG
-	servicelocator::register_sound_system(std::make_unique<sdl_sound_system>());
+	SoundServiceLocator::register_sound_system(std::make_unique<SDLSoundSystem>(dataPath));
 	#else
 	dae::SoundServiceLocator::register_sound_system(
 		std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SDLSoundSystem>(dataPath)));

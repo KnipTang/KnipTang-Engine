@@ -34,6 +34,9 @@ namespace dae
 			for (const auto& observer : m_observers)
 				observer->Notify(event, this);
 		}
+
+		std::vector<std::unique_ptr<Observer>>& GetObservers() { return m_observers; }
+
 	private:
 		std::vector<std::unique_ptr<Observer>> m_observers;
 		GameObject* m_GameObject;

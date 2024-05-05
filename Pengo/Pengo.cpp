@@ -12,31 +12,22 @@
 
 
 #include <iostream>
-#include "Minigin.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "TextObject.h"
 #include "Scene.h"
 #include "RenderComponent.h"
-#include "Transform.h"
-#include "FpsComponent.h"
 #include "RotationComponent.h"
-#include "Exercise1_ImGui_Component.h"
-#include "Exercise2_ImGui_Component.h"
 #include "InputManager.h"
-#include "GameCommands.h"
 #include "Subject.h"
-//#include "Achievement.h"
 #include "HealthComponent.h"
-#include "StateDisplay.h"
 #include "ScoreComponent.h"
 #include "CollisionComponent.h"
 #include "CollisionObserver.h"
 #include "SDLSoundSystem.h"
-#include "SoundServiceLocator.h"
-#include "LoggingSoundSystem.h"
 #include "SoundCommands.h"
-#include <SDL_mixer.h>
+#include "PlayerCommands.h"
+#include "FpsComponent.h"
 
 // Global access to Achievements object
 //dae::CSteamAchievements* g_SteamAchievements = NULL;
@@ -97,17 +88,42 @@ void load()
 	Sound_Explain.get()->AddComponent(new dae::TextObject(Sound_Explain.get(), "Press P to play sound", std::move(font)));
 
 
+	//dae::CollisionObserver* collisionObs = new dae::CollisionObserver();
+
 	//P1
 	auto P1 = std::make_unique<dae::GameObject>();
 	P1.get()->AddComponent(new dae::RenderComponent(P1.get()));
-	P1.get()->GetComponent<dae::RenderComponent>()->SetTexture("Pengo.png");
-	//P1.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(32,32,16,16);
+	P1.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+	P1.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0,16*4,16,16);
 	P1.get()->SetGameObjectPosition(200, 200);
 	P1.get()->AddComponent(new dae::CollisionComponent(P1.get(), 16.f, 16.f));
 	P1.get()->AddComponent(new dae::HealthComponent(P1.get()));
 	P1.get()->AddComponent(new dae::ScoreComponent(P1.get()));
-	P1.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new dae::CollisionObserver());
+	P1.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new dae::CollisionObserver(P1.get()));
 	P1.get()->SetTag("Player");
+
+	auto P2 = std::make_unique<dae::GameObject>();
+	P2.get()->AddComponent(new dae::RenderComponent(P2.get()));
+	P2.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+	P2.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 16*0, 16, 16);
+	P2.get()->SetGameObjectPosition(300, 200);
+	P2.get()->AddComponent(new dae::CollisionComponent(P2.get(), 16.f, 16.f));
+	P2.get()->AddComponent(new dae::HealthComponent(P2.get()));
+	P2.get()->AddComponent(new dae::ScoreComponent(P2.get()));
+	P2.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new dae::CollisionObserver(P2.get()));
+	P2.get()->SetTag("Player");
+
+	auto enemy = std::make_unique<dae::GameObject>();
+	enemy.get()->AddComponent(new dae::RenderComponent(enemy.get()));
+	enemy.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+	enemy.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 16*9, 16, 16);
+	enemy.get()->SetGameObjectPosition(300, 300);
+	enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16.f, 16.f));
+	enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
+	enemy.get()->AddComponent(new dae::ScoreComponent(enemy.get()));
+	//enemy.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new dae::CollisionObserver());
+	enemy.get()->SetTag("Enemy");
+
 
 	//auto displayLives{ std::make_shared<dae::GameObject>() };
 	//displayLives.get()->SetGameObjectPosition(0, 150);
@@ -129,23 +145,12 @@ void load()
 	//P1.get()->GetComponent<dae::ScoreComponent>()->AddObserver(displayPoints->GetComponent<dae::StateDisplay>());
 	//P1.get()->GetComponent<dae::ScoreComponent>()->AddObserver(g_achievementObserver);
 
-	auto P2 = std::make_unique<dae::GameObject>();
-	P2.get()->AddComponent(new dae::RenderComponent(P2.get()));
-	P2.get()->GetComponent<dae::RenderComponent>()->SetTexture("Pengo.png");
-	P2.get()->SetGameObjectPosition(300, 200);
-	P2.get()->AddComponent(new dae::CollisionComponent(P2.get(), 16.f, 16.f));
-	P2.get()->AddComponent(new dae::HealthComponent(P2.get()));
-	P2.get()->AddComponent(new dae::ScoreComponent(P2.get()));
-	P2.get()->AddComponent(new dae::CollisionComponent(P2.get(), 16.f, 16.f));
-	P2.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new dae::CollisionObserver());
-
-	//auto background = std::make_shared<dae::GameObject>();
-	//background.get()->AddComponent(new dae::RenderComponent(background.get()));
-	//background.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
-	//background.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 0, 224, 256);
-	//background.get()->SetGameObjectPosition(200, 200);
-	////background.get()->AddComponent(new dae::CollisionComponent(background.get(), 16.f, 16.f));
-	//scene.Add(background);
+	auto GameBackground = std::make_unique<dae::GameObject>();
+	GameBackground.get()->AddComponent(new dae::RenderComponent(GameBackground.get()));
+	GameBackground.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
+	GameBackground.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 0, 224, 256);
+	GameBackground.get()->SetGameObjectPosition(200, 200);
+	//background.get()->AddComponent(new dae::CollisionComponent(background.get(), 16.f, 16.f));
 
 	/*
 	displayLives = std::make_shared<dae::GameObject>();
@@ -175,31 +180,33 @@ void load()
 	//ss.play("PinkPanther60.wav", 100);
 	//ss.play("test.mp3", 100);
 
-	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
-	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_A), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
-	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_X), dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P1.get(), P1.get()->GetComponent<dae::HealthComponent>()));
-	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(0, -1, 0), 500.f));
-	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(0, 1, 0), 500.f));
-	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(-1, 0, 0), 500.f));
-	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(1, 0, 0), 500.f));
-	dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(0, -1, 0)));
-	dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(0, 1, 0)));
-	dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(-1, 0, 0)));
-	dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(1, 0, 0)));
-	dae::InputManager::GetInstance().BindCommand(SDLK_z, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P2.get(), P2.get()->GetComponent<dae::ScoreComponent>()));
-	dae::InputManager::GetInstance().BindCommand(SDLK_x, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P2.get(), P2.get()->GetComponent<dae::ScoreComponent>()));
-	dae::InputManager::GetInstance().BindCommand(SDLK_c, dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P2.get(), P2.get()->GetComponent<dae::HealthComponent>()));
+	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(0, -1, 0), 500.f));
+	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(0, 1, 0), 500.f));
+	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(-1, 0, 0), 500.f));
+	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(1, 0, 0), 500.f));
+	dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(0, -1, 0)));
+	dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(0, 1, 0)));
+	dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(-1, 0, 0)));
+	dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(1, 0, 0)));
 	dae::InputManager::GetInstance().BindCommand(SDLK_p, dae::InputActionType::IsUp, std::make_unique<dae::SoundCommand>());
 
 	scene.Add(std::move(backGround));
 	scene.Add(std::move(DAElogo));
+	scene.Add(std::move(GameBackground));
 	scene.Add(std::move(text));
 	scene.Add(std::move(FPS));
 	scene.Add(std::move(P1));
 	scene.Add(std::move(P2));
+	scene.Add(std::move(enemy));
 	scene.Add(std::move(P1_Explain));
 	scene.Add(std::move(P2_Explain));
 	scene.Add(std::move(Sound_Explain));
+	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_A), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_X), dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P1.get(), P1.get()->GetComponent<dae::HealthComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_z, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P2.get(), P2.get()->GetComponent<dae::ScoreComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_x, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P2.get(), P2.get()->GetComponent<dae::ScoreComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_c, dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P2.get(), P2.get()->GetComponent<dae::HealthComponent>()));
 	//dae::InputManager::GetInstance().BindCommand(SDLK_t, dae::InputActionType::IsDown, std::make_unique<dae::Damage>(go.get(), go.get()->GetComponent<dae::HealthComponent>()));
 	//dae::InputManager::GetInstance().BindCommand(SDLK_x, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(go.get(), go.get()->GetComponent<dae::ScoreComponent>()));
 
@@ -210,18 +217,4 @@ int main(int, char* []) {
 	dae::Minigin engine("../Data/");
 	engine.Run(load);
 	return 0;
-	//dae::Minigin engine;
-	//engine.Run();
-	//return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

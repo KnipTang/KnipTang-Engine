@@ -195,8 +195,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Exercise1_ImGui_Component.cpp" />
-    <ClCompile Include="Exercise2_ImGui_Component.cpp" />
+    <ClCompile Include="CollisionObserver.cpp" />
     <ClCompile Include="FpsComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="Pengo.cpp" />
@@ -206,11 +205,11 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClCompile Include="StateDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Exercise1_ImGui_Component.h" />
-    <ClInclude Include="Exercise2_ImGui_Component.h" />
+    <ClInclude Include="CollisionObserver.h" />
     <ClInclude Include="FpsComponent.h" />
     <ClInclude Include="GameCommands.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="PlayerCommands.h" />
     <ClInclude Include="RotationComponent.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="SoundCommands.h" />

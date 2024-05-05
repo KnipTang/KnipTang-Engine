@@ -1,8 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "Subject.h"
-#include "StateDisplay.h"
-#include "ResourceManager.h"
 #include "TextObject.h"
 namespace dae
 {
