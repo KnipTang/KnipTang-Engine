@@ -36,7 +36,10 @@
     <ClCompile Include="StateDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionObserver.cpp">
+    <ClCompile Include="PengoCollisionObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,7 +68,10 @@
     <ClInclude Include="StateDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionObserver.h">
+    <ClInclude Include="PengoCollisionObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

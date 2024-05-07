@@ -35,7 +35,7 @@ namespace dae
 				observer->Notify(event, this);
 		}
 
-		std::vector<std::unique_ptr<Observer>>& GetObservers() { return m_observers; }
+		//std::vector<std::unique_ptr<Observer>>& GetObservers() { return m_observers; }
 
 	private:
 		std::vector<std::unique_ptr<Observer>> m_observers;

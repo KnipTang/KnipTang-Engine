@@ -8,7 +8,7 @@ bool dae::CollisionComponent::Intersects(CollisionComponent& other)
 
     if(overlapX && overlapY)
     {
-        NotifyObservers(GameEvent::Collision, &other);
+        NotifyObservers(GameCollisionEvent::Collision, &other);
 	    //other.NotifyObservers(GameEvent::Collision);
     }
 

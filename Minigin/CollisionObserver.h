@@ -1,30 +1,26 @@
 #pragma once
-#include "GameObject.h"
-#include "Observer.h"
 
 namespace dae
 {
-	//enum class GameTags
-	//{
-	//	Player,
-	//	Enemy
-	//};
+	class CollisionComponent;
+    enum class GameCollisionEvent {
+        Collision
+    };
 
-    class CollisionObserver : public Observer
+    class CollisionObserver
     {
 	public:
-		void Notify(GameEvent event, Subject* actor) override;
 
-
-		CollisionObserver(GameObject* gameObject) : m_pOwner(gameObject) {}
+		//CollisionObserver(GameObject* gameObject) : m_pOwner(gameObject) {}
+		CollisionObserver() {}
 		virtual ~CollisionObserver() { }
 		CollisionObserver(const CollisionObserver& other) = delete;
 		CollisionObserver(CollisionObserver&& other) = delete;
 		CollisionObserver& operator=(const CollisionObserver& other) = delete;
 		CollisionObserver& operator=(CollisionObserver&& other) = delete;
 
-    private:
-		GameObject* m_pOwner;
+		virtual void NotifyCollision(GameCollisionEvent event, CollisionComponent* actor) = 0;
+    protected:
     };
 }
 
