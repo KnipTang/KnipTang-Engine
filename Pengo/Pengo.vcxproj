@@ -200,6 +200,8 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="Pengo.cpp" />
     <ClCompile Include="PengoCollisionObserver.cpp" />
+    <ClCompile Include="PengoPlayer.cpp" />
+    <ClCompile Include="PengoState.cpp" />
     <ClCompile Include="RotationComponent.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="SoundCommands.cpp" />
@@ -211,6 +213,8 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="PengoCollisionObserver.h" />
+    <ClInclude Include="PengoPlayer.h" />
+    <ClInclude Include="PengoState.h" />
     <ClInclude Include="PlayerCommands.h" />
     <ClInclude Include="RotationComponent.h" />
     <ClInclude Include="ScoreComponent.h" />

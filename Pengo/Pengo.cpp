@@ -29,7 +29,8 @@
 #include "PlayerCommands.h"
 #include "FpsComponent.h"
 #include "MovementComponent.h"
-
+#include "PengoState.h"
+#include "PengoPlayer.h"
 
 void load()
 {
@@ -73,12 +74,12 @@ void load()
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	auto P1_Explain = std::make_unique<dae::GameObject>();
 	P1_Explain.get()->SetGameObjectPosition(0, 100);
-	P1_Explain.get()->AddComponent(new dae::TextObject(P1_Explain.get(), "Use the D-Pad to move player 1, X to inflict damage, A and B to pick up pellets", std::move(font)));
+	P1_Explain.get()->AddComponent(new dae::TextObject(P1_Explain.get(), "Use the D-Pad to move m_Player 1, X to inflict damage, A and B to pick up pellets", std::move(font)));
 
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	auto P2_Explain = std::make_unique<dae::GameObject>();
 	P2_Explain.get()->SetGameObjectPosition(0, 120);
-	P2_Explain.get()->AddComponent(new dae::TextObject(P2_Explain.get(), "Use WASD to move player 2, C to inflict damage, Z and X to pick up pellets", std::move(font)));
+	P2_Explain.get()->AddComponent(new dae::TextObject(P2_Explain.get(), "Use WASD to move m_Player 2, C to inflict damage, Z and X to pick up pellets", std::move(font)));
 
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	auto Sound_Explain = std::make_unique<dae::GameObject>();
@@ -89,17 +90,19 @@ void load()
 	//dae::CollisionObserver* collisionObs = new dae::CollisionObserver();
 
 	//P1
-	auto P1 = std::make_unique<dae::GameObject>();
-	P1.get()->AddComponent(new dae::RenderComponent(P1.get()));
-	P1.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
-	P1.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0,16*4,16,16);
-	P1.get()->SetGameObjectPosition(0,0);
-	P1.get()->AddComponent(new dae::CollisionComponent(P1.get(), 16.f, 16.f));
-	P1.get()->AddComponent(new dae::HealthComponent(P1.get()));
-	P1.get()->AddComponent(new dae::ScoreComponent(P1.get()));
-	P1.get()->AddComponent(new MovementComponent(P1.get()));
-	P1.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P1.get()));
-	P1.get()->SetTag("Player");
+	//auto P1 = std::make_unique<dae::GameObject>();
+	//P1.get()->AddComponent(new dae::RenderComponent(P1.get()));
+	//P1.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+	//P1.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0,16*4,16,16);
+	//P1.get()->SetGameObjectPosition(0,0);
+	//P1.get()->AddComponent(new dae::CollisionComponent(P1.get(), 16.f, 16.f));
+	//P1.get()->AddComponent(new dae::HealthComponent(P1.get()));
+	//P1.get()->AddComponent(new dae::ScoreComponent(P1.get()));
+	//P1.get()->AddComponent(new MovementComponent(P1.get()));
+	//P1.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P1.get()));
+	//P1.get()->SetTag("Player");
+	PengoPlayer P1{};
+	//PengoState* _state;
 
 	auto P2 = std::make_unique<dae::GameObject>();
 	P2.get()->AddComponent(new dae::RenderComponent(P2.get()));
@@ -187,14 +190,14 @@ void load()
 	//ss.play("PinkPanther60.wav", 100);
 	//ss.play("test.mp3", 100);
 
-	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(0, -1, 0)));
-	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(0, 1, 0)));
-	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(-1, 0, 0)));
-	dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(1, 0, 0)));
-	dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(0, -1, 0)));
-	dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(0, 1, 0)));
-	dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(-1, 0, 0)));
-	dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(1, 0, 0)));
+	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(0, -1, 0)));
+	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(0, 1, 0)));
+	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(-1, 0, 0)));
+	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(1, 0, 0)));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(0, -1, 0)));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(0, 1, 0)));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(-1, 0, 0)));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(1, 0, 0)));
 	dae::InputManager::GetInstance().BindCommand(SDLK_p, dae::InputActionType::IsUp, std::make_unique<dae::SoundCommand>());
 
 	scene.Add(std::move(backGround));
@@ -202,7 +205,7 @@ void load()
 	scene.Add(std::move(GameBackground));
 	scene.Add(std::move(text));
 	scene.Add(std::move(FPS));
-	scene.Add(std::move(P1));
+	scene.Add(P1.GetPlayer());
 	scene.Add(std::move(P2));
 	scene.Add(std::move(enemy));
 	scene.Add(std::move(wall));
