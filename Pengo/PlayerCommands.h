@@ -8,8 +8,10 @@ namespace dae
 {
 	class Movement : public GameActorCommand {
 	public:
-		Movement(GameObject* actor, PengoPlayer* player, Controlls control, float speed = 16.f) : GameActorCommand(actor), m_Player(player), m_NewControl(control), m_Speed(speed)
+		Movement(GameObject* actor, PengoPlayer* player, Controlls control, float speed = 16.f) : GameActorCommand(actor), m_NewControl(control), m_Speed(speed)
 		{
+			m_Player = player;
+
 			switch (control)
 			{
 			case Controlls::UP:

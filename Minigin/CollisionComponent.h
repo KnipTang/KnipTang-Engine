@@ -8,6 +8,7 @@
 #include "Component.h"
 #include "GameObject.h"
 #include <memory>
+#include <iostream>
 namespace dae
 {
     class CollisionComponent : public Component
@@ -28,10 +29,10 @@ namespace dae
             glm::vec2 position = GetOwner()->GetGameObjectPosition();
             // Create a rectangle representing the collider
             RECT rect;
-            rect.left = static_cast<LONG>(position.x - m_Width / 2);
-            rect.top = static_cast<LONG>(position.y - m_Height / 2);
-            rect.right = static_cast<LONG>(position.x + m_Width / 2);
-            rect.bottom = static_cast<LONG>(position.y + m_Height / 2);
+            rect.left = static_cast<LONG>(position.x);
+            rect.top = static_cast<LONG>(position.y + m_Height);
+            rect.right = static_cast<LONG>(position.x + m_Width);
+            rect.bottom = static_cast<LONG>(position.y);
             // Get the device context
             HDC hdc = GetDC(nullptr);
             // Draw the rectangle

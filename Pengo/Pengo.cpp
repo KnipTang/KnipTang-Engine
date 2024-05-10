@@ -31,7 +31,7 @@
 #include "MovementComponent.h"
 #include "PengoState.h"
 #include "PengoPlayer.h"
-
+#include "Wall.h"
 void load()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
@@ -45,7 +45,7 @@ void load()
 	auto DAElogo = std::make_unique<dae::GameObject>();
 	DAElogo.get()->AddComponent(new dae::RenderComponent(DAElogo.get()));
 	DAElogo.get()->GetComponent<dae::RenderComponent>()->SetTexture("logo.tga");
-	DAElogo.get()->SetGameObjectPosition(216.f, 180.f);
+	DAElogo.get()->SetGameObjectPosition(216, 180);
 
 	//Text
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
@@ -54,21 +54,11 @@ void load()
 	text.get()->AddComponent(new dae::TextObject(text.get(), "Programming 4 Assignment", std::move(font)));
 
 	//FPS
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
 	auto FPS = std::make_unique<dae::GameObject>();
-	FPS.get()->SetGameObjectPosition(0, 70);
+	FPS.get()->SetGameObjectPosition(0, 0);
 	FPS.get()->AddComponent(new dae::TextObject(FPS.get(), "0FPS", std::move(font)));
 	FPS.get()->AddComponent(new dae::FpsComponent(FPS.get(), FPS.get()->GetComponent<dae::TextObject>()));
-
-	//SetParent testSetup
-	//go = std::make_shared<dae::GameObject>();
-	//auto secondGo = std::make_shared<dae::GameObject>();
-	//go.get()->SetGameObjectPosition(8, 8);
-	//secondGo.get()->SetGameObjectPosition(10, 5);
-	//go.get()->SetParent(secondGo.get(), true);
-	//std::cout << secondGo->GetGameObjectPosition().x << '\n' << go->GetGameObjectPosition().x;
-	//scene.Add(go);
-	//scene.Add(secondGo);
 
 	
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
@@ -86,30 +76,18 @@ void load()
 	Sound_Explain.get()->SetGameObjectPosition(50, 200);
 	Sound_Explain.get()->AddComponent(new dae::TextObject(Sound_Explain.get(), "Press P to play sound", std::move(font)));
 
-
-	//dae::CollisionObserver* collisionObs = new dae::CollisionObserver();
+	int element = 16;
+	int mapBorder = 8;
 
 	//P1
-	//auto P1 = std::make_unique<dae::GameObject>();
-	//P1.get()->AddComponent(new dae::RenderComponent(P1.get()));
-	//P1.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
-	//P1.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0,16*4,16,16);
-	//P1.get()->SetGameObjectPosition(0,0);
-	//P1.get()->AddComponent(new dae::CollisionComponent(P1.get(), 16.f, 16.f));
-	//P1.get()->AddComponent(new dae::HealthComponent(P1.get()));
-	//P1.get()->AddComponent(new dae::ScoreComponent(P1.get()));
-	//P1.get()->AddComponent(new MovementComponent(P1.get()));
-	//P1.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P1.get()));
-	//P1.get()->SetTag("Player");
-	PengoPlayer P1{};
-	//PengoState* _state;
+	PengoPlayer P1{ mapBorder, mapBorder };
 
 	auto P2 = std::make_unique<dae::GameObject>();
 	P2.get()->AddComponent(new dae::RenderComponent(P2.get()));
 	P2.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
 	P2.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 16*0, 16, 16);
 	P2.get()->SetGameObjectPosition(16 * 20, 16 * 15);
-	P2.get()->AddComponent(new dae::CollisionComponent(P2.get(), 16.f, 16.f));
+	P2.get()->AddComponent(new dae::CollisionComponent(P2.get(), 16, 16));
 	P2.get()->AddComponent(new dae::HealthComponent(P2.get()));
 	P2.get()->AddComponent(new dae::ScoreComponent(P2.get()));
 	P2.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P2.get()));
@@ -119,21 +97,142 @@ void load()
 	enemy.get()->AddComponent(new dae::RenderComponent(enemy.get()));
 	enemy.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
 	enemy.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 16*9, 16, 16);
-	enemy.get()->SetGameObjectPosition(16 * 20, 16 * 20);
-	enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16.f, 16.f));
+	enemy.get()->SetGameObjectPosition(16 * 0, 16 * 20);
+	enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16, 16));
 	enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
 	//enemy.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new dae::CollisionObserver());
 	enemy.get()->SetTag("Enemy");
 
-	auto wall = std::make_unique<dae::GameObject>();
-	wall.get()->AddComponent(new dae::RenderComponent(wall.get()));
-	wall.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
-	wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(708, 0, 16, 16);
-	wall.get()->SetGameObjectPosition(16 * 21, 16 * 20);
-	wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16.f, 16.f));
-	//enemy.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new dae::CollisionObserver());
-	wall.get()->SetTag("Wall");
+	//Wall
+	std::vector<Wall> walls;
+	{
+		walls.emplace_back(mapBorder + element * 1,  mapBorder + element * 0);
+		walls.emplace_back(mapBorder + element * 5,  mapBorder + element * 0);
+		walls.emplace_back(mapBorder + element * 11, mapBorder + element * 0);
 
+		walls.emplace_back(mapBorder + element * 1,	 mapBorder + element * 1);
+		walls.emplace_back(mapBorder + element * 3,	 mapBorder + element * 1);
+		walls.emplace_back(mapBorder + element * 4,	 mapBorder + element * 1);
+		walls.emplace_back(mapBorder + element * 5,	 mapBorder + element * 1);
+		walls.emplace_back(mapBorder + element * 6,	 mapBorder + element * 1);
+		walls.emplace_back(mapBorder + element * 7,	 mapBorder + element * 1);
+		walls.emplace_back(mapBorder + element * 8,	 mapBorder + element * 1);
+		walls.emplace_back(mapBorder + element * 9,  mapBorder + element * 1);
+		walls.emplace_back(mapBorder + element * 11, mapBorder + element * 1);
+
+		walls.emplace_back(mapBorder + element * 3,  mapBorder + element * 2);
+		walls.emplace_back(mapBorder + element * 9,  mapBorder + element * 2);
+		walls.emplace_back(mapBorder + element * 11, mapBorder + element * 2);
+
+		walls.emplace_back(mapBorder + element * 1,	 mapBorder + element * 3);
+		walls.emplace_back(mapBorder + element * 2,	 mapBorder + element * 3);
+		walls.emplace_back(mapBorder + element * 3,	 mapBorder + element * 3);
+		walls.emplace_back(mapBorder + element * 5,  mapBorder + element * 3);
+		walls.emplace_back(mapBorder + element * 6,	 mapBorder + element * 3);
+		walls.emplace_back(mapBorder + element * 7,	 mapBorder + element * 3);
+		walls.emplace_back(mapBorder + element * 9,	 mapBorder + element * 3);
+		walls.emplace_back(mapBorder + element * 11, mapBorder + element * 3);
+
+		walls.emplace_back(mapBorder + element * 5, mapBorder + element * 4);
+		walls.emplace_back(mapBorder + element * 9,  mapBorder + element * 4);
+
+		walls.emplace_back(mapBorder + element * 0,  mapBorder + element * 5);
+		walls.emplace_back(mapBorder + element * 1,  mapBorder + element * 5);
+		walls.emplace_back(mapBorder + element * 2,  mapBorder + element * 5);
+		walls.emplace_back(mapBorder + element * 3,  mapBorder + element * 5);
+		walls.emplace_back(mapBorder + element * 4,  mapBorder + element * 5);
+		walls.emplace_back(mapBorder + element * 5,  mapBorder + element * 5);
+		walls.emplace_back(mapBorder + element * 7,  mapBorder + element * 5);
+		walls.emplace_back(mapBorder + element * 8,  mapBorder + element * 5);
+		walls.emplace_back(mapBorder + element * 9,  mapBorder + element * 5);
+		walls.emplace_back(mapBorder + element * 11, mapBorder + element * 5);
+
+		walls.emplace_back(mapBorder + element * 7,  mapBorder + element * 6);
+		walls.emplace_back(mapBorder + element * 9,  mapBorder + element * 6);
+		walls.emplace_back(mapBorder + element * 11, mapBorder + element * 6);
+
+		walls.emplace_back(mapBorder + element * 1, mapBorder + element * 7);
+		walls.emplace_back(mapBorder + element * 2, mapBorder + element * 7);
+		walls.emplace_back(mapBorder + element * 3, mapBorder + element * 7);
+		walls.emplace_back(mapBorder + element * 4, mapBorder + element * 7);
+		walls.emplace_back(mapBorder + element * 5, mapBorder + element * 7);
+		walls.emplace_back(mapBorder + element * 6, mapBorder + element * 7);
+		walls.emplace_back(mapBorder + element * 7, mapBorder + element * 7);
+		walls.emplace_back(mapBorder + element * 9, mapBorder + element * 7);
+		walls.emplace_back(mapBorder + element * 11, mapBorder + element * 7);
+		walls.emplace_back(mapBorder + element * 12, mapBorder + element * 7);
+
+		walls.emplace_back(mapBorder + element * 1, mapBorder + element * 8);
+		walls.emplace_back(mapBorder + element * 7, mapBorder + element * 8);
+
+		walls.emplace_back(mapBorder + element * 1, mapBorder + element * 9);
+		walls.emplace_back(mapBorder + element * 2, mapBorder + element * 9);
+		walls.emplace_back(mapBorder + element * 3, mapBorder + element * 9);
+		walls.emplace_back(mapBorder + element * 4, mapBorder + element * 9);
+		walls.emplace_back(mapBorder + element * 5, mapBorder + element * 9);
+		walls.emplace_back(mapBorder + element * 7, mapBorder + element * 9);
+		walls.emplace_back(mapBorder + element * 9, mapBorder + element * 9);
+		walls.emplace_back(mapBorder + element * 10, mapBorder + element * 9);
+		walls.emplace_back(mapBorder + element * 11, mapBorder + element * 9);
+
+		walls.emplace_back(mapBorder + element * 1, mapBorder + element * 10);
+		walls.emplace_back(mapBorder + element * 7, mapBorder + element * 10);
+		walls.emplace_back(mapBorder + element * 9, mapBorder + element * 10);
+
+		walls.emplace_back(mapBorder + element * 1, mapBorder + element * 11);
+		walls.emplace_back(mapBorder + element * 3, mapBorder + element * 11);
+		walls.emplace_back(mapBorder + element * 4, mapBorder + element * 11);
+		walls.emplace_back(mapBorder + element * 5, mapBorder + element * 11);
+		walls.emplace_back(mapBorder + element * 6, mapBorder + element * 11);
+		walls.emplace_back(mapBorder + element * 7, mapBorder + element * 11);
+		walls.emplace_back(mapBorder + element * 9, mapBorder + element * 11);
+		walls.emplace_back(mapBorder + element * 10, mapBorder + element * 11);
+		walls.emplace_back(mapBorder + element * 11, mapBorder + element * 11);
+		walls.emplace_back(mapBorder + element * 12, mapBorder + element * 11);
+
+		walls.emplace_back(mapBorder + element * 3, mapBorder + element * 12);
+		walls.emplace_back(mapBorder + element * 7, mapBorder + element * 12);
+
+		walls.emplace_back(mapBorder + element * 0, mapBorder + element * 13);
+		walls.emplace_back(mapBorder + element * 1, mapBorder + element * 13);
+		walls.emplace_back(mapBorder + element * 3, mapBorder + element * 13);
+		walls.emplace_back(mapBorder + element * 5, mapBorder + element * 13);
+		walls.emplace_back(mapBorder + element * 7, mapBorder + element * 13);
+		walls.emplace_back(mapBorder + element * 8, mapBorder + element * 13);
+		walls.emplace_back(mapBorder + element * 9, mapBorder + element * 13);
+		walls.emplace_back(mapBorder + element * 10, mapBorder + element * 13);
+		walls.emplace_back(mapBorder + element * 11, mapBorder + element * 13);
+
+		walls.emplace_back(mapBorder + element * 5, mapBorder + element * 14);
+	}
+
+	//Borders
+	std::vector<std::unique_ptr<dae::GameObject>> borders;
+	{
+		auto border = std::make_unique<dae::GameObject>();
+		border.get()->SetGameObjectPosition(0, 0);
+		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 224.f, 8.f));
+		border.get()->SetTag("Wall");
+		borders.emplace_back(std::move(border));
+
+		border = std::make_unique<dae::GameObject>();
+		border.get()->SetGameObjectPosition(0, 0);
+		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 8.f, 256.f));
+		border.get()->SetTag("Wall");
+		borders.emplace_back(std::move(border));
+
+		border = std::make_unique<dae::GameObject>();
+		border.get()->SetGameObjectPosition(0, 248.f);
+		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 224.f, 8.f));
+		border.get()->SetTag("Wall");
+		borders.emplace_back(std::move(border));
+
+		border = std::make_unique<dae::GameObject>();
+		border.get()->SetGameObjectPosition(216.f, 0);
+		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 8.f, 256.f));
+		border.get()->SetTag("Wall");
+		borders.emplace_back(std::move(border));
+	}
 	//auto displayLives{ std::make_shared<dae::GameObject>() };
 	//displayLives.get()->SetGameObjectPosition(0, 150);
 	//displayLives.get()->SetParent(P1.get(), true);
@@ -154,12 +253,11 @@ void load()
 	//P1.get()->GetComponent<dae::ScoreComponent>()->AddObserver(displayPoints->GetComponent<dae::StateDisplay>());
 	//P1.get()->GetComponent<dae::ScoreComponent>()->AddObserver(g_achievementObserver);
 
-	float mapBorder = 8;
 	auto GameBackground = std::make_unique<dae::GameObject>();
 	GameBackground.get()->AddComponent(new dae::RenderComponent(GameBackground.get()));
 	GameBackground.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
 	GameBackground.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 0, 224, 256);
-	GameBackground.get()->SetGameObjectPosition(16 * 10 - mapBorder, 16 * 10 - mapBorder);
+	GameBackground.get()->SetGameObjectPosition(16 * 0, 16 * 0);
 	//background.get()->AddComponent(new dae::CollisionComponent(background.get(), 16.f, 16.f));
 
 	/*
@@ -194,24 +292,30 @@ void load()
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(0, 1, 0)));
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(-1, 0, 0)));
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(1, 0, 0)));
-	//dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(0, -1, 0)));
-	//dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(0, 1, 0)));
-	//dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(-1, 0, 0)));
-	//dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), glm::vec3(1, 0, 0)));
+
 	dae::InputManager::GetInstance().BindCommand(SDLK_p, dae::InputActionType::IsUp, std::make_unique<dae::SoundCommand>());
 
-	scene.Add(std::move(backGround));
-	scene.Add(std::move(DAElogo));
+	//scene.Add(std::move(backGround));
+	//scene.Add(std::move(DAElogo));
+	//scene.Add(std::move(text));
+	//scene.Add(std::move(P1_Explain));
+	//scene.Add(std::move(P2_Explain));
+	//scene.Add(std::move(Sound_Explain));
+
 	scene.Add(std::move(GameBackground));
-	scene.Add(std::move(text));
-	scene.Add(std::move(FPS));
-	scene.Add(P1.GetPlayer());
+	scene.Add(P1.GetActor());
 	scene.Add(std::move(P2));
 	scene.Add(std::move(enemy));
-	scene.Add(std::move(wall));
-	scene.Add(std::move(P1_Explain));
-	scene.Add(std::move(P2_Explain));
-	scene.Add(std::move(Sound_Explain));
+	for (auto& wall : walls)
+	{
+		scene.Add(wall.GetActor());
+	}
+	for (auto& bord : borders)
+	{
+		scene.Add(std::move(bord));
+	}
+	scene.Add(std::move(FPS));
+
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_A), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_X), dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P1.get(), P1.get()->GetComponent<dae::HealthComponent>()));

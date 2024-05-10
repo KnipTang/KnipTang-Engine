@@ -9,28 +9,28 @@
 #include "InputManager.h"
 #include "PlayerCommands.h"
 
-PengoPlayer::PengoPlayer() : m_Player(std::make_unique<dae::GameObject>())
+PengoPlayer::PengoPlayer(int posX, int posY)
 {
-	m_Player.get()->AddComponent(new dae::RenderComponent(m_Player.get()));
-	m_Player.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
-	m_Player.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 16 * 4, 16, 16);
-	m_Player.get()->SetGameObjectPosition(0, 0);
-	m_Player.get()->AddComponent(new dae::CollisionComponent(m_Player.get(), 16.f, 16.f));
-	m_Player.get()->AddComponent(new dae::HealthComponent(m_Player.get()));
-	m_Player.get()->AddComponent(new dae::ScoreComponent(m_Player.get()));
-	m_Player.get()->AddComponent(new MovementComponent(m_Player.get()));
-	m_Player.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(m_Player.get()));
-	m_Player.get()->SetTag("Player");
+	m_Actor.get()->AddComponent(new dae::RenderComponent(m_Actor.get()));
+	m_Actor.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+	m_Actor.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 16 * 4, 16, 16);
+	m_Actor.get()->SetGameObjectPosition(static_cast<float>(posX), static_cast<float>(posY));
+	m_Actor.get()->AddComponent(new dae::CollisionComponent(m_Actor.get(), 16.f, 16.f));
+	m_Actor.get()->AddComponent(new dae::HealthComponent(m_Actor.get()));
+	m_Actor.get()->AddComponent(new dae::ScoreComponent(m_Actor.get()));
+	m_Actor.get()->AddComponent(new MovementComponent(m_Actor.get()));
+	m_Actor.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(m_Actor.get()));
+	m_Actor.get()->SetTag("Player");
 
-    m_State = new MoveState{};
+    //m_State = new MoveState{};
 
-	dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(m_Player.get(), this, Controlls::UP));
-	dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(m_Player.get(), this, Controlls::DOWN));
-	dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(m_Player.get(), this, Controlls::LEFT));
-	dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(m_Player.get(), this, Controlls::RIGHT));
+	dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(m_Actor.get(), this, Controlls::UP));
+	dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(m_Actor.get(), this, Controlls::DOWN));
+	dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(m_Actor.get(), this, Controlls::LEFT));
+	dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(m_Actor.get(), this, Controlls::RIGHT));
 }
 
-void PengoPlayer::HandleInput(Controlls control)
+void PengoPlayer::HandleInput(Controlls /*control*/)
 {
     /*
     switch (control)
@@ -60,7 +60,7 @@ void PengoPlayer::HandleInput(Controlls control)
         break;
     }
     */
-	PengoState* newState = m_State->HandleInput(control);
-    if (newState != nullptr)
-        m_State = newState;
+	//PengoState* newState = m_State->HandleInput(control);
+    //if (newState != nullptr)
+    //    m_State = newState;
 }

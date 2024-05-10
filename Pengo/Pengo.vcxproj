@@ -195,6 +195,8 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FpsComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
@@ -206,8 +208,11 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="SoundCommands.cpp" />
     <ClCompile Include="StateDisplay.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="FpsComponent.h" />
     <ClInclude Include="GameCommands.h" />
     <ClInclude Include="HealthComponent.h" />
@@ -220,6 +225,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="SoundCommands.h" />
     <ClInclude Include="StateDisplay.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,17 +2,16 @@
 #include <memory>
 #include "GameObject.h"
 #include "PengoState.h"
+#include "Actor.h"
 
-
-class PengoPlayer
+class PengoPlayer : public Actor
 {
 public:
-	PengoPlayer();
-	std::unique_ptr<dae::GameObject> GetPlayer() { return std::move(m_Player); }
+	PengoPlayer(int posX, int posY);
+	~PengoPlayer() { m_State = nullptr; delete m_State; }
 
 	void HandleInput(Controlls control);
 private:
-	std::unique_ptr<dae::GameObject> m_Player;
 
 	PengoState* m_State;
 };
