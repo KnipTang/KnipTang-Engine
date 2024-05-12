@@ -51,7 +51,7 @@ void Scene::LateUpdate(float deltaTime)
 		{
 			//object.get()->RemoveAllChildren();
 			object.get()->RemoveAllComponent();
-			Remove(std::move(object));
+			m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
 		}
 	}
 }

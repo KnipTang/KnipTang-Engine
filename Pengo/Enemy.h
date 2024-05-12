@@ -4,7 +4,6 @@ class Enemy : public Actor
 {
 public:
 	Enemy(int posX, int posY);
-
 private:
 
 };

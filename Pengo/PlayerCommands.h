@@ -3,15 +3,14 @@
 #include "Command.h"
 #include "GameObject.h"
 #include "MovementComponent.h"
-#include "PengoPlayer.h"
+#include "PengoComponent.h"
+#include "PengoState.h"
 namespace dae
 {
 	class Movement : public GameActorCommand {
 	public:
-		Movement(GameObject* actor, PengoPlayer* player, Controlls control, float speed = 16.f) : GameActorCommand(actor), m_NewControl(control), m_Speed(speed)
+		Movement(GameObject* actor, Controlls control) : GameActorCommand(actor), m_Control(control)
 		{
-			m_Player = player;
-
 			switch (control)
 			{
 			case Controlls::UP:
@@ -39,23 +38,37 @@ namespace dae
 
 		void Execute(float /*deltaTime*/) override
 		{
-			glm::vec3 objPos = GetGameObject()->GetTransform()->GetWorldPosition();
-			objPos += m_Direction * m_Speed;
-			GetGameObject()->SetGameObjectPosition(objPos.x, objPos.y);
+			std::cout << "Moving\n";
+			if (GetGameObject()->HasComponent<PengoComponent>())
+			{
+				GetGameObject()->GetComponent<PengoComponent>()->HandleInput(m_Control);
+			}
 
 			if (GetGameObject()->HasComponent<MovementComponent>())
 			{
-				GetGameObject()->GetComponent<MovementComponent>()->SetDirection(m_Direction);
+				GetGameObject()->GetComponent<MovementComponent>()->Move(m_Direction);
 			}
 
-			m_Player->HandleInput(m_NewControl);
 		}
 	private:
 		glm::vec3 m_Direction;
-		float m_Speed;
 
-		PengoPlayer* m_Player;
-		Controlls m_NewControl;
+		Controlls m_Control;
+	};
+
+	class Attack : public GameActorCommand {
+	public:
+		Attack(GameObject* actor) : GameActorCommand(actor) { }
+
+		void Execute(float /*deltaTime*/) override
+		{
+			std::cout << "Attacking\n";
+			if (GetGameObject()->HasComponent<PengoComponent>())
+			{
+				GetGameObject()->GetComponent<PengoComponent>()->HandleInput(Controlls::ATTACK);
+			}
+		}
+	private:
 	};
 
 	//class SetControlState : public GameActorCommand {

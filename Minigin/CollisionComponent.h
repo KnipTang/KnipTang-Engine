@@ -25,6 +25,7 @@ namespace dae
         {
 #if NDEBUG
 #else
+            /*
             // Get the position of the game object
             glm::vec2 position = GetOwner()->GetGameObjectPosition();
             // Create a rectangle representing the collider
@@ -39,6 +40,7 @@ namespace dae
             Rectangle(hdc, rect.left, rect.top, rect.right, rect.bottom);
             // Release the device context
             ReleaseDC(nullptr, hdc);
+            */
 #endif
         }
 

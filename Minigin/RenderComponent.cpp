@@ -14,7 +14,7 @@ void dae::RenderComponent::SetTexture(const std::string& filename)
 	m_texture = ResourceManager::GetInstance().LoadTexture(filename);
 }
 
-void dae::RenderComponent::SetSourceRecr(const int x, const int y, const int widthSrc, const int heightSrc)
+void dae::RenderComponent::SetSourceRect(const int x, const int y, const int widthSrc, const int heightSrc)
 {
 	m_SourceRect.x = x;
 	m_SourceRect.y = y;

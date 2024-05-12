@@ -30,8 +30,11 @@
 #include "FpsComponent.h"
 #include "MovementComponent.h"
 #include "PengoState.h"
-#include "PengoPlayer.h"
+#include "PengoComponent.h"
 #include "Wall.h"
+#include "Enemy.h"
+#include "Animation.h"
+
 void load()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
@@ -80,12 +83,31 @@ void load()
 	int mapBorder = 8;
 
 	//P1
-	PengoPlayer P1{ mapBorder, mapBorder };
+	//PengoPlayer P1{ mapBorder, mapBorder };
+	auto P1 = std::make_unique<dae::GameObject>();
+	P1.get()->AddComponent(new PengoComponent(P1.get()));
+	P1.get()->AddComponent(new dae::RenderComponent(P1.get()));
+	P1.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+	P1.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
+	P1.get()->AddComponent(new Animation(P1.get()));
+	P1.get()->SetGameObjectPosition(static_cast<float>(mapBorder), static_cast<float>(mapBorder));
+	P1.get()->AddComponent(new dae::CollisionComponent(P1.get(), 16.f, 16.f));
+	P1.get()->AddComponent(new dae::HealthComponent(P1.get()));
+	P1.get()->AddComponent(new dae::ScoreComponent(P1.get()));
+	P1.get()->AddComponent(new MovementComponent(P1.get()));
+	P1.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P1.get()));
+	P1.get()->SetTag("Player");
+
+	dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(P1.get(), Controlls::UP));
+	dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(P1.get(), Controlls::DOWN));
+	dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(P1.get(), Controlls::LEFT));
+	dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(P1.get(), Controlls::RIGHT));
+	dae::InputManager::GetInstance().BindCommand(SDLK_e, dae::InputActionType::IsDown, std::make_unique<dae::Attack>(P1.get()));
 
 	auto P2 = std::make_unique<dae::GameObject>();
 	P2.get()->AddComponent(new dae::RenderComponent(P2.get()));
 	P2.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
-	P2.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 16*0, 16, 16);
+	P2.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 16*0, 16, 16);
 	P2.get()->SetGameObjectPosition(16 * 20, 16 * 15);
 	P2.get()->AddComponent(new dae::CollisionComponent(P2.get(), 16, 16));
 	P2.get()->AddComponent(new dae::HealthComponent(P2.get()));
@@ -93,15 +115,7 @@ void load()
 	P2.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P2.get()));
 	P2.get()->SetTag("Player");
 
-	auto enemy = std::make_unique<dae::GameObject>();
-	enemy.get()->AddComponent(new dae::RenderComponent(enemy.get()));
-	enemy.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
-	enemy.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 16*9, 16, 16);
-	enemy.get()->SetGameObjectPosition(16 * 0, 16 * 20);
-	enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16, 16));
-	enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
-	//enemy.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new dae::CollisionObserver());
-	enemy.get()->SetTag("Enemy");
+	Enemy enemy{ mapBorder + element * 2, mapBorder + element * 1 };
 
 	//Wall
 	std::vector<Wall> walls;
@@ -256,7 +270,7 @@ void load()
 	auto GameBackground = std::make_unique<dae::GameObject>();
 	GameBackground.get()->AddComponent(new dae::RenderComponent(GameBackground.get()));
 	GameBackground.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
-	GameBackground.get()->GetComponent<dae::RenderComponent>()->SetSourceRecr(0, 0, 224, 256);
+	GameBackground.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 0, 224, 256);
 	GameBackground.get()->SetGameObjectPosition(16 * 0, 16 * 0);
 	//background.get()->AddComponent(new dae::CollisionComponent(background.get(), 16.f, 16.f));
 
@@ -303,9 +317,9 @@ void load()
 	//scene.Add(std::move(Sound_Explain));
 
 	scene.Add(std::move(GameBackground));
-	scene.Add(P1.GetActor());
+	scene.Add(std::move(P1));
 	scene.Add(std::move(P2));
-	scene.Add(std::move(enemy));
+	scene.Add(enemy.GetActor());
 	for (auto& wall : walls)
 	{
 		scene.Add(wall.GetActor());

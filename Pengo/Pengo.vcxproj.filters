@@ -45,7 +45,7 @@
     <ClCompile Include="PengoState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PengoPlayer.cpp">
+    <ClCompile Include="PengoComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Wall.cpp">
@@ -55,6 +55,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,7 +95,7 @@
     <ClInclude Include="PengoState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PengoPlayer.h">
+    <ClInclude Include="PengoComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Wall.h">
@@ -102,6 +105,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

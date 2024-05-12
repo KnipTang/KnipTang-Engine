@@ -2,6 +2,7 @@
 #include "CollisionComponent.h"
 #include <iostream>
 #include "MovementComponent.h"
+#include "PengoComponent.h"
 
 void PengoCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::CollisionComponent* actor)
 {
@@ -17,6 +18,13 @@ void PengoCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 		else if (tag == "Enemy")
 		{
 			std::cout << "Enemy\n";
+
+			actor->GetOwner()->RemoveGameObject();
+
+			if (m_pOwner->HasComponent<PengoComponent>())
+			{
+				m_pOwner->GetComponent<PengoComponent>()->SetState(std::make_unique<DyingState>(actor->GetOwner()));
+			}
 		}
 		else if (tag == "Wall")
 		{

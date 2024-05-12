@@ -10,8 +10,9 @@ public:
 	void FixedUpdate(float /*fixedTimeStep*/) override {}
 	void Render() const override {}
 
-	void SetDirection(glm::vec3 direction) { m_Direction = direction; }
+	void Move(glm::vec3 direction);
 
+	void SetDirection(glm::vec3 direction) { m_Direction = direction; }
 	void SetHitWall(bool hit) { m_HitWall = hit; }
 
 	MovementComponent(dae::GameObject* gameObject, float speed = 16.f) : dae::Component(gameObject), m_Speed(speed) { };

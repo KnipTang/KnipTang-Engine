@@ -20,7 +20,9 @@ namespace dae
 		void Render() const override;
 
 		void SetTexture(const std::string& filename);
-		void SetSourceRecr(const int x, const int y, const int widthSrc, const int heightSrc);
+
+		void SetSourceRect(const int x, const int y, const int widthSrc, const int heightSrc);
+		SDL_Rect GetSourceRect() { return m_SourceRect; }
 
 		RenderComponent(GameObject* gameObject);
 		~RenderComponent() override {}
