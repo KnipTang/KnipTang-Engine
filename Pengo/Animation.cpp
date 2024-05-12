@@ -1,9 +1,14 @@
 #include "Animation.h"
+#include <iostream>
+#include "InputManager.h"
 
 void Animation::Update(float deltaTime)
 {
-	m_Time += deltaTime;
+	if (!m_AnimationOn)
+		return;
 
+	m_Time += deltaTime;
+	
 	if (m_Time >= m_FlipTime)
 	{
 		if (GetOwner()->HasComponent<dae::RenderComponent>())

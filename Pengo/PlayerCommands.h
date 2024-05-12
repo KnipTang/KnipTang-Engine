@@ -36,7 +36,7 @@ namespace dae
 			}
 		}
 
-		void Execute(float /*deltaTime*/) override
+		void Execute(float deltaTime) override
 		{
 			std::cout << "Moving\n";
 			if (GetGameObject()->HasComponent<PengoComponent>())
@@ -46,7 +46,7 @@ namespace dae
 
 			if (GetGameObject()->HasComponent<MovementComponent>())
 			{
-				GetGameObject()->GetComponent<MovementComponent>()->Move(m_Direction);
+				GetGameObject()->GetComponent<MovementComponent>()->Move(deltaTime, m_Direction);
 			}
 
 		}

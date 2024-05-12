@@ -35,33 +35,10 @@ public:
 	DyingState(dae::GameObject* gameObject) { Enter(gameObject); }
 	~DyingState() override {};
 
-	void Enter(dae::GameObject* gameObject) override
-	{
-		SDL_Rect currentRect{};
+	void Enter(dae::GameObject* gameObject) override;
 
-		Animation* animationComp = gameObject->GetComponent<Animation>();
-		if (animationComp != nullptr)
-		{
-			currentRect = animationComp->GetCurrentSourceRect();
-
-			currentRect.x = 0;
-			currentRect.y = 16 * 2;
-
-			animationComp->SetCurrentSourceRect(currentRect);
-		}
-
-		gameObject->RemoveComponent(gameObject->GetComponent<MovementComponent>());
-	}
-
-	std::unique_ptr<PengoState> HandleInput(dae::GameObject* /*gameObject*/, Controlls /*control*/) override
-	{
-		return std::make_unique<DyingState>();
-	}
-	std::unique_ptr<PengoState> Update() override
-	{
-		std::cout << "Dying :OO\n";
-		return std::make_unique<DyingState>();
-	}
+	std::unique_ptr<PengoState> HandleInput(dae::GameObject* /*gameObject*/, Controlls /*control*/) override;
+	std::unique_ptr<PengoState> Update() override;
 };
 
 class PushingState : public PengoState
@@ -70,10 +47,7 @@ public:
 	PushingState() {};
 	~PushingState() override {};
 
-	void Enter(dae::GameObject* /*gameObject*/) override
-	{
-
-	}
+	void Enter(dae::GameObject* /*gameObject*/) override {};
 
 	std::unique_ptr<PengoState> HandleInput(dae::GameObject* /*gameObject*/, Controlls /*control*/) override
 	{
@@ -89,58 +63,38 @@ public:
 class MoveState : public PengoState
 {
 public:
-	MoveState() { };
+	MoveState() {};
+	MoveState(dae::GameObject* gameObject) { Enter(gameObject); }
+	MoveState(dae::GameObject* gameObject, Controlls control) { Enter(gameObject, control); }
 	~MoveState() override {};
 
-	void Enter(dae::GameObject* /*gameObject*/) override
-	{
-		//std::cout << "ENtered";
-	}
+	void Enter(dae::GameObject* gameObject) override;
+	void Enter(dae::GameObject* gameObject, Controlls control);
 
-	std::unique_ptr<PengoState> HandleInput(dae::GameObject* gameObject, Controlls control) override
-	{
-		SDL_Rect currentRect{};
-
-		Animation* animationComp = gameObject->GetComponent<Animation>();
-		if (animationComp != nullptr)
-			currentRect = animationComp->GetCurrentSourceRect();
-
-		switch (control)
-		{
-		case Controlls::UP:
-			if (animationComp != nullptr)
-				currentRect.x = 16 * 4;
-			break;
-
-		case Controlls::DOWN:
-			if (animationComp != nullptr)
-				currentRect.x = 16 * 0;
-			break;
-
-		case Controlls::LEFT:
-			if (animationComp != nullptr)
-				currentRect.x = 16 * 2;
-			break;
-
-		case Controlls::RIGHT:
-			if (animationComp != nullptr)
-				currentRect.x = 16 * 6;
-			break;
-
-		case Controlls::ATTACK:
-			return std::make_unique<PushingState>();
-			break;
-		}
-
-		if (animationComp != nullptr)
-			animationComp->SetCurrentSourceRect(currentRect);
-
-		return std::make_unique<MoveState>();
-	}
-
+	std::unique_ptr<PengoState> HandleInput(dae::GameObject* gameObject, Controlls control) override;
 	std::unique_ptr<PengoState> Update() override
 	{
 		return std::make_unique<MoveState>();
+	}
+};
+
+class Idle : public PengoState
+{
+public:
+	Idle() {};
+	Idle(dae::GameObject* gameObject) { Enter(gameObject); }
+	~Idle() override {};
+
+	void Enter(dae::GameObject* gameObject) override
+	{
+		gameObject->GetComponent<Animation>()->ToggleAnimation(false);
+	}
+
+	std::unique_ptr<PengoState> HandleInput(dae::GameObject*, Controlls control) override;
+
+	std::unique_ptr<PengoState> Update() override
+	{
+		return std::make_unique<PushingState>();
 	}
 
 };

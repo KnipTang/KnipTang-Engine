@@ -42,6 +42,6 @@ void PengoComponent::HandleInput(Controlls control)
     if (newState != nullptr)
     {
         m_State = std::move(newState);
-        m_State->Enter(GetOwner());
+        //m_State->Enter(GetOwner());
     }
 }

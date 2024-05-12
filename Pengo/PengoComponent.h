@@ -18,7 +18,7 @@ public:
 		m_State = std::move(state); 
 	}
 
-	PengoComponent(dae::GameObject* gameObject) : dae::Component(gameObject) { m_State = std::make_unique<MoveState>(); }
+	PengoComponent(dae::GameObject* gameObject) : dae::Component(gameObject) { m_State = std::make_unique<Idle>(); }
 	virtual ~PengoComponent() 
 	{ 
 		//m_MovementState = nullptr; delete m_MovementState;

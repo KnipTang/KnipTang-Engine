@@ -19,11 +19,12 @@ void PengoCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 		{
 			std::cout << "Enemy\n";
 
+			m_pOwner->SetGameObjectPosition(actor->GetOwner()->GetGameObjectPosition().x, actor->GetOwner()->GetGameObjectPosition().y);
 			actor->GetOwner()->RemoveGameObject();
 
 			if (m_pOwner->HasComponent<PengoComponent>())
 			{
-				m_pOwner->GetComponent<PengoComponent>()->SetState(std::make_unique<DyingState>(actor->GetOwner()));
+				m_pOwner->GetComponent<PengoComponent>()->SetState(std::make_unique<DyingState>(m_pOwner));
 			}
 		}
 		else if (tag == "Wall")
