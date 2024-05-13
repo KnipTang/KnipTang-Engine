@@ -4,6 +4,7 @@
 
 Wall::Wall(int posX, int posY)
 {
+	m_Actor = std::make_unique<dae::GameObject>();
 
 	m_Actor.get()->AddComponent(new dae::RenderComponent(m_Actor.get()));
 	m_Actor.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");

@@ -200,6 +200,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FpsComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="Pengo.cpp" />
     <ClCompile Include="PengoCollisionObserver.cpp" />
@@ -218,6 +219,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClInclude Include="FpsComponent.h" />
     <ClInclude Include="GameCommands.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="MovementComponent.h" />
     <ClInclude Include="PengoCollisionObserver.h" />
     <ClInclude Include="PengoComponent.h" />
