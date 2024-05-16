@@ -101,11 +101,17 @@ void Level::PlacePlayer()
 
     P1.get()->SetTag("Player");
 
-    dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(P1.get(), Controlls::UP));
-    dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(P1.get(), Controlls::DOWN));
-    dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(P1.get(), Controlls::LEFT));
-    dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsDown, std::make_unique<dae::Movement>(P1.get(), Controlls::RIGHT));
-    dae::InputManager::GetInstance().BindCommand(SDLK_e, dae::InputActionType::IsDown, std::make_unique<dae::Attack>(P1.get()));
+    dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::UP));
+    dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::DOWN));
+    dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::LEFT));
+    dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::RIGHT));
+    dae::InputManager::GetInstance().BindCommand(SDLK_e, dae::InputActionType::IsPressed, std::make_unique<dae::Attack>(P1.get()));
+
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::UP));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::DOWN));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::LEFT));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::RIGHT));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<dae::Attack>(P1.get()));
 
     m_GameObjects.emplace_back(std::move(P1));
 }

@@ -74,34 +74,47 @@ dae::InputManager::~InputManager()
 
 bool dae::InputManager::ProcessInput(float deltaTime)
 {
-	const Uint8* previousKeyboardState = SDL_GetKeyboardState(NULL);
-	const Uint8* currentKeyboardState = SDL_GetKeyboardState(NULL);
 
-	Uint8 keyboardChanges[SDL_NUM_SCANCODES];
-	for (int i = 0; i < SDL_NUM_SCANCODES; ++i) {
-		keyboardChanges[i] = currentKeyboardState[i] ^ previousKeyboardState[i];
-	}
+	//const Uint8* previousKeyboardState = SDL_GetKeyboardState(NULL);
+	//const Uint8* currentKeyboardState = SDL_GetKeyboardState(NULL);
 
-	for (int i = 0; i < SDL_NUM_SCANCODES; ++i) {
-		if (keyboardChanges[i] && currentKeyboardState[i]) {
-			keysPressedThisFrame[i] = true;
-			keysReleasedThisFrame[i] = false;
-		}
-		else if (keyboardChanges[i] && !currentKeyboardState[i]) {
-			keysPressedThisFrame[i] = false;
-			keysReleasedThisFrame[i] = true;
-		}
-		else {
-			keysPressedThisFrame[i] = false;
-			keysReleasedThisFrame[i] = false;
-		}
-	}
+	//Uint8 keyboardChanges[SDL_NUM_SCANCODES];
+	//for (int i = 0; i < SDL_NUM_SCANCODES; ++i) {
+	//	keyboardChanges[i] = currentKeyboardState[i] ^ previousKeyboardState[i];
+	//}
+	//
+	//for (int i = 0; i < SDL_NUM_SCANCODES; ++i) {
+	//	if (keyboardChanges[i] && currentKeyboardState[i]) {
+	//		keysPressedThisFrame[i] = true;
+	//		keysReleasedThisFrame[i] = false;
+	//	}
+	//	else if (keyboardChanges[i] && !currentKeyboardState[i]) {
+	//		keysPressedThisFrame[i] = false;
+	//		keysReleasedThisFrame[i] = true;
+	//	}
+	//	else {
+	//		keysPressedThisFrame[i] = false;
+	//		keysReleasedThisFrame[i] = false;
+	//	}
+	//}
 
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
+		if (e.type == SDL_KEYDOWN /* && !e.key.repeat*/)
+		{
+			keysPressedThisFrame[e.key.keysym.sym] = true;
+		}
+		
+		if (e.type == SDL_KEYUP)
+		{
+			std::fill(std::begin(keysPressedThisFrame), std::end(keysPressedThisFrame), false);
+			keysReleasedThisFrame[e.key.keysym.sym] = true;
+		}
+
+		/*
 		if (e.type == SDL_KEYDOWN)
 		{
 			int keyCode = e.key.keysym.sym;
@@ -139,7 +152,24 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 				}
 			}
 		}
+		*/
 	}
+
+	//const Uint8* state = SDL_GetKeyboardState(NULL);
+
+	for (auto& [key, binding] : keyBindings)
+	{
+		auto& [inputAction, command] = binding;
+
+		if (inputAction == InputActionType::IsDown && keysPressedThisFrame[key])
+			command->Execute(deltaTime);
+		else if (inputAction == InputActionType::IsUp && keysReleasedThisFrame[key])
+			command->Execute(deltaTime);
+		else if (inputAction == InputActionType::IsPressed && keysPressedThisFrame[key])
+			command->Execute(deltaTime);
+	}
+
+	std::fill(std::begin(keysReleasedThisFrame), std::end(keysReleasedThisFrame), false);
 
 	return m_Pimpl->ProcessInput(deltaTime);
 }
