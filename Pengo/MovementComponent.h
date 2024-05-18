@@ -1,7 +1,8 @@
 #pragma once
 #include "Component.h"
 #include "GameObject.h"
-
+#include "CollisionComponent.h"
+#include <memory>
 class MovementComponent : public dae::Component
 {
 public:
@@ -15,7 +16,7 @@ public:
 	void SetDirection(glm::vec3 direction) { m_Direction = direction; }
 	void SetHitWall(bool hit) { m_HitWall = hit; }
 
-	MovementComponent(dae::GameObject* gameObject, float speed = 40.f) : dae::Component(gameObject), m_Speed(speed) { };
+	MovementComponent(dae::GameObject* gameObject, float speed = 40.f) : dae::Component(gameObject), m_Speed(speed) {};
 	virtual ~MovementComponent() { }
 	MovementComponent(const MovementComponent& other) = delete;
 	MovementComponent(MovementComponent&& other) = delete;

@@ -153,8 +153,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		//SoundServiceLocator::get_sound_system().Update();
 
 
-		renderer.Render();
 		sceneManager.LateUpdate(deltaTime);
+		renderer.Render();
 
 		//SteamAPI_RunCallbacks();
 		// Calculate the sleep time until the next frame

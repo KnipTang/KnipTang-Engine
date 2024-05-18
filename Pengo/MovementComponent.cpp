@@ -1,5 +1,6 @@
 #include "MovementComponent.h"
 #include "PengoComponent.h"
+#include "DenyCollisionComponent.h"
 #include <memory>
 void MovementComponent::Update(float deltaTime)
 {
@@ -52,4 +53,9 @@ void MovementComponent::Move(float , glm::vec3 direction)
 	m_Direction = direction;
 
 	m_StartPos = GetOwner()->GetTransform()->GetWorldPosition();
+
+	if (GetOwner()->HasComponent<BlockCollisionCheckComponent>())
+	{
+		GetOwner()->GetComponent<BlockCollisionCheckComponent>()->SetDirection(m_Direction);
+	}
 }

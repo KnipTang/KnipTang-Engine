@@ -63,6 +63,7 @@ namespace dae
 		void Execute(float /*deltaTime*/) override
 		{
 			std::cout << "Attacking\n";
+			GetGameObject()->GetTransform()->SetLocalPosition(glm::vec3{ 5,5,5 });
 			if (GetGameObject()->HasComponent<PengoComponent>())
 			{
 				GetGameObject()->GetComponent<PengoComponent>()->HandleInput(Controlls::ATTACK);

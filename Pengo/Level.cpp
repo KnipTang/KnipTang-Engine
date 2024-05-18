@@ -11,6 +11,7 @@
 #include "ScoreComponent.h"
 #include <InputManager.h>
 #include "PlayerCommands.h"
+#include "DenyCollisionComponent.h"
 Level::Level(std::string filePath) : m_FilePath(filePath)
 {
 
@@ -96,10 +97,20 @@ void Level::PlacePlayer()
     P1.get()->AddComponent(new dae::CollisionComponent(P1.get(), 16.f, 16.f));
     P1.get()->AddComponent(new dae::HealthComponent(P1.get()));
     P1.get()->AddComponent(new dae::ScoreComponent(P1.get()));
+    P1.get()->AddComponent(new BlockCollisionCheckComponent(P1.get()));
     P1.get()->AddComponent(new MovementComponent(P1.get()));
     P1.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P1.get()));
-
     P1.get()->SetTag("Player");
+
+    auto InFront = std::make_unique<dae::GameObject>();
+    InFront.get()->AddComponent(new dae::RenderComponent(InFront.get()));
+    InFront.get()->SetGameObjectPosition(0, 16.f);
+    InFront.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+    InFront.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
+    InFront.get()->AddComponent(new dae::CollisionComponent(InFront.get(), 16.f, 16.f));
+
+    InFront.get()->SetParent(P1.get(), false);
+    
 
     dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::UP));
     dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::DOWN));
@@ -113,7 +124,8 @@ void Level::PlacePlayer()
     dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::RIGHT));
     dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<dae::Attack>(P1.get()));
 
-    m_GameObjects.emplace_back(std::move(P1));
+    m_GameObjects.emplace_back(std::move(P1));    
+    m_GameObjects.emplace_back(std::move(InFront));
 }
 
 void Level::PlaceWall()

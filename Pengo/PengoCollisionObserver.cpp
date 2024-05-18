@@ -3,6 +3,7 @@
 #include <iostream>
 #include "MovementComponent.h"
 #include "PengoComponent.h"
+#include "DenyCollisionComponent.h"
 
 void PengoCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::CollisionComponent* actor)
 {
@@ -31,6 +32,10 @@ void PengoCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 		{
 			std::cout << "Wall\n";
 
+			if (m_pOwner->HasComponent<BlockCollisionCheckComponent>())
+			{
+				m_pOwner->GetComponent<BlockCollisionCheckComponent>()->SetHitBlock(true);
+			}
 			if (m_pOwner->HasComponent<MovementComponent>())
 			{
 				m_pOwner->GetComponent<MovementComponent>()->SetHitWall(true);
