@@ -15,7 +15,7 @@
 #include "InFrontObserver.h"
 #include "AttackComponent.h"
 #include "WallMovementComponent.h"
-
+#include "WallCollisionObserver.h"
 Level::Level(std::string filePath) : m_FilePath(filePath)
 {
 
@@ -93,7 +93,7 @@ void Level::PlacePlayer()
     auto P1 = std::make_unique<dae::GameObject>();
 
     P1.get()->AddComponent(new PengoComponent(P1.get()));
-    //P1.get()->AddComponent(new AttackComponent(P1.get()));
+    P1.get()->AddComponent(new AttackComponent(P1.get()));
     P1.get()->AddComponent(new dae::RenderComponent(P1.get()));
     P1.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
     P1.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
@@ -108,8 +108,8 @@ void Level::PlacePlayer()
 
     auto InFront = std::make_unique<dae::GameObject>();
     InFront.get()->AddComponent(new dae::RenderComponent(InFront.get()));
-    InFront.get()->SetGameObjectPosition(0.f, 16.f);
-    InFront.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+    InFront.get()->SetGameObjectPosition(0, 16.f);
+    InFront.get()->GetComponent<dae::RenderComponent>()->SetTexture("Red.png");
     InFront.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
     InFront.get()->AddComponent(new dae::CollisionComponent(InFront.get(), 16.f, 16.f));
     InFront.get()->AddComponent(new InFrontViewComponent(InFront.get()));
@@ -122,13 +122,13 @@ void Level::PlacePlayer()
     dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::DOWN));
     dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::LEFT));
     dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::RIGHT));
-    dae::InputManager::GetInstance().BindCommand(SDLK_e, dae::InputActionType::IsPressed, std::make_unique<dae::Attack>(P1.get()));
+    dae::InputManager::GetInstance().BindCommand(SDLK_e, dae::InputActionType::IsPressed, std::make_unique<dae::Attack>(P1.get(), Controlls::ATTACK));
 
     dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::UP));
     dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::DOWN));
     dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::LEFT));
     dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P1.get(), Controlls::RIGHT));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<dae::Attack>(P1.get()));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<dae::Attack>(P1.get(), Controlls::ATTACK));
 
     m_GameObjects.emplace_back(std::move(P1));    
     m_GameObjects.emplace_back(std::move(InFront));
@@ -144,6 +144,7 @@ void Level::PlaceWall()
     wall.get()->SetGameObjectPosition(m_PosX, m_PosY);
     wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
     wall.get()->AddComponent(new WallMovementComponent(wall.get()));
+    wall.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new WallCollisionObserver(wall.get()));
 
     wall.get()->SetTag("Wall");
 

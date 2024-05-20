@@ -1,7 +1,7 @@
 #pragma once
 #include <Component.h>
 #include <iostream>
-//#include "GameObject.h"
+#include "GameObject.h"
 class AttackComponent : public dae::Component
 {
 public:

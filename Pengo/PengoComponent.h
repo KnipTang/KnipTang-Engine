@@ -18,6 +18,9 @@ public:
 		m_State = std::move(state); 
 	}
 
+	void SetCurrentDirection(glm::vec3 direction) { m_CurrentDirection = direction; }
+	glm::vec3 GetCurrentDirection() { return m_CurrentDirection; }
+
 	PengoComponent(dae::GameObject* gameObject) : dae::Component(gameObject) { m_State = std::make_unique<Idle>(); }
 	virtual ~PengoComponent() 
 	{ 
@@ -29,5 +32,7 @@ public:
 	PengoComponent& operator=(PengoComponent&& other) = delete;
 private:
 	std::unique_ptr<PengoState> m_State;
+
+	glm::vec3 m_CurrentDirection;
 };
 

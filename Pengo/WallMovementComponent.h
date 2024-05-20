@@ -16,7 +16,7 @@ public:
 
 	void SetHitWall(bool hit) { m_HitWall = hit; }
 
-	WallMovementComponent(dae::GameObject* gameObject) : dae::Component(gameObject) { };
+	WallMovementComponent(dae::GameObject* gameObject, float speed = 40.f) : dae::Component(gameObject), m_Speed(speed) { };
 	virtual ~WallMovementComponent() { }
 	WallMovementComponent(const WallMovementComponent& other) = delete;
 	WallMovementComponent(WallMovementComponent&& other) = delete;

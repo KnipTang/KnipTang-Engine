@@ -1,5 +1,5 @@
 #include "WallMovementComponent.h"
-
+#include "WallCollisionObserver.h"
 void WallMovementComponent::Update(float deltaTime)
 {
 	if (m_Moving && !m_HitWall)
@@ -46,6 +46,11 @@ void WallMovementComponent::Move(glm::vec3 direction)
 	{
 		return;
 	}
+
+	//if (GetOwner()->HasComponent<WallCollisionObserver>() == false)
+	//{
+	//	GetOwner()->AddComponent(new WallCollisionObserver(GetOwner()));
+	//}
 
 	m_Moving = true;
 	m_Direction = direction;
