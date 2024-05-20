@@ -24,6 +24,10 @@ bool dae::CollisionComponent::Intersects(CollisionComponent& other)
     {
         NotifyObservers(GameCollisionEvent::Collision, &other);
     }
+    else
+    {
+        NotifyObservers(GameCollisionEvent::NoCollision, &other);
+    }
 
     return overlapX && overlapY;
 }

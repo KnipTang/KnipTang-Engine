@@ -11,7 +11,11 @@
 #include "ScoreComponent.h"
 #include <InputManager.h>
 #include "PlayerCommands.h"
-#include "DenyCollisionComponent.h"
+#include "InFrontViewComponent.h"
+#include "InFrontObserver.h"
+#include "AttackComponent.h"
+#include "WallMovementComponent.h"
+
 Level::Level(std::string filePath) : m_FilePath(filePath)
 {
 
@@ -89,6 +93,7 @@ void Level::PlacePlayer()
     auto P1 = std::make_unique<dae::GameObject>();
 
     P1.get()->AddComponent(new PengoComponent(P1.get()));
+    //P1.get()->AddComponent(new AttackComponent(P1.get()));
     P1.get()->AddComponent(new dae::RenderComponent(P1.get()));
     P1.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
     P1.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
@@ -97,17 +102,18 @@ void Level::PlacePlayer()
     P1.get()->AddComponent(new dae::CollisionComponent(P1.get(), 16.f, 16.f));
     P1.get()->AddComponent(new dae::HealthComponent(P1.get()));
     P1.get()->AddComponent(new dae::ScoreComponent(P1.get()));
-    P1.get()->AddComponent(new BlockCollisionCheckComponent(P1.get()));
     P1.get()->AddComponent(new MovementComponent(P1.get()));
     P1.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P1.get()));
     P1.get()->SetTag("Player");
 
     auto InFront = std::make_unique<dae::GameObject>();
     InFront.get()->AddComponent(new dae::RenderComponent(InFront.get()));
-    InFront.get()->SetGameObjectPosition(0, 16.f);
+    InFront.get()->SetGameObjectPosition(0.f, 16.f);
     InFront.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
     InFront.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
     InFront.get()->AddComponent(new dae::CollisionComponent(InFront.get(), 16.f, 16.f));
+    InFront.get()->AddComponent(new InFrontViewComponent(InFront.get()));
+    InFront.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new InFrontObserver(InFront.get()));
 
     InFront.get()->SetParent(P1.get(), false);
     
@@ -137,6 +143,7 @@ void Level::PlaceWall()
     wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(708, 0, 16, 16);
     wall.get()->SetGameObjectPosition(m_PosX, m_PosY);
     wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
+    wall.get()->AddComponent(new WallMovementComponent(wall.get()));
 
     wall.get()->SetTag("Wall");
 

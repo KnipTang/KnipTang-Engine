@@ -1,8 +1,6 @@
 #include <string>
 #include "GameObject.h"
-
 #include <iostream>
-
 void dae::GameObject::Update(float deltaTime)
 {
 	for (const auto& component : m_pComponents)
@@ -29,7 +27,6 @@ void dae::GameObject::FixedUpdate(float fixedTimeStep)
 
 void dae::GameObject::Render() const
 {
-	//const auto& pos = m_transform.GetWorldPosition();
 	for (const auto& component : m_pComponents)
 	{
 		component->Render();

@@ -19,6 +19,8 @@ namespace dae
 		void FixedUpdate(float fixedTimeStep);
 		void Render() const;
 
+		void CollisionDetection();
+
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
@@ -27,7 +29,6 @@ namespace dae
 
 	private: 
 
-		void DetectCollisions();
 
 		std::string m_name;
 		std::vector<std::unique_ptr<GameObject>> m_objects{};

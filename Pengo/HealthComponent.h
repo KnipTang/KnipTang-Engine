@@ -7,8 +7,10 @@ namespace dae
 	class HealthComponent : public Component, public Subject
 	{
 	public:
-		void Update(float /*deltaTime*/) override { }
-		void LateUpdate(float /*deltaTime*/) override {}
+		void Update(float /*deltaTime*/) override {
+		}
+		void LateUpdate(float /*deltaTime*/) override {
+		}
 		void FixedUpdate(float /*fixedTimeStep*/) override {}
 		void Render() const override {}
 

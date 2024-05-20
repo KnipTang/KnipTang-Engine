@@ -23,8 +23,8 @@ namespace dae
         void FixedUpdate(float /*fixedTimeStep*/) override {}
         void Render() const override
         {
-#if NDEBUG
-#else
+//#if NDEBUG
+//#else
             /*
             // Get the position of the game object
             glm::vec2 position = GetOwner()->GetGameObjectPosition();
@@ -41,7 +41,7 @@ namespace dae
             // Release the device context
             ReleaseDC(nullptr, hdc);
             */
-#endif
+//#endif
         }
 
 
@@ -71,6 +71,7 @@ namespace dae
             for (const auto& observer : m_observers)
                 observer->NotifyCollision(event, other);
         }
+
     private:
         float m_Width{};
         float m_Height{};

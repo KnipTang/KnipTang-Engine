@@ -7,7 +7,6 @@
 namespace dae
 {
 	class Texture2D;
-
 	class GameObject final
 	{
 	public:

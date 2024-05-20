@@ -28,12 +28,12 @@ void Scene::RemoveAll()
 
 void Scene::Update(float deltaTime)
 {
+	//CollisionDetection()
+
 	for(auto& object : m_objects)
 	{
 		object->Update(deltaTime);
 	}
-
-	DetectCollisions();
 }
 
 void Scene::LateUpdate(float deltaTime)
@@ -46,7 +46,7 @@ void Scene::LateUpdate(float deltaTime)
 	//Delete gameobjects that are marked to be deleted
 	for (auto& object : m_objects)
 	{
-		if (object == nullptr) return;
+		if (object == nullptr) continue;
 		if (object.get()->IsRemoveGameObjectTrue())
 		{
 			//object.get()->RemoveAllChildren();
@@ -61,7 +61,7 @@ void Scene::FixedUpdate(float fixedTimeStep)
 {
 	for (auto& object : m_objects)
 	{
-		object->Update(fixedTimeStep);
+		object->FixedUpdate(fixedTimeStep);
 	}
 }
 
@@ -74,7 +74,7 @@ void Scene::Render() const
 }
 
 
-void Scene::DetectCollisions()
+void Scene::CollisionDetection()
 {
 	// Iterate over all pairs of objects that could potentially collide
 	for (size_t i = 0; i < m_objects.size(); ++i)

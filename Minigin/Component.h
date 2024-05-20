@@ -9,10 +9,10 @@ namespace dae
 	class Component
 	{
 	public:
-		virtual void Update(float deltaTime) = 0;
-		virtual void LateUpdate(float deltaTime) = 0;
-		virtual void FixedUpdate(float fixedTimeStep) = 0;
-		virtual void Render() const = 0;
+		virtual void Update(float) {};
+		virtual void LateUpdate(float) {};
+		virtual void FixedUpdate(float) {};
+		virtual void Render() const {};
 
 		GameObject* GetOwner() const { return m_pOwner; }
 

@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include <iostream>
 
 void dae::SceneManager::Update(float deltaTime)
 {
@@ -29,6 +30,14 @@ void dae::SceneManager::Render()
 	for (const auto& scene : m_scenes)
 	{
 		scene->Render();
+	}
+}
+
+void dae::SceneManager::CollisionDetection()
+{
+	for (const auto& scene : m_scenes)
+	{
+		scene->CollisionDetection();
 	}
 }
 

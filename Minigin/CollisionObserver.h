@@ -4,7 +4,8 @@ namespace dae
 {
 	class CollisionComponent;
     enum class GameCollisionEvent {
-        Collision
+        Collision,
+		NoCollision
     };
 
     class CollisionObserver

@@ -139,6 +139,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		lastTime = currentTime;
 		lag += deltaTime;
 
+		sceneManager.CollisionDetection();
+
 		doContinue = input.ProcessInput(deltaTime);
 
 		while (lag >= fixedTimeStep)
