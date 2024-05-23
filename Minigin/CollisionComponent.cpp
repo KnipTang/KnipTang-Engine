@@ -15,7 +15,7 @@ bool dae::CollisionComponent::Intersects(CollisionComponent& other)
     float rightB = otherPos.x + other.m_Width;
     float topB = otherPos.y;
     float bottomB = otherPos.y + other.m_Height;
-    
+
     // Check for overlap along both axes
     bool overlapX = leftA < rightB && rightA > leftB;
     bool overlapY = topA < bottomB && bottomA > topB;

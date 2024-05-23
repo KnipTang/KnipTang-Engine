@@ -99,6 +99,12 @@ void Scene::CollisionDetection()
 				// Handle the collision;
 				//HandleCollision(collisionComponent1, collisionComponent2);
 			}
+			if (collisionComponent2->Intersects(*collisionComponent1))
+			{
+				//std::cout << "Collisonnnn";
+				// Handle the collision;
+				//HandleCollision(collisionComponent1, collisionComponent2);
+			}
 		}
 	}
 }

@@ -51,12 +51,7 @@ void WallMovementComponent::Move(glm::vec3 direction)
 		return;
 	}
 
-	//if (GetOwner()->HasComponent<WallCollisionObserver>() == false)
-	//{
-	//	GetOwner()->AddComponent(new WallCollisionObserver(GetOwner()));
-	//}
 	GetOwner()->GetComponent<dae::CollisionComponent>()->AddObserver(new WallCollisionObserver(GetOwner()));
-	//GetOwner()->AddComponent<new WallCollisionObserver>(GetOwner());
 
 	m_Moving = true;
 	m_Direction = direction;
@@ -87,5 +82,5 @@ void WallMovementComponent::SetHitWall(bool hit)
 	GetOwner()->RemoveAllChildren();
 
 	m_HitWall = hit;
-	m_Moving = !hit;
+	//m_Moving = !hit;
 }

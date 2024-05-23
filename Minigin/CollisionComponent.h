@@ -23,25 +23,23 @@ namespace dae
         void FixedUpdate(float /*fixedTimeStep*/) override {}
         void Render() const override
         {
-//#if NDEBUG
-//#else
-            /*
-            // Get the position of the game object
-            glm::vec2 position = GetOwner()->GetGameObjectPosition();
-            // Create a rectangle representing the collider
-            RECT rect;
-            rect.left = static_cast<LONG>(position.x);
-            rect.top = static_cast<LONG>(position.y + m_Height);
-            rect.right = static_cast<LONG>(position.x + m_Width);
-            rect.bottom = static_cast<LONG>(position.y);
-            // Get the device context
-            HDC hdc = GetDC(nullptr);
-            // Draw the rectangle
-            Rectangle(hdc, rect.left, rect.top, rect.right, rect.bottom);
-            // Release the device context
-            ReleaseDC(nullptr, hdc);
-            */
-//#endif
+
+            
+            //// Get the position of the game object
+            //glm::vec2 position = GetOwner()->GetGameObjectPosition();
+            //// Create a rectangle representing the collider
+            //RECT rect;
+            //rect.left = static_cast<LONG>(position.x);
+            //rect.top = static_cast<LONG>(position.y + m_Height);
+            //rect.right = static_cast<LONG>(position.x + m_Width);
+            //rect.bottom = static_cast<LONG>(position.y);
+            //// Get the device context
+            //HDC hdc = GetDC(nullptr);
+            //// Draw the rectangle
+            //Rectangle(hdc, rect.left, rect.top, rect.right, rect.bottom);
+            //// Release the device context
+            //ReleaseDC(nullptr, hdc);
+            
         }
 
 
