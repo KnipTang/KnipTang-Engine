@@ -1,6 +1,7 @@
 #include "WallCollisionObserver.h"
 #include "CollisionComponent.h"
 #include "WallMovementComponent.h"
+#include "EnemyComponent.h"
 #include <iostream>
 
 void WallCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::CollisionComponent* actor)
@@ -8,28 +9,28 @@ void WallCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::
 	if (event == dae::GameCollisionEvent::Collision)
 	{
 		std::string tag = actor->GetOwner()->GetTag();
-		std::cout << "Begin OverLapping: " << m_pOwner->GetTag() << " With: ";
 
 		if (tag == "Player")
 		{
-			std::cout << "Player\n";
 		}
-		else if (tag == "Enemy")
+		if (tag == "Enemy")
 		{
-			std::cout << "Enemy\n";
+			if (m_pOwner->HasComponent<WallMovementComponent>())
+			{
+				if (m_pOwner->GetComponent<WallMovementComponent>()->IsWallMoving())
+				{
+					glm::vec3 currentDirection = m_pOwner->GetComponent<WallMovementComponent>()->GetDirection();
 
-			//m_pOwner->SetGameObjectPosition(actor->GetOwner()->GetGameObjectPosition().x, actor->GetOwner()->GetGameObjectPosition().y);
-			//actor->GetOwner()->RemoveGameObject();
+					if (actor->GetOwner()->HasComponent<EnemyComponent>())
+						actor->GetOwner()->GetComponent<EnemyComponent>()->SetHitByWallPos(currentDirection);
 
-			//if (m_pOwner->HasComponent<PengoComponent>())
-			//{
-			//	m_pOwner->GetComponent<PengoComponent>()->SetState(std::make_unique<DyingState>(m_pOwner));
-			//}
+					actor->GetOwner()->SetParent(m_pOwner, false);
+					//actor->GetOwner()->RemoveGameObject();
+				}
+			}
 		}
-		else if (tag == "Wall")
+		if (tag == "Wall")
 		{
-			std::cout << "Wall\n";
-
 			if (m_pOwner->HasComponent<WallMovementComponent>())
 			{
 				m_pOwner->GetComponent<WallMovementComponent>()->SetHitWall(true);

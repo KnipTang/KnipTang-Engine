@@ -1,15 +1,19 @@
 #include "WallMovementComponent.h"
+#include "CollisionComponent.h"
 #include "WallCollisionObserver.h"
+#include <iostream>
 void WallMovementComponent::Update(float deltaTime)
 {
 	if (m_Moving && !m_HitWall)
 	{
 		glm::vec3 objPos = GetOwner()->GetTransform()->GetWorldPosition();
 
-		m_TraveledLength += m_Speed * deltaTime;
-		if (m_TraveledLength >= 16.f)
+		m_TraveledElementLength += m_Speed * deltaTime;
+		m_TraveledTotalLength += m_Speed * deltaTime;
+
+		if (m_TraveledElementLength >= 16.f)
 		{
-			m_TraveledLength = 0;
+			m_TraveledElementLength = 0;
 			return;
 		}
 
@@ -51,9 +55,37 @@ void WallMovementComponent::Move(glm::vec3 direction)
 	//{
 	//	GetOwner()->AddComponent(new WallCollisionObserver(GetOwner()));
 	//}
+	GetOwner()->GetComponent<dae::CollisionComponent>()->AddObserver(new WallCollisionObserver(GetOwner()));
+	//GetOwner()->AddComponent<new WallCollisionObserver>(GetOwner());
 
 	m_Moving = true;
 	m_Direction = direction;
 
 	m_StartPos = GetOwner()->GetTransform()->GetWorldPosition();
+}
+
+void WallMovementComponent::SetHitWall(bool hit)
+{
+	unsigned int observerCount = static_cast<unsigned int>(GetOwner()->GetComponent<dae::CollisionComponent>()->GetObserversCount());
+	for (unsigned int i = 0; i < observerCount; i++)
+	{
+		GetOwner()->GetComponent<dae::CollisionComponent>()->RemoveObserver(GetOwner()->GetComponent<dae::CollisionComponent>()->GetObserverAt(i));
+	}
+	
+
+	if (m_TraveledTotalLength < 16 && m_Moving)
+	{
+		//GetOwner()->SetGameObjectPosition(5, 5);
+		GetOwner()->RemoveGameObject();
+	}
+	m_TraveledTotalLength = 0;
+
+	for (int i = 0; i < GetOwner()->GetChildCount(); i++)
+	{
+		GetOwner()->GetChildAt(i)->RemoveGameObject();
+	}
+	GetOwner()->RemoveAllChildren();
+
+	m_HitWall = hit;
+	m_Moving = !hit;
 }

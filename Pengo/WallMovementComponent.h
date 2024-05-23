@@ -11,10 +11,12 @@ public:
 
 	void Move(glm::vec3 direction);
 
+	bool IsWallMoving() { return m_Moving; }
+
 	void SetDirection(glm::vec3 direction) { m_Direction = direction; }
 	glm::vec3 GetDirection() { return m_Direction; }
 
-	void SetHitWall(bool hit) { m_HitWall = hit; }
+	void SetHitWall(bool hit);
 
 	WallMovementComponent(dae::GameObject* gameObject, float speed = 40.f) : dae::Component(gameObject), m_Speed(speed) { };
 	virtual ~WallMovementComponent() { }
@@ -31,8 +33,8 @@ private:
 	bool m_HitWall = false;
 
 	bool m_Moving = false;
-	float m_TraveledLength = 0;
-
+	float m_TraveledElementLength = 0;
+	float m_TraveledTotalLength = 0;
 	glm::vec3 m_StartPos;
 };
 

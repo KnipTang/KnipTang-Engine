@@ -16,6 +16,8 @@
 #include "AttackComponent.h"
 #include "WallMovementComponent.h"
 #include "WallCollisionObserver.h"
+#include "EnemyComponent.h"
+
 Level::Level(std::string filePath) : m_FilePath(filePath)
 {
 
@@ -82,6 +84,7 @@ void Level::HandleElement(std::string element)
         PlaceWall();
         break;
     case 3: // Enemy
+        PlaceEnemy();
         break;
     default:
         break;
@@ -110,8 +113,8 @@ void Level::PlacePlayer()
     InFront.get()->AddComponent(new dae::RenderComponent(InFront.get()));
     InFront.get()->SetGameObjectPosition(0, 16.f);
     InFront.get()->GetComponent<dae::RenderComponent>()->SetTexture("Red.png");
-    InFront.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
-    InFront.get()->AddComponent(new dae::CollisionComponent(InFront.get(), 16.f, 16.f));
+    InFront.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 5, 5);
+    InFront.get()->AddComponent(new dae::CollisionComponent(InFront.get(), 1.f, 1.f));
     InFront.get()->AddComponent(new InFrontViewComponent(InFront.get()));
     InFront.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new InFrontObserver(InFront.get()));
 
@@ -144,9 +147,24 @@ void Level::PlaceWall()
     wall.get()->SetGameObjectPosition(m_PosX, m_PosY);
     wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
     wall.get()->AddComponent(new WallMovementComponent(wall.get()));
-    wall.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new WallCollisionObserver(wall.get()));
-
+    //wall.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new WallCollisionObserver(wall.get()));
     wall.get()->SetTag("Wall");
 
     m_GameObjects.emplace_back(std::move(wall));
+}
+
+void Level::PlaceEnemy()
+{
+    auto enemy = std::make_unique<dae::GameObject>();
+
+    enemy.get()->AddComponent(new EnemyComponent(enemy.get()));
+    enemy.get()->AddComponent(new dae::RenderComponent(enemy.get()));
+    enemy.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+    enemy.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 16 * 9, 16, 16);
+    enemy.get()->SetGameObjectPosition(static_cast<float>(m_PosX), static_cast<float>(m_PosY));
+    enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16, 16));
+    enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
+    enemy.get()->SetTag("Enemy");
+
+    m_GameObjects.emplace_back(std::move(enemy));
 }

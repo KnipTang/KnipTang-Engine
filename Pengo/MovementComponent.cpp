@@ -8,10 +8,10 @@ void MovementComponent::Update(float deltaTime)
 	{
 		glm::vec3 objPos = GetOwner()->GetTransform()->GetWorldPosition();
 	
-		m_TraveledLength += m_Speed * deltaTime;
-		if (m_TraveledLength >= 16.f)
+		m_TraveledElementLength += m_Speed * deltaTime;
+		if (m_TraveledElementLength >= 16.f)
 		{
-			m_TraveledLength = 0;
+			m_TraveledElementLength = 0;
 			StopMoving();
 
 			return;

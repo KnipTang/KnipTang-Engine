@@ -33,7 +33,7 @@ private:
 	bool m_HitWall = false;
 
 	bool m_Moving = false;
-	float m_TraveledLength = 0;
+	float m_TraveledElementLength = 0;
 
 	glm::vec3 m_StartPos;
 };

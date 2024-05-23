@@ -16,19 +16,15 @@ namespace dae
 			switch (control)
 			{
 			case Controlls::UP:
-				std::cout << "UP" << std::endl;
 				m_Direction = glm::vec3(0, -1, 0);
 				break;
 			case Controlls::DOWN:
-				std::cout << "DOWN" << std::endl;
 				m_Direction = glm::vec3(0, 1, 0);
 				break;
 			case Controlls::LEFT:
-				std::cout << "LEFT" << std::endl;
 				m_Direction = glm::vec3(-1, 0, 0);
 				break;
 			case Controlls::RIGHT:
-				std::cout << "RIGHT" << std::endl;
 				m_Direction = glm::vec3(1, 0, 0);
 				break;
 			default:
@@ -40,7 +36,6 @@ namespace dae
 
 		void Execute(float deltaTime) override
 		{
-			std::cout << "Moving\n";
 			if (GetGameObject()->HasComponent<PengoComponent>())
 			{
 				GetGameObject()->GetComponent<PengoComponent>()->HandleInput(m_Control);
@@ -69,7 +64,6 @@ namespace dae
 
 		void Execute(float /*deltaTime*/) override
 		{
-			std::cout << "Attacking\n";
 			if (GetGameObject()->HasComponent<AttackComponent>())
 			{
 				GetGameObject()->GetComponent<AttackComponent>()->Attack();

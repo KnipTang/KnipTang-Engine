@@ -65,23 +65,20 @@ void load()
 	FPS.get()->AddComponent(new dae::FpsComponent(FPS.get(), FPS.get()->GetComponent<dae::TextObject>()));
 
 	
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
-	auto P1_Explain = std::make_unique<dae::GameObject>();
-	P1_Explain.get()->SetGameObjectPosition(0, 100);
-	P1_Explain.get()->AddComponent(new dae::TextObject(P1_Explain.get(), "Use the D-Pad to move m_Player 1, X to inflict damage, A and B to pick up pellets", std::move(font)));
-
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
-	auto P2_Explain = std::make_unique<dae::GameObject>();
-	P2_Explain.get()->SetGameObjectPosition(0, 120);
-	P2_Explain.get()->AddComponent(new dae::TextObject(P2_Explain.get(), "Use WASD to move m_Player 2, C to inflict damage, Z and X to pick up pellets", std::move(font)));
+	//font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
+	//auto P1_Explain = std::make_unique<dae::GameObject>();
+	//P1_Explain.get()->SetGameObjectPosition(0, 100);
+	//P1_Explain.get()->AddComponent(new dae::TextObject(P1_Explain.get(), "Use the D-Pad to move m_Player 1, X to inflict damage, A and B to pick up pellets", std::move(font)));
+	//
+	//font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
+	//auto P2_Explain = std::make_unique<dae::GameObject>();
+	//P2_Explain.get()->SetGameObjectPosition(0, 120);
+	//P2_Explain.get()->AddComponent(new dae::TextObject(P2_Explain.get(), "Use WASD to move m_Player 2, C to inflict damage, Z and X to pick up pellets", std::move(font)));
 
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	auto Sound_Explain = std::make_unique<dae::GameObject>();
 	Sound_Explain.get()->SetGameObjectPosition(50, 200);
 	Sound_Explain.get()->AddComponent(new dae::TextObject(Sound_Explain.get(), "Press P to play sound", std::move(font)));
-
-	int element = 16;
-	int mapBorder = 8;
 
 	auto P2 = std::make_unique<dae::GameObject>();
 	P2.get()->AddComponent(new dae::RenderComponent(P2.get()));
@@ -93,8 +90,6 @@ void load()
 	P2.get()->AddComponent(new dae::ScoreComponent(P2.get()));
 	P2.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P2.get()));
 	P2.get()->SetTag("Player");
-
-	Enemy enemy{ mapBorder + element * 2, mapBorder + element * 1 };
 
 	Level m_Level{"Resources/Level.txt"};
 	std::vector<std::unique_ptr<dae::GameObject>> level = m_Level.LoadLevel();
@@ -195,8 +190,7 @@ void load()
 	//scene.Add(std::move(Sound_Explain));
 
 	scene.Add(std::move(GameBackground));
-	//scene.Add(std::move(P1));
-	scene.Add(std::move(P2));
+	//scene.Add(std::move(P2));
 	for(auto& object : level)
 	{
 		scene.Add(std::move(object));

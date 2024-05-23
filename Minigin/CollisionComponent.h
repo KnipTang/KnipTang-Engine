@@ -72,6 +72,9 @@ namespace dae
                 observer->NotifyCollision(event, other);
         }
 
+        size_t GetObserversCount() const { return m_observers.size(); }
+        CollisionObserver* GetObserverAt(unsigned int index) const { return m_observers.at(index).get(); }
+
     private:
         float m_Width{};
         float m_Height{};

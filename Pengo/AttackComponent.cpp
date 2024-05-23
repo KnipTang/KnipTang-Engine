@@ -17,8 +17,5 @@ void AttackComponent::Attack()
 		{
 			m_ObjectInfront->GetComponent<WallMovementComponent>()->Move(direction);
 		}
-		std::cout << "Ready;'\n";
 	}
-	else
-		std::cout << "NOTReady;'\n";
 }
