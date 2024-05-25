@@ -54,6 +54,7 @@ void MovementComponent::Move(float , glm::vec3 direction)
 
 	if (m_HitWall)
 	{
+		StopMoving();
 		return;
 	}
 

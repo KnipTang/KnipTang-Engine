@@ -5,7 +5,12 @@ bool dae::CollisionComponent::Intersects(CollisionComponent& other)
     glm::vec3 ownerPos = GetOwner()->GetGameObjectPosition();
     glm::vec3 otherPos = other.GetOwner()->GetGameObjectPosition();
 
-    // Get boundaries of both objects
+    ownerPos.x += m_Left;
+    ownerPos.y += m_Top;
+
+    otherPos.x += other.m_Left;
+    otherPos.y += other.m_Top;
+
     float leftA = ownerPos.x;
     float rightA = ownerPos.x + m_Width;
     float topA = ownerPos.y;
@@ -16,7 +21,6 @@ bool dae::CollisionComponent::Intersects(CollisionComponent& other)
     float topB = otherPos.y;
     float bottomB = otherPos.y + other.m_Height;
 
-    // Check for overlap along both axes
     bool overlapX = leftA < rightB && rightA > leftB;
     bool overlapY = topA < bottomB && bottomA > topB;
 

@@ -17,6 +17,7 @@
 #include "WallMovementComponent.h"
 #include "WallCollisionObserver.h"
 #include "EnemyComponent.h"
+#include "EnemyMovementAIComponent.h"
 
 Level::Level(std::string filePath) : m_FilePath(filePath)
 {
@@ -158,11 +159,12 @@ void Level::PlaceEnemy()
     auto enemy = std::make_unique<dae::GameObject>();
 
     enemy.get()->AddComponent(new EnemyComponent(enemy.get()));
+    enemy.get()->AddComponent(new EnemyMovementAIComponent(enemy.get()));
     enemy.get()->AddComponent(new dae::RenderComponent(enemy.get()));
     enemy.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
     enemy.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 16 * 9, 16, 16);
     enemy.get()->SetGameObjectPosition(static_cast<float>(m_PosX), static_cast<float>(m_PosY));
-    enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16, 16));
+    enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 1.f, 1.f, 8.f, 8.f));
     enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
     enemy.get()->SetTag("Enemy");
 

@@ -14,8 +14,8 @@ namespace dae
     class CollisionComponent : public Component
     {
     public:
-        CollisionComponent(GameObject* gameObject, float width, float height)
-            : Component(gameObject), m_Width(width), m_Height(height)
+        CollisionComponent(GameObject* gameObject, float width, float height, float left = 0, float top = 0)
+            : Component(gameObject), m_Width(width), m_Height(height), m_Left(left), m_Top(top)
         { }
 
         void Update(float /*deltaTime*/) override {}
@@ -27,12 +27,14 @@ namespace dae
             
             //// Get the position of the game object
             //glm::vec2 position = GetOwner()->GetGameObjectPosition();
+            //position.x += m_Left;
+            //position.y += m_Top;
             //// Create a rectangle representing the collider
             //RECT rect;
             //rect.left = static_cast<LONG>(position.x);
-            //rect.top = static_cast<LONG>(position.y + m_Height);
             //rect.right = static_cast<LONG>(position.x + m_Width);
             //rect.bottom = static_cast<LONG>(position.y);
+            //rect.top = static_cast<LONG>(position.y + m_Height);
             //// Get the device context
             //HDC hdc = GetDC(nullptr);
             //// Draw the rectangle
@@ -49,9 +51,8 @@ namespace dae
             m_Height = height;
         }
         glm::vec2 GetSize() { return glm::vec2{m_Width, m_Height }; }
-        // Function to check for collision with another rectangle
-        bool Intersects(CollisionComponent& other);
 
+        bool Intersects(CollisionComponent& other);
 
         void AddObserver(CollisionObserver* observer) {
             m_observers.push_back(std::unique_ptr<CollisionObserver>(observer));
@@ -76,7 +77,8 @@ namespace dae
     private:
         float m_Width{};
         float m_Height{};
-
+        float m_Left{};
+        float m_Top{};
         std::vector<std::unique_ptr<CollisionObserver>> m_observers;
         //GameObject* m_GameObject;
     };
