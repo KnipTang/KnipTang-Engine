@@ -49,8 +49,7 @@ void Scene::LateUpdate(float deltaTime)
 		if (object == nullptr) continue;
 		if (object.get()->IsRemoveGameObjectTrue())
 		{
-			//object.get()->RemoveAllChildren();
-			object.get()->RemoveAllComponent();
+			//object.get()->RemoveAllComponent();
 			m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
 		}
 	}

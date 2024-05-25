@@ -24,6 +24,8 @@ void WallCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::
 					if (actor->GetOwner()->HasComponent<EnemyComponent>())
 						actor->GetOwner()->GetComponent<EnemyComponent>()->SetHitByWallPos(currentDirection);
 
+
+
 					actor->GetOwner()->SetParent(m_pOwner, false);
 					//actor->GetOwner()->RemoveGameObject();
 				}

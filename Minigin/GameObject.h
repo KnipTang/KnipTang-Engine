@@ -43,7 +43,7 @@ namespace dae
 
 		void RemoveAllChildren();
 
-		void RemoveGameObject() { m_RemoveGameObject = true; }
+		void RemoveGameObject();
 		bool IsRemoveGameObjectTrue() { return m_RemoveGameObject; }
 		//void RemoveParent(GameObject* parent, bool keepWorldPosition)
 

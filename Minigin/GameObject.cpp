@@ -1,6 +1,7 @@
 #include <string>
 #include "GameObject.h"
 #include <iostream>
+#include <algorithm>
 void dae::GameObject::Update(float deltaTime)
 {
 	for (const auto& component : m_pComponents)
@@ -40,20 +41,39 @@ void dae::GameObject::AddComponent(Component* component)
 
 void dae::GameObject::RemoveComponent(Component* component)
 {
-	auto it = std::find_if(m_pComponents.begin(), m_pComponents.end(),
-		[component](const std::unique_ptr<Component>& ptr) { return ptr.get() == component; });
+	m_pComponents.erase(
+		std::remove_if(
+			m_pComponents.begin(),
+			m_pComponents.end(),
+			[&](const std::unique_ptr<Component>& cmpt) {
+				return cmpt.get() == component;
+			}
+		),
+		m_pComponents.end()
+	);
 
-	if (it != m_pComponents.end()) {
-		m_pComponents.erase(it);
-	}
+		//m_pComponents.shrink_to_fit();
+
+	//std::erase(m_pComponents, component);
+	//auto it = std::find_if(m_pComponents.begin(), m_pComponents.end(),
+	//	[component](const std::unique_ptr<Component>& ptr) { return ptr.get() == component; });
+	//
+	//if (it != m_pComponents.end()) {
+	//	m_pComponents.erase(it);
+	//}
 }
 
 void dae::GameObject::RemoveAllComponent()
 {
-	for (const auto& component : m_pComponents)
+	size_t amountComponents = m_pComponents.size();
+	for (size_t i = 0; i < amountComponents; i++)
 	{
-		RemoveComponent(component.get());
+		RemoveComponent(m_pComponents[0].get());
 	}
+	//for (const auto& component : m_pComponents)
+	//{
+	//	RemoveComponent(component.get());
+	//}
 }
 
 void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
@@ -88,8 +108,20 @@ void dae::GameObject::RemoveAllChildren()
 {
 	for (const auto& children : m_pChildren)
 	{
-		children->RemoveAllComponent();
 		RemoveChild(children);
+	}
+}
+
+void dae::GameObject::RemoveGameObject()
+{
+	m_RemoveGameObject = true;
+	for (const auto& children : m_pChildren)
+	{
+		children->RemoveGameObject();
+	}
+	if (GetParent() != nullptr)
+	{
+		GetParent()->RemoveChild(this);
 	}
 }
 
@@ -102,8 +134,9 @@ void dae::GameObject::AddChild(GameObject* child)
 //todo not compleet
 void dae::GameObject::RemoveChild(GameObject* child)
 {
-	//child->SetParent(nullptr, false);
-	m_pChildren.erase(std::remove(m_pChildren.begin(), m_pChildren.end(), child), m_pChildren.end());
+	//child->RemoveAllComponent();
+	std::erase(m_pChildren, child);
+	//m_pChildren.erase(std::remove(m_pChildren.begin(), m_pChildren.end(), child), m_pChildren.end());
 }
 
 bool dae::GameObject::IsChild(GameObject* potentialChild) const

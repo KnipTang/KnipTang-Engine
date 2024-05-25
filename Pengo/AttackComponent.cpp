@@ -15,7 +15,7 @@ void AttackComponent::Attack()
 
 		if(m_ObjectInfront->HasComponent<WallMovementComponent>())
 		{
-			m_ObjectInfront->GetComponent<WallMovementComponent>()->Move(direction);
+			m_ObjectInfront->GetComponent<WallMovementComponent>()->Move(direction, GetOwner());
 		}
 	}
 }

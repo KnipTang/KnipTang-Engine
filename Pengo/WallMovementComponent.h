@@ -9,7 +9,7 @@ public:
 	void FixedUpdate(float /*fixedTimeStep*/) override {}
 	void Render() const override {}
 
-	void Move(glm::vec3 direction);
+	void Move(glm::vec3 direction, dae::GameObject* moverOwner);
 
 	bool IsWallMoving() { return m_Moving; }
 
@@ -36,5 +36,7 @@ private:
 	float m_TraveledElementLength = 0;
 	float m_TraveledTotalLength = 0;
 	glm::vec3 m_StartPos;
+
+	dae::GameObject* m_MoverOwner;
 };
 

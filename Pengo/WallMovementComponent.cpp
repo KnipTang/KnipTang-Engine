@@ -39,7 +39,7 @@ void WallMovementComponent::LateUpdate(float)
 	m_HitWall = false;
 }
 
-void WallMovementComponent::Move(glm::vec3 direction)
+void WallMovementComponent::Move(glm::vec3 direction, dae::GameObject* moverOwner)
 {
 	if (m_Moving)
 	{
@@ -50,6 +50,8 @@ void WallMovementComponent::Move(glm::vec3 direction)
 	{
 		return;
 	}
+
+	m_MoverOwner = moverOwner;
 
 	GetOwner()->GetComponent<dae::CollisionComponent>()->AddObserver(new WallCollisionObserver(GetOwner()));
 
