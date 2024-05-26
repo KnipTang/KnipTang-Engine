@@ -19,6 +19,8 @@ namespace dae
 		void Render();
 
 		void CollisionDetection();
+
+		Scene* GetSceneByName(std::string name);
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;

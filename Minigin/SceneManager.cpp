@@ -41,6 +41,17 @@ void dae::SceneManager::CollisionDetection()
 	}
 }
 
+dae::Scene* dae::SceneManager::GetSceneByName(std::string name)
+{
+	for (const auto& scene : m_scenes)
+	{
+		if (scene->m_name == name)
+			return scene.get();
+	}
+
+	return nullptr;
+}
+
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
 	std::unique_ptr<Scene> scene = std::unique_ptr<Scene>(new Scene(name));

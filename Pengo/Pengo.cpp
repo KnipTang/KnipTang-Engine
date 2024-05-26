@@ -39,7 +39,6 @@
 void load()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
-
 	//Background image
 	auto backGround = std::make_unique<dae::GameObject>();
 	backGround.get()->AddComponent(new dae::RenderComponent(backGround.get()));

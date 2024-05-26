@@ -107,3 +107,16 @@ void Scene::CollisionDetection()
 		}
 	}
 }
+
+std::vector<GameObject*> dae::Scene::GetGameObjectsWithTag(std::string tag)
+{
+	std::vector<GameObject*> gameobjectsWithTag;
+
+	for (const auto& object : m_objects)
+	{
+		if (object->GetTag() == tag)
+			gameobjectsWithTag.emplace_back(object.get());
+	}
+
+	return gameobjectsWithTag;
+}
