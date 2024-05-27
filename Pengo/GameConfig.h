@@ -1,4 +1,6 @@
 #pragma once
 
-int constexpr Config_ElementSize = 16;
-int constexpr Config_MapBorderSize = 8;
+namespace Config {
+    constexpr float ELEMENT_SIZE = 16.0f;
+    constexpr float BORDER_SIZE = 8.0f;
+}

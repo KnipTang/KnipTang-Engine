@@ -2,21 +2,24 @@
 
 void EnemyMovementAIComponent::FixedUpdate(float deltaTime)
 {
-	UpdateDirection();
-	m_CurrentMoveTime += deltaTime;
-
-	if (m_CurrentMoveTime >= m_MoveTime)
+	if (!m_Moving)
+	{
+		UpdateDirection();
+		RoundOffPosition();
+		m_Moving = true;
+	}
+	else
 	{
 		glm::vec3 objPos = GetOwner()->GetTransform()->GetWorldPosition();
 
-		//m_TraveledElementLength += m_Speed * deltaTime;
-		//if (m_TraveledElementLength >= 16.f)
-		//{
-		//	m_TraveledElementLength = 0;
-		//	StopMoving();
-		//
-		//	return;
-		//}
+		m_TraveledElementLength += m_Speed * deltaTime;
+		if (m_TraveledElementLength >= 16.f)
+		{
+			m_TraveledElementLength = 0;
+			m_Moving = false;
+		
+			return;
+		}
 
 		objPos += m_Direction * m_Speed * deltaTime;
 		GetOwner()->SetGameObjectPosition(objPos.x, objPos.y);
@@ -35,6 +38,8 @@ void EnemyMovementAIComponent::UpdateDirection()
 	float dx = closestPlayerPos.x - enemyPos.x;
 	float dy = closestPlayerPos.y - enemyPos.y;
 	
+	m_Direction = {0,0,0};
+
 	if (std::abs(dx) > std::abs(dy)) {
 		m_Direction.x = (dx > 0) ? 1.0f : -1.0f;
 	}
@@ -75,4 +80,15 @@ dae::GameObject* EnemyMovementAIComponent::GetClosestPlayer()
 float EnemyMovementAIComponent::CalculateDistanceSquared(const glm::vec3& pos1, const glm::vec3& pos2) {
 	glm::vec3 diff = pos1 - pos2;
 	return glm::dot(diff, diff);
+}
+
+void EnemyMovementAIComponent::RoundOffPosition()
+{
+	glm::vec3 pos = GetOwner()->GetGameObjectPosition();
+	pos.x -= 8;
+	pos.y -= 8;
+	pos = { round(pos.x / 16) * 16, round(pos.y / 16) * 16, pos.z };
+	pos.x += 8;
+	pos.y += 8;
+	GetOwner()->SetGameObjectPosition(pos.x, pos.y);
 }

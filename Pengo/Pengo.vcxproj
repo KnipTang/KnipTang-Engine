@@ -218,6 +218,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClCompile Include="StateDisplay.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="WallCollisionObserver.cpp" />
+    <ClCompile Include="WallComponent.cpp" />
     <ClCompile Include="WallMovementComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +247,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClInclude Include="StateDisplay.h" />
     <ClInclude Include="Wall.h" />
     <ClInclude Include="WallCollisionObserver.h" />
+    <ClInclude Include="WallComponent.h" />
     <ClInclude Include="WallMovementComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

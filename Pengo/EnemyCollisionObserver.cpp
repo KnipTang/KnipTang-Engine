@@ -2,6 +2,8 @@
 #include "EnemyComponent.h"
 #include "CollisionComponent.h"
 #include "Component.h"
+#include "WallMovementComponent.h"
+#include "WallComponent.h"
 
 void EnemyCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::CollisionComponent* actor)
 {
@@ -18,9 +20,28 @@ void EnemyCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 		}
 		if (tag == "Wall")
 		{
-			if (m_pOwner->GetParent() != actor->GetOwner())
+			bool wasHitByWall = false;
+
 			{
-				m_pOwner->GetComponent<EnemyComponent>()->Dies();
+				if (m_pOwner->HasComponent<EnemyComponent>())
+					wasHitByWall = m_pOwner->GetComponent<EnemyComponent>()->WasHitByWall();
+			}
+
+			if (wasHitByWall)
+			{
+				if (m_pOwner->GetParent() == nullptr)
+					return;
+				if (m_pOwner->GetParent() != actor->GetOwner())
+				{
+					m_pOwner->GetComponent<EnemyComponent>()->Dies();
+				}
+			}
+			else
+			{
+				if(actor->GetOwner()->HasComponent<WallComponent>())
+				{
+					actor->GetOwner()->GetComponent<WallComponent>()->DeleteWall();
+				}
 			}
 		}
 	}

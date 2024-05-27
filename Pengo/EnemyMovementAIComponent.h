@@ -7,7 +7,7 @@ class EnemyMovementAIComponent : public dae::Component
 public:
 	void FixedUpdate(float deltaTime) override;
 
-	EnemyMovementAIComponent(dae::GameObject* gameObject) : dae::Component(gameObject) 
+	EnemyMovementAIComponent(dae::GameObject* gameObject, float speed = 16.f) : dae::Component(gameObject), m_Speed(speed)
 	{
 		m_CurrentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
 		m_Player = m_CurrentScene->GetGameObjectsWithTag("Player");
@@ -23,11 +23,13 @@ private:
 	void UpdateDirection();
 	float CalculateDistanceSquared(const glm::vec3& pos1, const glm::vec3& pos2);
 
-	bool m_Move;
-	float m_CurrentMoveTime;
-	float m_MoveTime;
+	void RoundOffPosition();
 
-	float m_Speed = 6.f;
+	bool m_Moving;
+
+	float m_Speed;
+
+	float m_TraveledElementLength;
 
 	dae::Scene* m_CurrentScene;
 

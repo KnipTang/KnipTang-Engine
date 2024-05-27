@@ -1,6 +1,8 @@
 #include "WallMovementComponent.h"
 #include "CollisionComponent.h"
 #include "WallCollisionObserver.h"
+#include "WallComponent.h"
+#include "GameConfig.h"
 #include <iostream>
 void WallMovementComponent::Update(float deltaTime)
 {
@@ -11,7 +13,7 @@ void WallMovementComponent::Update(float deltaTime)
 		m_TraveledElementLength += m_Speed * deltaTime;
 		m_TraveledTotalLength += m_Speed * deltaTime;
 
-		if (m_TraveledElementLength >= 16.f)
+		if (m_TraveledElementLength >= Config::ELEMENT_SIZE)
 		{
 			m_TraveledElementLength = 0;
 			return;
@@ -23,11 +25,11 @@ void WallMovementComponent::Update(float deltaTime)
 	else if (GetOwner()->GetGameObjectPosition().x != round(GetOwner()->GetGameObjectPosition().x) || GetOwner()->GetGameObjectPosition().y != round(GetOwner()->GetGameObjectPosition().y))
 	{
 		glm::vec3 pos = GetOwner()->GetGameObjectPosition();
-		pos.x -= 8;
-		pos.y -= 8;
-		pos = { round(pos.x / 16) * 16, round(pos.y / 16) * 16, pos.z };
-		pos.x += 8;
-		pos.y += 8;
+		pos.x -= Config::BORDER_SIZE;
+		pos.y -= Config::BORDER_SIZE;
+		pos = { round(pos.x / Config::ELEMENT_SIZE) * Config::ELEMENT_SIZE, round(pos.y / Config::ELEMENT_SIZE) * Config::ELEMENT_SIZE, pos.z };
+		pos.x += Config::BORDER_SIZE;
+		pos.y += Config::BORDER_SIZE;
 		GetOwner()->SetGameObjectPosition(pos.x, pos.y);
 
 		m_Moving = false;
@@ -70,18 +72,19 @@ void WallMovementComponent::SetHitWall(bool hit)
 	}
 	
 
-	if (m_TraveledTotalLength < 16 && m_Moving)
+	if (m_TraveledTotalLength < Config::ELEMENT_SIZE && m_Moving)
 	{
-		//GetOwner()->SetGameObjectPosition(5, 5);
-		GetOwner()->RemoveGameObject();
+		if (GetOwner()->HasComponent<WallComponent>())
+			GetOwner()->GetComponent<WallComponent>()->DeleteWall();
+		//GetOwner()->RemoveGameObject();
 	}
 	m_TraveledTotalLength = 0;
 
-	for (int i = 0; i < GetOwner()->GetChildCount(); i++)
-	{
-		GetOwner()->GetChildAt(i)->RemoveGameObject();
-	}
-	GetOwner()->RemoveAllChildren();
+	//for (int i = 0; i < GetOwner()->GetChildCount(); i++)
+	//{
+	//	GetOwner()->GetChildAt(i)->RemoveGameObject();
+	//}
+	//GetOwner()->RemoveAllChildren();
 
 	m_HitWall = hit;
 	//m_Moving = !hit;

@@ -2,6 +2,8 @@
 #include "CollisionComponent.h"
 #include "WallMovementComponent.h"
 #include "EnemyComponent.h"
+#include "RenderComponent.h"
+#include "EnemyMovementAIComponent.h"
 #include <iostream>
 
 void WallCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::CollisionComponent* actor)
@@ -24,7 +26,9 @@ void WallCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::
 					if (actor->GetOwner()->HasComponent<EnemyComponent>())
 						actor->GetOwner()->GetComponent<EnemyComponent>()->SetHitByWallPos(currentDirection);
 
-
+					if (actor->GetOwner()->HasComponent<EnemyMovementAIComponent>())
+						actor->GetOwner()->RemoveComponent(actor->GetOwner()->GetComponent<EnemyMovementAIComponent>());
+					//m_pOwner->RemoveComponent(m_pOwner->GetComponent<dae::RenderComponent>());
 
 					actor->GetOwner()->SetParent(m_pOwner, false);
 					//actor->GetOwner()->RemoveGameObject();
