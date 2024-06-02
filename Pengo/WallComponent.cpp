@@ -1,13 +1,39 @@
 #include "WallComponent.h"
 #include "GameObject.h"
+#include "Animation.h"
+
+WallComponent::WallComponent(dae::GameObject* gameObject) : dae::Component(gameObject)
+{
+}
+
+void WallComponent::Update(float deltaTime)
+{
+	if (m_Delete)
+	{
+		m_WallCurrentDeleteTime += deltaTime;
+
+		if (m_WallCurrentDeleteTime >= m_WallDeleteTime)
+		{
+			GetOwner()->RemoveGameObject();
+		}
+	}
+}
 
 void WallComponent::DeleteWall()
 {
-	GetOwner()->RemoveGameObject();
+	if (m_Delete)
+		return;
 
-	//for (int i = 0; i < GetOwner()->GetChildCount(); i++)
-	//{
-	//	GetOwner()->GetChildAt(i)->RemoveGameObject();
-	//}
-	//GetOwner()->RemoveAllChildren();
+	m_Delete = true;
+
+	Animation* animationComp = GetOwner()->GetComponent<Animation>();
+	if (animationComp != nullptr)
+	{
+		SDL_Rect deletingWallStartingRect = { 708, 48, 16, 16 };
+
+		animationComp->ToggleAnimation(true);
+		animationComp->SetStartSourceRect(deletingWallStartingRect);
+
+		m_WallDeleteTime = animationComp->GetMaxFrames() * animationComp->GetFlipTime();
+	}
 }

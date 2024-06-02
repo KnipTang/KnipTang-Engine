@@ -112,10 +112,24 @@ std::vector<GameObject*> dae::Scene::GetGameObjectsWithTag(std::string tag)
 {
 	std::vector<GameObject*> gameobjectsWithTag;
 
+	//for (const auto& object : GettonTegsObject)
+	//{
+	//	if (object->GetTag() == tag)
+	//		gameobjectsWithTag.emplace_back(object.get());
+	//}
+	//
+	//if (gameobjectsWithTag.size() > 0)
+	//{
+	//	return gameobjectsWithTag;
+	//}
+
 	for (const auto& object : m_objects)
 	{
-		if (object->GetTag() == tag)
+		if (object->GetTag() == tag) 
+		{
 			gameobjectsWithTag.emplace_back(object.get());
+			//GettonTegsObject.emplace_back(object.get());
+		}
 	}
 
 	return gameobjectsWithTag;

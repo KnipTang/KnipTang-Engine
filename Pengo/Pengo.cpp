@@ -35,6 +35,7 @@
 #include "Enemy.h"
 #include "Animation.h"
 #include "Level.h"
+#include "GameConfig.h"
 
 void load()
 {
@@ -59,11 +60,20 @@ void load()
 	//FPS
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
 	auto FPS = std::make_unique<dae::GameObject>();
-	FPS.get()->SetGameObjectPosition(0, 0);
+	FPS.get()->SetGameObjectPosition(0, 16);
 	FPS.get()->AddComponent(new dae::TextObject(FPS.get(), "0FPS", std::move(font)));
 	FPS.get()->AddComponent(new dae::FpsComponent(FPS.get(), FPS.get()->GetComponent<dae::TextObject>()));
 
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 8);
+	auto menuBottom = std::make_unique<dae::GameObject>();
+	menuBottom.get()->SetGameObjectPosition(Config::BORDER_SIZE, Config::MENUTOP_SIZE + 256.f);
+	menuBottom.get()->AddComponent(new dae::TextObject(menuBottom.get(), "ACT 1", std::move(font)));
 	
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
+	auto menuTop = std::make_unique<dae::GameObject>();
+	menuTop.get()->SetGameObjectPosition(Config::BORDER_SIZE, 0);
+	menuTop.get()->AddComponent(new dae::TextObject(menuTop.get(), "1P         0 HI 20000 2P          0", std::move(font)));
+
 	//font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	//auto P1_Explain = std::make_unique<dae::GameObject>();
 	//P1_Explain.get()->SetGameObjectPosition(0, 100);
@@ -97,25 +107,25 @@ void load()
 	std::vector<std::unique_ptr<dae::GameObject>> borders;
 	{
 		auto border = std::make_unique<dae::GameObject>();
-		border.get()->SetGameObjectPosition(0, 0);
+		border.get()->SetGameObjectPosition(0, Config::MENUTOP_SIZE);
 		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 224.f, 8.f));
 		border.get()->SetTag("Wall");
 		borders.emplace_back(std::move(border));
 
 		border = std::make_unique<dae::GameObject>();
-		border.get()->SetGameObjectPosition(0, 0);
+		border.get()->SetGameObjectPosition(0, Config::MENUTOP_SIZE);
 		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 8.f, 256.f));
 		border.get()->SetTag("Wall");
 		borders.emplace_back(std::move(border));
 
 		border = std::make_unique<dae::GameObject>();
-		border.get()->SetGameObjectPosition(0, 248.f);
+		border.get()->SetGameObjectPosition(0, Config::MENUTOP_SIZE + 248.f);
 		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 224.f, 8.f));
 		border.get()->SetTag("Wall");
 		borders.emplace_back(std::move(border));
 
 		border = std::make_unique<dae::GameObject>();
-		border.get()->SetGameObjectPosition(216.f, 0);
+		border.get()->SetGameObjectPosition(216.f, Config::MENUTOP_SIZE);
 		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 8.f, 256.f));
 		border.get()->SetTag("Wall");
 		borders.emplace_back(std::move(border));
@@ -144,7 +154,7 @@ void load()
 	GameBackground.get()->AddComponent(new dae::RenderComponent(GameBackground.get()));
 	GameBackground.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
 	GameBackground.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 0, 224, 256);
-	GameBackground.get()->SetGameObjectPosition(16 * 0, 16 * 0);
+	GameBackground.get()->SetGameObjectPosition(16 * 0, Config::MENUTOP_SIZE);
 
 	/*
 	displayLives = std::make_shared<dae::GameObject>();
@@ -199,6 +209,8 @@ void load()
 		scene.Add(std::move(bord));
 	}
 	scene.Add(std::move(FPS));
+	scene.Add(std::move(menuBottom));
+	scene.Add(std::move(menuTop));
 
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_A), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));

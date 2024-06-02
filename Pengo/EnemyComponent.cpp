@@ -5,10 +5,11 @@
 
 void EnemyComponent::SetHitByWallPos(glm::vec3 direction)
 {
-	if (direction.x < 0 || direction.y < 0)
-		GetOwner()->SetGameObjectPosition(direction.x, direction.y);
-	else
-		GetOwner()->SetGameObjectPosition(direction.x * Config::ELEMENT_SIZE, direction.y * Config::ELEMENT_SIZE);
+	GetOwner()->SetGameObjectPosition(direction.x * Config::ELEMENT_SIZE, direction.y * Config::ELEMENT_SIZE);
+	//if (direction.x < 0 || direction.y < 0)
+	//	GetOwner()->SetGameObjectPosition(direction.x * Config::ELEMENT_SIZE, direction.y * Config::ELEMENT_SIZE);
+	//else
+	//	GetOwner()->SetGameObjectPosition(direction.x * Config::ELEMENT_SIZE, direction.y * Config::ELEMENT_SIZE);
 	
 	//GetOwner()->GetComponent<dae::CollisionComponent>()->AddObserver(new EnemyCollisionObserver(GetOwner()));
 

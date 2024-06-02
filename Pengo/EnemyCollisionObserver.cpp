@@ -38,9 +38,14 @@ void EnemyCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 			}
 			else
 			{
+				if (actor->GetOwner()->HasComponent<WallMovementComponent>())
+					if (actor->GetOwner()->GetComponent<WallMovementComponent>()->IsWallMoving())
+						return;
+
 				if(actor->GetOwner()->HasComponent<WallComponent>())
 				{
 					actor->GetOwner()->GetComponent<WallComponent>()->DeleteWall();
+					actor->GetOwner()->SetParent(m_pOwner, true);
 				}
 			}
 		}

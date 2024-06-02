@@ -20,6 +20,7 @@
 #include "EnemyMovementAIComponent.h"
 #include "EnemyCollisionObserver.h"
 #include "WallComponent.h"
+#include "GameConfig.h"
 
 Level::Level(std::string filePath) : m_FilePath(filePath)
 {
@@ -74,7 +75,7 @@ void Level::HandleElement(std::string element)
     int elementNr = std::stoi(element);
 
     m_PosX = static_cast<float>(m_MapBorder + m_Element * m_CurrentColum);
-    m_PosY = static_cast<float>(m_MapBorder + m_Element * m_CurrentRow);
+    m_PosY = static_cast<float>(Config::MENUTOP_SIZE + m_MapBorder + m_Element * m_CurrentRow);
 
     switch (elementNr)
     {
@@ -149,6 +150,7 @@ void Level::PlaceWall()
     wall.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
     wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(708, 0, 16, 16);
     wall.get()->SetGameObjectPosition(m_PosX, m_PosY);
+    wall.get()->AddComponent(new Animation(wall.get(), false, 5));
     wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
     wall.get()->AddComponent(new WallMovementComponent(wall.get()));
     //wall.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new WallCollisionObserver(wall.get()));
@@ -169,6 +171,10 @@ void Level::PlaceEnemy()
     enemy.get()->SetGameObjectPosition(static_cast<float>(m_PosX), static_cast<float>(m_PosY));
     enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16.f, 16.f));
     enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
+    enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
+
+    enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
+
     enemy.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new EnemyCollisionObserver(enemy.get()));
     enemy.get()->SetTag("Enemy");
 

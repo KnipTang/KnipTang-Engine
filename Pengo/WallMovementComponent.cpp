@@ -43,6 +43,10 @@ void WallMovementComponent::LateUpdate(float)
 
 void WallMovementComponent::Move(glm::vec3 direction, dae::GameObject* moverOwner)
 {
+	if (GetOwner()->HasComponent<WallComponent>())
+		if (GetOwner()->GetComponent<WallComponent>()->IsWallDeleting())
+			return;
+
 	if (m_Moving)
 	{
 		return;

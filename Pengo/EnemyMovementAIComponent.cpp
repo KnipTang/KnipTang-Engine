@@ -2,6 +2,9 @@
 
 void EnemyMovementAIComponent::FixedUpdate(float deltaTime)
 {
+	if (GetOwner()->GetChildCount() > 0)
+		return;
+
 	if (!m_Moving)
 	{
 		UpdateDirection();

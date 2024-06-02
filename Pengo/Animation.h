@@ -10,25 +10,43 @@ public:
 	void FixedUpdate(float /*fixedTimeStep*/) override {}
 	void Render() const override {};
 
+	void SetStartSourceRect(SDL_Rect startSourceRect)
+	{
+		m_StartSourceRect = startSourceRect;
+		SetCurrentSourceRect(m_StartSourceRect);
+	}
+	SDL_Rect GetStartSourceRect()
+	{
+		return m_StartSourceRect;
+	}
+
 	void SetCurrentSourceRect(SDL_Rect currentSourceRect) 
 	{ 
 		m_CurrentSourceRect = currentSourceRect; 
-		if (GetOwner()->HasComponent<dae::RenderComponent>())
+		if (m_RenderComp != nullptr)
 		{
-			dae::RenderComponent* renderComp = GetOwner()->GetComponent<dae::RenderComponent>();
-			renderComp->SetSourceRect(m_CurrentSourceRect.x, m_CurrentSourceRect.y, m_CurrentSourceRect.w, m_CurrentSourceRect.h);
+			m_RenderComp->SetSourceRect(m_CurrentSourceRect.x, m_CurrentSourceRect.y, m_CurrentSourceRect.w, m_CurrentSourceRect.h);
 		}
 	}
 	SDL_Rect GetCurrentSourceRect() { return m_CurrentSourceRect; }
 
-	Animation(dae::GameObject* gameObject) : dae::Component(gameObject) 
+	Animation(dae::GameObject* gameObject, bool animationOn = false, int maxFrames = 1) : dae::Component(gameObject)
 	{ 
-		m_MaxFrames = 1; 
+		m_AnimationOn = animationOn;
 
-		m_CurrentSourceRect = GetOwner()->GetComponent<dae::RenderComponent>()->GetSourceRect();
+		m_MaxFrames = maxFrames;
+
+		m_FlipTime = 0.25f;
+
+		m_RenderComp = GetOwner()->GetComponent<dae::RenderComponent>();
+		m_StartSourceRect = m_RenderComp->GetSourceRect();
+		m_CurrentSourceRect = m_StartSourceRect;
 	}
 
 	void ToggleAnimation(bool animation) { m_AnimationOn = animation; };
+
+	float GetFlipTime() { return m_FlipTime; }
+	int GetMaxFrames() { return m_MaxFrames; }
 
 	virtual ~Animation() { }
 	Animation(const Animation& other) = delete;
@@ -37,14 +55,16 @@ public:
 	Animation& operator=(Animation&& other) = delete;
 
 private:
-	float m_Time = 0;
-	float m_FlipTime = 0.25f;
+	float m_CurrentTime = 0;
+	float m_FlipTime;
 
 	int m_CurrentFrame = 0;
 	int m_MaxFrames;
 
 	bool m_AnimationOn;
 
+	SDL_Rect m_StartSourceRect;
 	SDL_Rect m_CurrentSourceRect;
+	dae::RenderComponent* m_RenderComp;
 };
 

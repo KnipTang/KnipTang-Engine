@@ -7,28 +7,26 @@ void Animation::Update(float deltaTime)
 	if (!m_AnimationOn)
 		return;
 
-	m_Time += deltaTime;
+	m_CurrentTime += deltaTime;
 	
-	if (m_Time >= m_FlipTime)
+	if (m_CurrentTime >= m_FlipTime)
 	{
 		if (GetOwner()->HasComponent<dae::RenderComponent>())
 		{
-			dae::RenderComponent* renderComp = GetOwner()->GetComponent<dae::RenderComponent>();
-			SDL_Rect currentSourceRect = m_CurrentSourceRect;
-
 			if (m_CurrentFrame < m_MaxFrames)
 			{
-				currentSourceRect.x += 16;
+				m_CurrentSourceRect.x += 16;
 				m_CurrentFrame++;
 			}
 			else
 			{
 				m_CurrentFrame = 0;
+				m_CurrentSourceRect = m_StartSourceRect;
 			}
 
-			renderComp->SetSourceRect(currentSourceRect.x, currentSourceRect.y, currentSourceRect.w, currentSourceRect.h);
+			m_RenderComp->SetSourceRect(m_CurrentSourceRect.x, m_CurrentSourceRect.y, m_CurrentSourceRect.w, m_CurrentSourceRect.h);
 		}
 
-		m_Time = 0;
+		m_CurrentTime = 0;
 	}
 }

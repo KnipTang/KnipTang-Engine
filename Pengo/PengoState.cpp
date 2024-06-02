@@ -2,17 +2,17 @@
 
 void DyingState::Enter(dae::GameObject* gameObject)
 {
-	SDL_Rect currentRect{};
+	SDL_Rect startRect{};
 
 	Animation* animationComp = gameObject->GetComponent<Animation>();
 	if (animationComp != nullptr)
 	{
-		currentRect = animationComp->GetCurrentSourceRect();
+		startRect = animationComp->GetStartSourceRect();
 
-		currentRect.x = 0;
-		currentRect.y = 16 * 2;
+		startRect.x = 0;
+		startRect.y = 16 * 2;
 
-		animationComp->SetCurrentSourceRect(currentRect);
+		animationComp->SetStartSourceRect(startRect);
 	}
 
 	gameObject->RemoveComponent(gameObject->GetComponent<MovementComponent>());
@@ -40,32 +40,32 @@ void MoveState::Enter(dae::GameObject* gameObject, Controlls control)
 {
 	Enter(gameObject);
 
-	SDL_Rect currentRect{};
+	SDL_Rect startRect{};
 
 	Animation* animationComp = gameObject->GetComponent<Animation>();
 	if (animationComp != nullptr)
-		currentRect = animationComp->GetCurrentSourceRect();
+		startRect = animationComp->GetCurrentSourceRect();
 
 	switch (control)
 	{
 	case Controlls::UP:
 		if (animationComp != nullptr)
-			currentRect.x = 16 * 4;
+			startRect.x = 16 * 4;
 		break;
 
 	case Controlls::DOWN:
 		if (animationComp != nullptr)
-			currentRect.x = 16 * 0;
+			startRect.x = 16 * 0;
 		break;
 
 	case Controlls::LEFT:
 		if (animationComp != nullptr)
-			currentRect.x = 16 * 2;
+			startRect.x = 16 * 2;
 		break;
 
 	case Controlls::RIGHT:
 		if (animationComp != nullptr)
-			currentRect.x = 16 * 6;
+			startRect.x = 16 * 6;
 		break;
 
 	case Controlls::ATTACK:
@@ -73,7 +73,7 @@ void MoveState::Enter(dae::GameObject* gameObject, Controlls control)
 	}
 
 	if (animationComp != nullptr)
-		animationComp->SetCurrentSourceRect(currentRect);
+		animationComp->SetStartSourceRect(startRect);
 }
 
 std::unique_ptr<PengoState> MoveState::HandleInput(dae::GameObject* gameObject, Controlls)

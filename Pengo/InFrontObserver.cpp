@@ -19,6 +19,9 @@ void InFrontObserver::NotifyCollision(dae::GameCollisionEvent event, dae::Collis
 		}
 		else if (tag == "Wall")
 		{
+			if (m_pOwner->GetParent() == nullptr)
+				return;
+
 			if (m_pOwner->GetParent()->HasComponent<MovementComponent>())
 			{
 				m_pOwner->GetParent()->GetComponent<MovementComponent>()->SetHitWall(true);
