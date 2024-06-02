@@ -13,7 +13,7 @@ Scene::~Scene() = default;
 
 void Scene::Add(std::unique_ptr<GameObject> object)
 {
-	m_objects.emplace_back(std::move(object));
+	m_pendingAdditions.emplace_back(std::move(object));
 }
 
 void Scene::Remove(std::unique_ptr<GameObject> object)
@@ -24,12 +24,11 @@ void Scene::Remove(std::unique_ptr<GameObject> object)
 void Scene::RemoveAll()
 {
 	m_objects.clear();
+	m_pendingAdditions.clear();
 }
 
 void Scene::Update(float deltaTime)
 {
-	//CollisionDetection()
-
 	for(auto& object : m_objects)
 	{
 		object->Update(deltaTime);
@@ -40,6 +39,7 @@ void Scene::LateUpdate(float deltaTime)
 {
 	for (auto& object : m_objects)
 	{
+		if (object == nullptr) continue;
 		object->LateUpdate(deltaTime);
 	}
 
@@ -53,6 +53,10 @@ void Scene::LateUpdate(float deltaTime)
 			m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
 		}
 	}
+	for (auto& object : m_pendingAdditions) {
+		m_objects.emplace_back(std::move(object));
+	}
+	m_pendingAdditions.clear();
 }
 
 
@@ -60,6 +64,7 @@ void Scene::FixedUpdate(float fixedTimeStep)
 {
 	for (auto& object : m_objects)
 	{
+		if (object == nullptr) continue;
 		object->FixedUpdate(fixedTimeStep);
 	}
 }
@@ -94,16 +99,17 @@ void Scene::CollisionDetection()
 			// Check for collision between the two collision components
 			if (collisionComponent1->Intersects(*collisionComponent2))
 			{
+				collisionComponent2->Intersects(*collisionComponent1);
 				//std::cout << "Collisonnnn";
 				// Handle the collision;
 				//HandleCollision(collisionComponent1, collisionComponent2);
 			}
-			if (collisionComponent2->Intersects(*collisionComponent1))
-			{
-				//std::cout << "Collisonnnn";
-				// Handle the collision;
-				//HandleCollision(collisionComponent1, collisionComponent2);
-			}
+			//if )
+			//{
+			//	//std::cout << "Collisonnnn";
+			//	// Handle the collision;
+			//	//HandleCollision(collisionComponent1, collisionComponent2);
+			//}
 		}
 	}
 }

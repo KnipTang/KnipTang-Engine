@@ -30,6 +30,11 @@ public:
 	}
 	SDL_Rect GetCurrentSourceRect() { return m_CurrentSourceRect; }
 
+	void ToggleAnimation(bool animation) { m_AnimationOn = animation; };
+
+	float GetFlipTime() { return m_FlipTime; }
+	int GetMaxFrames() { return m_MaxFrames; }
+
 	Animation(dae::GameObject* gameObject, bool animationOn = false, int maxFrames = 1) : dae::Component(gameObject)
 	{ 
 		m_AnimationOn = animationOn;
@@ -42,11 +47,6 @@ public:
 		m_StartSourceRect = m_RenderComp->GetSourceRect();
 		m_CurrentSourceRect = m_StartSourceRect;
 	}
-
-	void ToggleAnimation(bool animation) { m_AnimationOn = animation; };
-
-	float GetFlipTime() { return m_FlipTime; }
-	int GetMaxFrames() { return m_MaxFrames; }
 
 	virtual ~Animation() { }
 	Animation(const Animation& other) = delete;

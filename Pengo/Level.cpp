@@ -21,6 +21,7 @@
 #include "EnemyCollisionObserver.h"
 #include "WallComponent.h"
 #include "GameConfig.h"
+#include "EnemySpawnComponent.h"
 
 Level::Level(std::string filePath) : m_FilePath(filePath)
 {
@@ -161,22 +162,34 @@ void Level::PlaceWall()
 
 void Level::PlaceEnemy()
 {
-    auto enemy = std::make_unique<dae::GameObject>();
+    auto wall = std::make_unique<dae::GameObject>();
 
-    enemy.get()->AddComponent(new EnemyComponent(enemy.get()));
-    enemy.get()->AddComponent(new EnemyMovementAIComponent(enemy.get()));
-    enemy.get()->AddComponent(new dae::RenderComponent(enemy.get()));
-    enemy.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
-    enemy.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 16 * 9, 16, 16);
-    enemy.get()->SetGameObjectPosition(static_cast<float>(m_PosX), static_cast<float>(m_PosY));
-    enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16.f, 16.f));
-    enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
-    enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
+    wall.get()->AddComponent(new WallComponent(wall.get()));
+    wall.get()->AddComponent(new dae::RenderComponent(wall.get()));
+    wall.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
+    wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(708, 0, 16, 16);
+    wall.get()->SetGameObjectPosition(m_PosX, m_PosY);
+    wall.get()->AddComponent(new Animation(wall.get(), false, 5));
+    wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
+    wall.get()->AddComponent(new WallMovementComponent(wall.get()));
+    wall.get()->AddComponent(new EnemySpawnComponent(wall.get()));
+    wall.get()->SetTag("Wall");
 
-    enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
+    //auto enemy = std::make_unique<dae::GameObject>();
+    //
+    //enemy.get()->AddComponent(new EnemyComponent(enemy.get()));
+    //enemy.get()->AddComponent(new EnemyMovementAIComponent(enemy.get()));
+    //enemy.get()->AddComponent(new dae::RenderComponent(enemy.get()));
+    //enemy.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+    //enemy.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 16 * 9, 16, 16);
+    ////enemy.get()->SetGameObjectPosition(static_cast<float>(m_PosX), static_cast<float>(m_PosY));
+    //enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16.f, 16.f));
+    //enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
+    //enemy.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new EnemyCollisionObserver(enemy.get()));
+    //enemy.get()->SetTag("Enemy");
 
-    enemy.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new EnemyCollisionObserver(enemy.get()));
-    enemy.get()->SetTag("Enemy");
+    //enemy.get()->SetParent(wall.get(), false);
 
-    m_GameObjects.emplace_back(std::move(enemy));
+   // m_GameObjects.emplace_back(std::move(enemy));
+    m_GameObjects.emplace_back(std::move(wall));
 }
