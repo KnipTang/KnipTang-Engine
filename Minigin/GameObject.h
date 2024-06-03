@@ -28,6 +28,11 @@ namespace dae
 					return derived;
 				}
 			}
+			for (const auto& component : m_pPendingComponents) {
+				if (T* derived = dynamic_cast<T*>(component.get())) {
+					return derived;
+				}
+			}
 			return nullptr;
 		}
 		
@@ -68,6 +73,7 @@ namespace dae
 		bool IsChild(GameObject* potentialChild) const;
 
 		std::vector<std::unique_ptr<Component>> m_pComponents;
+		std::vector<std::unique_ptr<Component>> m_pPendingComponents;
 
 		Transform m_Transform{this}; //Local transform
 

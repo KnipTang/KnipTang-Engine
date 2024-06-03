@@ -16,6 +16,9 @@ namespace dae
 
 		GameObject* GetOwner() const { return m_pOwner; }
 
+		bool IsRemoveComponentTrue() { return m_RemoveComponent; }
+		void RemoveComponent() { m_RemoveComponent = true; };
+
 		//Component(/*GameObject* pParent*/) : /*m_pOwner(pParent)*/ {};
 		Component(GameObject* gameObject) : m_pOwner(gameObject) {}
 		virtual ~Component() = default;
@@ -26,5 +29,7 @@ namespace dae
 
 	private:
 		GameObject* m_pOwner;
+
+		bool m_RemoveComponent = false;
 	};
 }

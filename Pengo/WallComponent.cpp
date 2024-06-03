@@ -26,6 +26,11 @@ void WallComponent::DeleteWall()
 
 	m_Delete = true;
 
+	PlayBreakWall();
+}
+
+void WallComponent::PlayBreakWall()
+{
 	Animation* animationComp = GetOwner()->GetComponent<Animation>();
 	if (animationComp != nullptr)
 	{

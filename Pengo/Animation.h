@@ -31,15 +31,16 @@ public:
 	SDL_Rect GetCurrentSourceRect() { return m_CurrentSourceRect; }
 
 	void ToggleAnimation(bool animation) { m_AnimationOn = animation; };
+	bool IsAnimating() { return m_AnimationOn; }
 
 	float GetFlipTime() { return m_FlipTime; }
 	int GetMaxFrames() { return m_MaxFrames; }
 
-	Animation(dae::GameObject* gameObject, bool animationOn = false, int maxFrames = 1) : dae::Component(gameObject)
+	Animation(dae::GameObject* gameObject, bool animationOn = false, int maxFrames = 1, bool loopAnimation = false) : dae::Component(gameObject)
 	{ 
 		m_AnimationOn = animationOn;
-
 		m_MaxFrames = maxFrames;
+		m_LoopAnimation = loopAnimation;
 
 		m_FlipTime = 0.25f;
 
@@ -62,6 +63,8 @@ private:
 	int m_MaxFrames;
 
 	bool m_AnimationOn;
+
+	bool m_LoopAnimation;
 
 	SDL_Rect m_StartSourceRect;
 	SDL_Rect m_CurrentSourceRect;

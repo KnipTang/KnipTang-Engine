@@ -230,11 +230,11 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClInclude Include="EnemyComponent.h" />
     <ClInclude Include="EnemyMovementAIComponent.h" />
     <ClInclude Include="EnemySpawnComponent.h" />
+    <ClInclude Include="GameCommands.h" />
     <ClInclude Include="InFrontObserver.h" />
     <ClInclude Include="InFrontViewComponent.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FpsComponent.h" />
-    <ClInclude Include="GameCommands.h" />
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="Level.h" />

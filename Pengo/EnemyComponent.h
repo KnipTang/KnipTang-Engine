@@ -14,7 +14,7 @@ public:
 
 	void Dies();
 
-	EnemyComponent(dae::GameObject* gameObject) : dae::Component(gameObject) {};
+	EnemyComponent(dae::GameObject* gameObject);
 	virtual ~EnemyComponent() { }
 	EnemyComponent(const EnemyComponent& other) = delete;
 	EnemyComponent(EnemyComponent&& other) = delete;

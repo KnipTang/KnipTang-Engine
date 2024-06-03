@@ -14,6 +14,8 @@ public:
 	WallComponent& operator=(WallComponent&& other) = delete;
 
 	void DeleteWall();
+	void PlayBreakWall();
+	float GetTimeToBreakWall() { return m_WallDeleteTime; }
 
 	bool IsWallDeleting() { return m_Delete; }
 private:

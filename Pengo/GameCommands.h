@@ -6,6 +6,17 @@
 
 namespace dae
 {
+	class StartGameCommand : public GameActorCommand
+	{
+	public:
+		StartGameCommand(GameObject* actor) : GameActorCommand(actor) {}
+
+		void Execute(float /*deltaTime*/) override
+		{
+			std::cout << "Jump";
+		}
+	};
+
 	class JumpCommand : public GameActorCommand {
 	public:
 		JumpCommand(GameObject* actor) : GameActorCommand(actor) {}

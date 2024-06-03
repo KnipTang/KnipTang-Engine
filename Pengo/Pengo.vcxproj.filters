@@ -110,9 +110,6 @@
     <ClInclude Include="FpsComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameCommands.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SoundCommands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -177,6 +174,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EnemySpawnComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCommands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

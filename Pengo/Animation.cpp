@@ -20,6 +20,11 @@ void Animation::Update(float deltaTime)
 			}
 			else
 			{
+				if (!m_LoopAnimation)
+				{
+					m_AnimationOn = false;
+					return;
+				}
 				m_CurrentFrame = 0;
 				m_CurrentSourceRect = m_StartSourceRect;
 			}

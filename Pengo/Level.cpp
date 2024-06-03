@@ -172,24 +172,24 @@ void Level::PlaceEnemy()
     wall.get()->AddComponent(new Animation(wall.get(), false, 5));
     wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
     wall.get()->AddComponent(new WallMovementComponent(wall.get()));
-    wall.get()->AddComponent(new EnemySpawnComponent(wall.get()));
     wall.get()->SetTag("Wall");
 
-    //auto enemy = std::make_unique<dae::GameObject>();
-    //
-    //enemy.get()->AddComponent(new EnemyComponent(enemy.get()));
-    //enemy.get()->AddComponent(new EnemyMovementAIComponent(enemy.get()));
-    //enemy.get()->AddComponent(new dae::RenderComponent(enemy.get()));
-    //enemy.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
-    //enemy.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 16 * 9, 16, 16);
-    ////enemy.get()->SetGameObjectPosition(static_cast<float>(m_PosX), static_cast<float>(m_PosY));
-    //enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16.f, 16.f));
-    //enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
-    //enemy.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new EnemyCollisionObserver(enemy.get()));
-    //enemy.get()->SetTag("Enemy");
+    auto enemy = std::make_unique<dae::GameObject>();
+    
+    enemy.get()->AddComponent(new EnemyComponent(enemy.get()));
+    enemy.get()->AddComponent(new dae::RenderComponent(enemy.get()));
+    enemy.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+    enemy.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 16 * 8, 16, 16);
+    enemy.get()->SetGameObjectPosition(static_cast<float>(m_PosX), static_cast<float>(m_PosY));
+    enemy.get()->AddComponent(new Animation(enemy.get(), true, 5));
+    enemy.get()->AddComponent(new EnemySpawnComponent(enemy.get()));
+    enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16.f, 16.f));
+    enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));
+    enemy.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new EnemyCollisionObserver(enemy.get()));
+    enemy.get()->SetTag("Enemy");
+    
+    wall.get()->SetParent(enemy.get(), true);
 
-    //enemy.get()->SetParent(wall.get(), false);
-
-   // m_GameObjects.emplace_back(std::move(enemy));
+    m_GameObjects.emplace_back(std::move(enemy));
     m_GameObjects.emplace_back(std::move(wall));
 }

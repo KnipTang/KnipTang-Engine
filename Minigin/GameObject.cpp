@@ -16,6 +16,20 @@ void dae::GameObject::LateUpdate(float deltaTime)
 	{
 		component->LateUpdate(deltaTime);
 	}
+
+	for (auto& components : m_pComponents)
+	{
+		if (components == nullptr) continue;
+		if (components.get()->IsRemoveComponentTrue())
+		{
+			m_pComponents.erase(std::remove(m_pComponents.begin(), m_pComponents.end(), components), m_pComponents.end());
+		}
+	}
+
+	for (auto& components : m_pPendingComponents) {
+		m_pComponents.emplace_back(std::move(components));
+	}
+	m_pPendingComponents.clear();
 }
 
 void dae::GameObject::FixedUpdate(float fixedTimeStep)
@@ -36,21 +50,23 @@ void dae::GameObject::Render() const
 
 void dae::GameObject::AddComponent(Component* component)
 {
-	m_pComponents.emplace_back(component);
+	m_pPendingComponents.emplace_back(component);
 }
 
 void dae::GameObject::RemoveComponent(Component* component)
 {
-	m_pComponents.erase(
-		std::remove_if(
-			m_pComponents.begin(),
-			m_pComponents.end(),
-			[&](const std::unique_ptr<Component>& cmpt) {
-				return cmpt.get() == component;
-			}
-		),
-		m_pComponents.end()
-	);
+	component->RemoveComponent();
+
+	//m_pComponents.erase(
+	//	std::remove_if(
+	//		m_pComponents.begin(),
+	//		m_pComponents.end(),
+	//		[&](const std::unique_ptr<Component>& cmpt) {
+	//			return cmpt.get() == component;
+	//		}
+	//	),
+	//	m_pComponents.end()
+	//);
 
 		//m_pComponents.shrink_to_fit();
 
@@ -65,11 +81,16 @@ void dae::GameObject::RemoveComponent(Component* component)
 
 void dae::GameObject::RemoveAllComponent()
 {
-	size_t amountComponents = m_pComponents.size();
-	for (size_t i = 0; i < amountComponents; i++)
+	//size_t amountComponents = m_pComponents.size();
+	//for (size_t i = 0; i < amountComponents; i++)
+	//{
+	//	RemoveComponent(m_pComponents[0].get());
+	//}
+	for (auto& components : m_pComponents)
 	{
-		RemoveComponent(m_pComponents[0].get());
+		components.get()->RemoveComponent();
 	}
+	m_pPendingComponents.clear();
 	//for (const auto& component : m_pComponents)
 	//{
 	//	RemoveComponent(component.get());
