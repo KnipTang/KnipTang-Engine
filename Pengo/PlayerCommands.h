@@ -52,7 +52,10 @@ namespace dae
 			{
 				GetGameObject()->GetComponent<MovementComponent>()->Move(deltaTime, m_Direction);
 			}
-
+			if (GetGameObject()->HasComponent<AttackComponent>())
+			{
+				GetGameObject()->GetComponent<AttackComponent>()->JoyStickPressed();
+			}
 		}
 	private:
 		glm::vec3 m_Direction{0,0,0};

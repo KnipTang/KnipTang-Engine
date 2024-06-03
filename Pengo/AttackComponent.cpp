@@ -6,7 +6,7 @@
 void AttackComponent::Attack()
 {
 	//m_ObjectInfront->SetGameObjectPosition(5, 5);
-	if (m_AttackReady)
+	if (m_AttackReady && m_JoyStickPressed)
 	{
 		glm::vec3 direction{ 0,0,0 };
 

@@ -9,11 +9,14 @@ public:
 	void LateUpdate(float) override 
 	{ 
 		if (m_AttackReady) m_AttackReady = false;
+		if (m_JoyStickPressed) m_JoyStickPressed = false;
 	}
 	void FixedUpdate(float) override {}
 	void Render() const override {}
 
 	void Attack();
+
+	void JoyStickPressed() { m_JoyStickPressed = true; };
 
 	void SetAttackReady(bool value) 
 	{ 
@@ -39,4 +42,6 @@ private:
 	dae::GameObject* m_ObjectInfront;
 
 	bool m_AttackReady;
+
+	bool m_JoyStickPressed;
 };
