@@ -20,4 +20,3 @@ void EnemyComponent::Dies()
 {
 	GetOwner()->RemoveGameObject();
 }
-

@@ -1,8 +1,10 @@
 #include "EnemyMovementAIComponent.h"
+#include "EnemyState.h"
+#include "EnemyComponent.h"
 
 void EnemyMovementAIComponent::FixedUpdate(float deltaTime)
 {
-	if (GetOwner()->GetChildCount() > 0)
+	if (GetOwner()->GetChildCount() > 0 || GetOwner()->GetParent() != nullptr)
 		return;
 
 	if (!m_Moving)
@@ -48,6 +50,15 @@ void EnemyMovementAIComponent::UpdateDirection()
 	}
 	else {
 		m_Direction.y = (dy > 0) ? 1.0f : -1.0f;
+	}
+
+	if (m_Direction != m_LastDirection)
+	{
+		m_LastDirection = m_Direction;
+		if (GetOwner()->HasComponent<EnemyComponent>())
+		{
+			GetOwner()->GetComponent<EnemyComponent>()->SetState(std::make_unique<MovingState>(GetOwner(), m_Direction));
+		}
 	}
 }
 

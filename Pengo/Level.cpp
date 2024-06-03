@@ -105,7 +105,7 @@ void Level::PlacePlayer()
     P1.get()->AddComponent(new dae::RenderComponent(P1.get()));
     P1.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
     P1.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
-    P1.get()->AddComponent(new Animation(P1.get()));
+    P1.get()->AddComponent(new Animation(P1.get(), false, 1, true));
     P1.get()->SetGameObjectPosition(m_PosX, m_PosY);
     P1.get()->AddComponent(new dae::CollisionComponent(P1.get(), 1.f, 1.f, 8.f, 8.f));
     P1.get()->AddComponent(new dae::HealthComponent(P1.get()));
@@ -115,10 +115,10 @@ void Level::PlacePlayer()
     P1.get()->SetTag("Player");
 
     auto InFront = std::make_unique<dae::GameObject>();
-    InFront.get()->AddComponent(new dae::RenderComponent(InFront.get()));
+    //InFront.get()->AddComponent(new dae::RenderComponent(InFront.get()));
     InFront.get()->SetGameObjectPosition(0, 16.f);
-    InFront.get()->GetComponent<dae::RenderComponent>()->SetTexture("Red.png");
-    InFront.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 5, 5);
+    //InFront.get()->GetComponent<dae::RenderComponent>()->SetTexture("Red.png");
+    //InFront.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 5, 5);
     InFront.get()->AddComponent(new dae::CollisionComponent(InFront.get(), 1.f, 1.f));
     InFront.get()->AddComponent(new InFrontViewComponent(InFront.get()));
     InFront.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new InFrontObserver(InFront.get()));
@@ -181,7 +181,7 @@ void Level::PlaceEnemy()
     enemy.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
     enemy.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 16 * 8, 16, 16);
     enemy.get()->SetGameObjectPosition(static_cast<float>(m_PosX), static_cast<float>(m_PosY));
-    enemy.get()->AddComponent(new Animation(enemy.get(), true, 5));
+    enemy.get()->AddComponent(new Animation(enemy.get(), true, 5, false));
     enemy.get()->AddComponent(new EnemySpawnComponent(enemy.get()));
     enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16.f, 16.f));
     enemy.get()->AddComponent(new dae::HealthComponent(enemy.get()));

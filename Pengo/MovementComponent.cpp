@@ -70,6 +70,7 @@ void MovementComponent::StopMoving()
 	m_Moving = false;
 	if (GetOwner()->HasComponent<PengoComponent>())
 	{
-		GetOwner()->GetComponent<PengoComponent>()->SetState(std::make_unique<Idle>(GetOwner()));
+		if(!GetOwner()->GetComponent<PengoComponent>()->IsPengoKilled())
+			GetOwner()->GetComponent<PengoComponent>()->SetState(std::make_unique<Idle>(GetOwner()));
 	}
 }

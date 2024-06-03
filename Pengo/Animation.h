@@ -34,7 +34,11 @@ public:
 	bool IsAnimating() { return m_AnimationOn; }
 
 	float GetFlipTime() { return m_FlipTime; }
+
+	void SetMaxFrames(int maxFrames) { m_MaxFrames = maxFrames; }
 	int GetMaxFrames() { return m_MaxFrames; }
+
+	void ToggleLooping(bool loopValue) { m_LoopAnimation = loopValue; };
 
 	Animation(dae::GameObject* gameObject, bool animationOn = false, int maxFrames = 1, bool loopAnimation = false) : dae::Component(gameObject)
 	{ 

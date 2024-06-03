@@ -21,6 +21,13 @@ public:
 	void SetCurrentDirection(glm::vec3 direction) { m_CurrentDirection = direction; }
 	glm::vec3 GetCurrentDirection() { return m_CurrentDirection; }
 
+	void SetPengoIsKilled() 
+	{ 
+		m_IsDead = true; 
+		SetState(std::make_unique<DyingState>(GetOwner()));
+	}
+	bool IsPengoKilled() { return m_IsDead; }
+
 	PengoComponent(dae::GameObject* gameObject) : dae::Component(gameObject) { m_State = std::make_unique<Idle>(); }
 	virtual ~PengoComponent() 
 	{ 
@@ -34,5 +41,7 @@ private:
 	std::unique_ptr<PengoState> m_State;
 
 	glm::vec3 m_CurrentDirection;
+
+	bool m_IsDead;
 };
 

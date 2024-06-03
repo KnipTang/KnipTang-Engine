@@ -24,7 +24,7 @@ void PengoCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 
 			if (m_pOwner->HasComponent<PengoComponent>())
 			{
-				m_pOwner->GetComponent<PengoComponent>()->SetState(std::make_unique<DyingState>(m_pOwner));
+				m_pOwner->GetComponent<PengoComponent>()->SetPengoIsKilled();
 			}
 		}
 		else if (tag == "Wall")

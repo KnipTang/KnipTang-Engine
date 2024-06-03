@@ -2,17 +2,15 @@
 
 void DyingState::Enter(dae::GameObject* gameObject)
 {
-	SDL_Rect startRect{};
-
 	Animation* animationComp = gameObject->GetComponent<Animation>();
 	if (animationComp != nullptr)
 	{
-		startRect = animationComp->GetStartSourceRect();
+		animationComp->ToggleAnimation(true);
 
-		startRect.x = 0;
-		startRect.y = 16 * 2;
+		SDL_Rect dyingRect{};
+		dyingRect = { 0, 16 * 2, 16, 16 };
 
-		animationComp->SetStartSourceRect(startRect);
+		animationComp->SetStartSourceRect(dyingRect);
 	}
 
 	gameObject->RemoveComponent(gameObject->GetComponent<MovementComponent>());
@@ -31,49 +29,53 @@ std::unique_ptr<PengoState> DyingState::Update()
 
 
 
-void MoveState::Enter(dae::GameObject* gameObject)
+void MoveState::Enter(dae::GameObject* )
 {
-	gameObject->GetComponent<Animation>()->ToggleAnimation(true);
+	//gameObject->GetComponent<Animation>()->ToggleAnimation(true);
 }
 
 void MoveState::Enter(dae::GameObject* gameObject, Controlls control)
 {
-	Enter(gameObject);
-
-	SDL_Rect startRect{};
+	//Enter(gameObject);
 
 	Animation* animationComp = gameObject->GetComponent<Animation>();
 	if (animationComp != nullptr)
-		startRect = animationComp->GetCurrentSourceRect();
-
-	switch (control)
 	{
-	case Controlls::UP:
-		if (animationComp != nullptr)
-			startRect.x = 16 * 4;
-		break;
+		if (animationComp->IsAnimating())
+			return;
 
-	case Controlls::DOWN:
-		if (animationComp != nullptr)
-			startRect.x = 16 * 0;
-		break;
+		animationComp->ToggleAnimation(true);
 
-	case Controlls::LEFT:
-		if (animationComp != nullptr)
-			startRect.x = 16 * 2;
-		break;
+		SDL_Rect currentStartingRect = animationComp->GetCurrentSourceRect();
 
-	case Controlls::RIGHT:
-		if (animationComp != nullptr)
-			startRect.x = 16 * 6;
-		break;
+		switch (control)
+		{
+		case Controlls::UP:
+			if (animationComp != nullptr)
+				currentStartingRect = {16 * 4, 0, 16, 16};
+			break;
 
-	case Controlls::ATTACK:
-		break;
+		case Controlls::DOWN:
+			if (animationComp != nullptr)
+				currentStartingRect = { 16 * 0, 0, 16, 16 };
+			break;
+
+		case Controlls::LEFT:
+			if (animationComp != nullptr)
+				currentStartingRect = { 16 * 2, 0, 16, 16 };
+			break;
+
+		case Controlls::RIGHT:
+			if (animationComp != nullptr)
+				currentStartingRect = { 16 * 6, 0, 16, 16 };
+			break;
+
+		case Controlls::ATTACK:
+			break;
+		}
+
+		animationComp->SetStartSourceRect(currentStartingRect);
 	}
-
-	if (animationComp != nullptr)
-		animationComp->SetStartSourceRect(startRect);
 }
 
 std::unique_ptr<PengoState> MoveState::HandleInput(dae::GameObject* gameObject, Controlls)
@@ -82,6 +84,11 @@ std::unique_ptr<PengoState> MoveState::HandleInput(dae::GameObject* gameObject, 
 }
 
 
+
+void Idle::Enter(dae::GameObject* gameObject)
+{
+	gameObject->GetComponent<Animation>()->ToggleAnimation(false);
+}
 
 std::unique_ptr<PengoState> Idle::HandleInput(dae::GameObject* gameObject, Controlls control)
 {

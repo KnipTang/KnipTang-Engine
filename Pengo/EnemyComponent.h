@@ -1,6 +1,9 @@
 #pragma once
 #include <Component.h>
+#include <memory>
 #include "GameObject.h"
+#include "EnemyState.h"
+
 class EnemyComponent : public dae::Component
 {
 public:
@@ -14,6 +17,11 @@ public:
 
 	void Dies();
 
+	void SetState(std::unique_ptr<EnemyState> state)
+	{
+		m_State = std::move(state);
+	}
+
 	EnemyComponent(dae::GameObject* gameObject);
 	virtual ~EnemyComponent() { }
 	EnemyComponent(const EnemyComponent& other) = delete;
@@ -21,6 +29,8 @@ public:
 	EnemyComponent& operator=(const EnemyComponent& other) = delete;
 	EnemyComponent& operator=(EnemyComponent&& other) = delete;
 private:
+	std::unique_ptr<EnemyState> m_State;
+
 	bool m_WasHitByWall;
 };
 

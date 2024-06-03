@@ -36,9 +36,13 @@ namespace dae
 
 		void Execute(float deltaTime) override
 		{
-			if (GetGameObject()->HasComponent<PengoComponent>())
+			PengoComponent* pengoComp = GetGameObject()->GetComponent<PengoComponent>();
+			if (pengoComp != nullptr)
 			{
-				GetGameObject()->GetComponent<PengoComponent>()->HandleInput(m_Control);
+				if (pengoComp->IsPengoKilled())
+					return;
+
+				pengoComp->HandleInput(m_Control);
 			}
 			if (GetGameObject()->HasComponent<PengoComponent>())
 			{

@@ -36,4 +36,5 @@ private:
 	std::vector<dae::GameObject*> m_Player;
 
 	glm::vec3 m_Direction{ 1,0,0 };
+	glm::vec3 m_LastDirection{ 0,0,0 };
 };

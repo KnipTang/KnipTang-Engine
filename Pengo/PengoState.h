@@ -85,10 +85,7 @@ public:
 	Idle(dae::GameObject* gameObject) { Enter(gameObject); }
 	~Idle() override {};
 
-	void Enter(dae::GameObject* gameObject) override
-	{
-		gameObject->GetComponent<Animation>()->ToggleAnimation(false);
-	}
+	void Enter(dae::GameObject* gameObject) override;
 
 	std::unique_ptr<PengoState> HandleInput(dae::GameObject*, Controlls control) override;
 
