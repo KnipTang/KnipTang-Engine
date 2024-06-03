@@ -35,7 +35,7 @@ void WallCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::
 				}
 			}
 		}
-		if (tag == "Wall")
+		if (tag == "Wall" || tag == "HardWall")
 		{
 			std::cout << "Wall\n";
 			if (m_pOwner->HasComponent<WallMovementComponent>())

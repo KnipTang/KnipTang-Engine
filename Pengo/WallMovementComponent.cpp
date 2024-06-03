@@ -78,9 +78,13 @@ void WallMovementComponent::SetHitWall(bool hit)
 
 	if (m_TraveledTotalLength < Config::ELEMENT_SIZE && m_Moving)
 	{
-		if (GetOwner()->HasComponent<WallComponent>())
-			GetOwner()->GetComponent<WallComponent>()->DeleteWall();
-		//GetOwner()->RemoveGameObject();
+		if (GetOwner()->GetTag() != "HardWall")
+		{
+			if (GetOwner()->HasComponent<WallComponent>())
+			{
+				GetOwner()->GetComponent<WallComponent>()->DeleteWall();
+			}
+		}
 	}
 	m_TraveledTotalLength = 0;
 

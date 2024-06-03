@@ -91,6 +91,9 @@ void Level::HandleElement(std::string element)
     case 3: // Enemy
         PlaceEnemy();
         break;
+    case 4: // HardWall
+        PlaceHardWall();
+        break;
     default:
         break;
     }
@@ -191,5 +194,21 @@ void Level::PlaceEnemy()
     wall.get()->SetParent(enemy.get(), true);
 
     m_GameObjects.emplace_back(std::move(enemy));
+    m_GameObjects.emplace_back(std::move(wall));
+}
+
+void Level::PlaceHardWall()
+{
+    auto wall = std::make_unique<dae::GameObject>();
+
+    wall.get()->AddComponent(new WallComponent(wall.get()));
+    wall.get()->AddComponent(new dae::RenderComponent(wall.get()));
+    wall.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
+    wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(708, 16, 16, 16);
+    wall.get()->SetGameObjectPosition(m_PosX, m_PosY);
+    wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
+    wall.get()->AddComponent(new WallMovementComponent(wall.get()));
+    wall.get()->SetTag("HardWall");
+
     m_GameObjects.emplace_back(std::move(wall));
 }

@@ -17,7 +17,7 @@ void InFrontObserver::NotifyCollision(dae::GameCollisionEvent event, dae::Collis
 		else if (tag == "Enemy")
 		{
 		}
-		else if (tag == "Wall")
+		else if (tag == "Wall" || tag == "HardWall")
 		{
 			if (m_pOwner->GetParent() == nullptr)
 				return;

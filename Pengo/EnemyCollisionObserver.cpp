@@ -18,7 +18,7 @@ void EnemyCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 		{
 			
 		}
-		if (tag == "Wall")
+		if (tag == "Wall" || tag == "HardWall")
 		{
 			bool wasHitByWall = false;
 
@@ -44,7 +44,9 @@ void EnemyCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 
 				if(actor->GetOwner()->HasComponent<WallComponent>())
 				{
-					actor->GetOwner()->GetComponent<WallComponent>()->DeleteWall();
+					if(tag != "HardWall")
+						actor->GetOwner()->GetComponent<WallComponent>()->DeleteWall();
+
 					actor->GetOwner()->SetParent(m_pOwner, true);
 				}
 			}

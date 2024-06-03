@@ -18,6 +18,7 @@ private:
 	void PlacePlayer();
 	void PlaceWall();
 	void PlaceEnemy();
+	void PlaceHardWall();
 
 	int m_Element = 16;
 	int m_MapBorder = 8;
