@@ -4,6 +4,7 @@
 #include "CollisionComponent.h"
 #include "Animation.h"
 #include <Scene.h>
+#include "EnemySpawnComponent.h"
 
 EnemyComponent::EnemyComponent(dae::GameObject* gameObject) : dae::Component(gameObject)
 {
@@ -28,6 +29,7 @@ void EnemyComponent::Dies()
 	dae::GameObject* enemyWalls = GetEnemySpawnBlock();
 	if (enemyWalls != nullptr)
 	{
+		enemyWalls->GetComponent<EnemySpawnComponent>()->SpawnEnemy();
 		//Call enemy spawn component
 	}
 
