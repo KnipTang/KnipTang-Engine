@@ -1,5 +1,6 @@
 #pragma once
 #include <Component.h>
+class Animation;
 class WallComponent : public dae::Component
 {
 public:
@@ -15,13 +16,10 @@ public:
 
 	void DeleteWall();
 	void PlayBreakWall();
-	float GetTimeToBreakWall() { return m_WallDeleteTime; }
 
 	bool IsWallDeleting() { return m_Delete; }
 private:
 	bool m_Delete = false;
-
-	float m_WallCurrentDeleteTime = 0;
-	float m_WallDeleteTime;
+	Animation* m_AnimationComp;
 };
 

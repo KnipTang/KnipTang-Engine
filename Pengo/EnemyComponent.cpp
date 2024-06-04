@@ -29,8 +29,19 @@ void EnemyComponent::Dies()
 	dae::GameObject* enemyWalls = GetEnemySpawnBlock();
 	if (enemyWalls != nullptr)
 	{
-		if(enemyWalls->HasComponent<EnemySpawnComponent>())
+		if (enemyWalls->HasComponent<EnemySpawnComponent>())
 			enemyWalls->GetComponent<EnemySpawnComponent>()->SpawnEnemy();
+	}
+	else
+	{
+		dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
+		size_t amountEnemies = currentScene->GetGameObjectsWithLayer("Enemy").size();
+
+		if (amountEnemies <= 1)
+		{
+			dae::SceneManager::GetInstance().UnloadScene("Demo");
+			dae::SceneManager::GetInstance().LoadScene("StartScreen");
+		}
 	}
 
 	GetOwner()->RemoveGameObject();

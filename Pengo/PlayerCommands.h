@@ -98,12 +98,15 @@ namespace dae
 
 			std::vector<dae::GameObject*> enemyWalls = currentScene.GetGameObjectsWithTag("EnemyWall");
 			
-			for (int i = 0; i < m_EnemiesSpawnAtStart; i++)
+			if (m_EnemiesSpawnAtStart > enemyWalls.size())
+				m_EnemiesSpawnAtStart = enemyWalls.size();
+
+			for (size_t i = 0; i < m_EnemiesSpawnAtStart; i++)
 			{
 				enemyWalls.at(i)->GetComponent<EnemySpawnComponent>()->SpawnEnemy();
 			}
 		}
 	private:
-		int m_EnemiesSpawnAtStart = 3;
+		size_t m_EnemiesSpawnAtStart = 3;
 	};
 }

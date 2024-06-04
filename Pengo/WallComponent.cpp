@@ -6,13 +6,11 @@ WallComponent::WallComponent(dae::GameObject* gameObject) : dae::Component(gameO
 {
 }
 
-void WallComponent::Update(float deltaTime)
+void WallComponent::Update(float)
 {
 	if (m_Delete)
 	{
-		m_WallCurrentDeleteTime += deltaTime;
-
-		if (m_WallCurrentDeleteTime >= m_WallDeleteTime)
+		if (!m_AnimationComp->IsAnimating())
 		{
 			GetOwner()->RemoveGameObject();
 		}
@@ -31,15 +29,14 @@ void WallComponent::DeleteWall()
 
 void WallComponent::PlayBreakWall()
 {
-	Animation* animationComp = GetOwner()->GetComponent<Animation>();
-	if (animationComp != nullptr)
+	m_AnimationComp = GetOwner()->GetComponent<Animation>();
+	if (m_AnimationComp != nullptr)
 	{
 		SDL_Rect deletingWallStartingRect = { 708, 48, 16, 16 };
 
-		animationComp->ToggleAnimation(true);
-		animationComp->SetStartSourceRect(deletingWallStartingRect);
-		animationComp->SetMaxFrames(9);
-		animationComp->SetFlipTime(0.1f);
-		m_WallDeleteTime = animationComp->GetMaxFrames() * animationComp->GetFlipTime();
+		m_AnimationComp->ToggleAnimation(true);
+		m_AnimationComp->SetStartSourceRect(deletingWallStartingRect);
+		m_AnimationComp->SetMaxFrames(8);
+		m_AnimationComp->SetFlipTime(0.1f);
 	}
 }

@@ -22,7 +22,7 @@ void Animation::Update(float deltaTime)
 			{
 				if (!m_LoopAnimation)
 				{
-					ToggleLooping(false);
+					m_AnimationOn = false;
 					if(m_ResetWhenDone)
 						SetCurrentSourceRect(m_StartSourceRect);
 					return;

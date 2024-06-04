@@ -53,6 +53,11 @@ dae::Scene* dae::SceneManager::GetSceneByName(std::string name)
 	return nullptr;
 }
 
+std::vector<dae::Scene*> dae::SceneManager::GetActiveScenes()
+{
+	return m_ActiveScenes;
+}
+
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
 	std::unique_ptr<Scene> scene = std::unique_ptr<Scene>(new Scene(name));

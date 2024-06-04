@@ -24,6 +24,7 @@ namespace dae
 		void CollisionDetection();
 
 		Scene* GetSceneByName(std::string name);
+		std::vector<Scene*> GetActiveScenes();
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
