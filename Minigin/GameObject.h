@@ -60,6 +60,9 @@ namespace dae
 		void SetTag(std::string tag) { m_Tag = tag; }
 		std::string GetTag() { return m_Tag; }
 
+		void SetLayer(std::string layer) { m_Layer = layer; }
+		std::string GetLayer() { return m_Layer; }
+
 		GameObject() = default;
 		~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
@@ -83,5 +86,6 @@ namespace dae
 		bool m_RemoveGameObject = false;
 
 		std::string m_Tag = "None";
+		std::string m_Layer = "None";
 	};
 }

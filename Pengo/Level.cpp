@@ -94,6 +94,9 @@ void Level::HandleElement(std::string element)
     case 4: // HardWall
         PlaceHardWall();
         break;
+    case 5: // HardWall
+        PlaceEnemyWall();
+        break;
     default:
         break;
     }
@@ -152,13 +155,14 @@ void Level::PlaceWall()
     wall.get()->AddComponent(new WallComponent(wall.get()));
     wall.get()->AddComponent(new dae::RenderComponent(wall.get()));
     wall.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
-    wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(708, 0, 16, 16);
+    wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(724, 0, 16, 16);
     wall.get()->SetGameObjectPosition(m_PosX, m_PosY);
     wall.get()->AddComponent(new Animation(wall.get(), false, 5));
     wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
     wall.get()->AddComponent(new WallMovementComponent(wall.get()));
     //wall.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new WallCollisionObserver(wall.get()));
     wall.get()->SetTag("Wall");
+    wall.get()->SetLayer("Wall");
 
     m_GameObjects.emplace_back(std::move(wall));
 }
@@ -204,11 +208,29 @@ void Level::PlaceHardWall()
     wall.get()->AddComponent(new WallComponent(wall.get()));
     wall.get()->AddComponent(new dae::RenderComponent(wall.get()));
     wall.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
-    wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(708, 16, 16, 16);
+    wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(724, 16, 16, 16);
     wall.get()->SetGameObjectPosition(m_PosX, m_PosY);
     wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
     wall.get()->AddComponent(new WallMovementComponent(wall.get()));
     wall.get()->SetTag("HardWall");
+
+    m_GameObjects.emplace_back(std::move(wall));
+}
+
+void Level::PlaceEnemyWall()
+{
+    auto wall = std::make_unique<dae::GameObject>();
+
+    wall.get()->AddComponent(new WallComponent(wall.get()));
+    wall.get()->AddComponent(new dae::RenderComponent(wall.get()));
+    wall.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
+    wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(708, 0, 16, 16);
+    wall.get()->SetGameObjectPosition(m_PosX, m_PosY);
+    wall.get()->AddComponent(new Animation(wall.get(), true, 1, true));
+    wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
+    wall.get()->AddComponent(new WallMovementComponent(wall.get()));
+    wall.get()->SetTag("Wall");
+    wall.get()->SetLayer("EnemyWall");
 
     m_GameObjects.emplace_back(std::move(wall));
 }

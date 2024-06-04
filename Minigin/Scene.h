@@ -22,6 +22,7 @@ namespace dae
 		void CollisionDetection();
 
 		std::vector<GameObject*> GetGameObjectsWithTag(std::string tag);
+		std::vector<GameObject*> GetGameObjectsWithLayer(std::string layer);
 
 		~Scene();
 		Scene(const Scene& other) = delete;

@@ -140,3 +140,18 @@ std::vector<GameObject*> dae::Scene::GetGameObjectsWithTag(std::string tag)
 
 	return gameobjectsWithTag;
 }
+
+std::vector<GameObject*> dae::Scene::GetGameObjectsWithLayer(std::string layer)
+{
+	std::vector<GameObject*> gameobjectsWithLayer;
+
+	for (const auto& object : m_objects)
+	{
+		if (object->GetLayer() == layer)
+		{
+			gameobjectsWithLayer.emplace_back(object.get());
+		}
+	}
+
+	return gameobjectsWithLayer;
+}
