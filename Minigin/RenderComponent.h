@@ -21,6 +21,7 @@ namespace dae
 
 		void SetTexture(const std::string& filename);
 
+		void SetSourceRect(SDL_Rect sourceRect) { SetSourceRect(sourceRect.x, sourceRect.y, sourceRect.w, sourceRect.h); }
 		void SetSourceRect(const int x, const int y, const int widthSrc, const int heightSrc);
 		SDL_Rect GetSourceRect() { return m_SourceRect; }
 

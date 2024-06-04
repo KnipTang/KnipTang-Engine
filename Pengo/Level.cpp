@@ -210,7 +210,7 @@ void Level::PlaceEnemyWall()
     wall.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
     wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(708, 0, 16, 16);
     wall.get()->SetGameObjectPosition(m_PosX, m_PosY);
-    wall.get()->AddComponent(new Animation(wall.get()));
+    wall.get()->AddComponent(new Animation(wall.get(), true, 1, false, true, 1.f));
     wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
     wall.get()->SetLayer("Wall");
     wall.get()->SetTag("EnemyWall");

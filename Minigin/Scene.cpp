@@ -134,7 +134,14 @@ std::vector<GameObject*> dae::Scene::GetGameObjectsWithTag(std::string tag)
 		if (object->GetTag() == tag) 
 		{
 			gameobjectsWithTag.emplace_back(object.get());
-			//GettonTegsObject.emplace_back(object.get());
+		}
+	}
+
+	for (const auto& object : m_pendingAdditions)
+	{
+		if (object->GetTag() == tag)
+		{
+			gameobjectsWithTag.emplace_back(object.get());
 		}
 	}
 
@@ -146,6 +153,14 @@ std::vector<GameObject*> dae::Scene::GetGameObjectsWithLayer(std::string layer)
 	std::vector<GameObject*> gameobjectsWithLayer;
 
 	for (const auto& object : m_objects)
+	{
+		if (object->GetLayer() == layer)
+		{
+			gameobjectsWithLayer.emplace_back(object.get());
+		}
+	}
+
+	for (const auto& object : m_pendingAdditions)
 	{
 		if (object->GetLayer() == layer)
 		{

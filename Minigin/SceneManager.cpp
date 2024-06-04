@@ -44,7 +44,7 @@ void dae::SceneManager::CollisionDetection()
 
 dae::Scene* dae::SceneManager::GetSceneByName(std::string name)
 {
-	for (const auto& scene : m_ActiveScenes)
+	for (const auto& scene : m_scenes)
 	{
 		if (scene->m_name == name)
 			return scene.get();

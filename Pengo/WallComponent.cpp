@@ -39,6 +39,7 @@ void WallComponent::PlayBreakWall()
 		animationComp->ToggleAnimation(true);
 		animationComp->SetStartSourceRect(deletingWallStartingRect);
 		animationComp->SetMaxFrames(9);
+		animationComp->SetFlipTime(0.1f);
 		m_WallDeleteTime = animationComp->GetMaxFrames() * animationComp->GetFlipTime();
 	}
 }

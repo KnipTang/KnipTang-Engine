@@ -22,7 +22,9 @@ void Animation::Update(float deltaTime)
 			{
 				if (!m_LoopAnimation)
 				{
-					m_AnimationOn = false;
+					ToggleLooping(false);
+					if(m_ResetWhenDone)
+						SetCurrentSourceRect(m_StartSourceRect);
 					return;
 				}
 				m_CurrentFrame = 0;
@@ -34,4 +36,14 @@ void Animation::Update(float deltaTime)
 
 		m_CurrentTime = 0;
 	}
+}
+
+void Animation::ToggleLooping(bool loopValue)
+{
+	m_LoopAnimation = loopValue;
+}
+
+void Animation::ToggleResetWhenDone(bool resetWhenDone)
+{
+	m_ResetWhenDone = resetWhenDone;
 }

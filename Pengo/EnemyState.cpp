@@ -54,6 +54,7 @@ void SpawningState::Enter(dae::GameObject*)
 		m_AnimationComp->ToggleAnimation(true);
 		m_AnimationComp->ToggleLooping(false);
 		m_AnimationComp->SetMaxFrames(5);
+		m_AnimationComp->SetFlipTime(0.25f);
 
 		SDL_Rect currentStartingRect = { 0, 16 * 8, 16, 16 };
 

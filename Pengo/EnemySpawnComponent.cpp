@@ -37,5 +37,5 @@ void EnemySpawnComponent::SpawnEnemy()
 
 	dae::SceneManager::GetInstance().GetSceneByName("Demo")->Add(std::move(enemy));
 
-	//GetOwner()->GetComponent<WallComponent>()->DeleteWall();
+	GetOwner()->GetComponent<WallComponent>()->DeleteWall();
 }
