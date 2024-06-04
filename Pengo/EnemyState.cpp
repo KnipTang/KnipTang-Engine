@@ -1,7 +1,23 @@
 #include <iostream>
 #include "EnemyState.h"
+#include "EnemyComponent.h"
+#include "GameObject.h"
 
-void MovingState::Enter(dae::GameObject*, ActionState actionState)
+void IdleState::Enter(dae::GameObject*)
+{
+	if (m_AnimationComp != nullptr)
+	{
+		m_AnimationComp->ToggleAnimation(false);
+		m_AnimationComp->ToggleLooping(false);
+		m_AnimationComp->SetMaxFrames(1);
+
+		SDL_Rect currentStartingRect = { 16 * 0, 16 * 9, 16, 16 };
+
+		m_AnimationComp->SetStartSourceRect(currentStartingRect);
+	}
+}
+
+void MovingState::Enter(dae::GameObject*)
 {
 	if (m_AnimationComp != nullptr)
 	{
@@ -11,7 +27,7 @@ void MovingState::Enter(dae::GameObject*, ActionState actionState)
 
 		SDL_Rect currentStartingRect = m_AnimationComp->GetCurrentSourceRect();
 
-		switch (actionState)
+		switch (m_CurrentState)
 		{
 		case ActionState::UP:
 			currentStartingRect = { 16 * 4, 16 * 9, 16, 16 };
@@ -30,3 +46,29 @@ void MovingState::Enter(dae::GameObject*, ActionState actionState)
 		m_AnimationComp->SetStartSourceRect(currentStartingRect);
 	}
 }
+
+void SpawningState::Enter(dae::GameObject*)
+{
+	if (m_AnimationComp != nullptr)
+	{
+		m_AnimationComp->ToggleAnimation(true);
+		m_AnimationComp->ToggleLooping(false);
+		m_AnimationComp->SetMaxFrames(5);
+
+		SDL_Rect currentStartingRect = { 0, 16 * 8, 16, 16 };
+
+		m_AnimationComp->SetStartSourceRect(currentStartingRect);
+	}
+}
+
+void SpawningState::Update()
+{
+	if (!m_AnimationComp->IsAnimating())
+	{
+		if (m_EnemyComp != nullptr)
+		{
+			m_EnemyComp->SetState(std::make_unique<IdleState>(m_EnemyComp->GetOwner()));
+		}
+	}
+}
+

@@ -6,7 +6,8 @@
 #include "PengoComponent.h"
 #include "PengoState.h"
 #include "AttackComponent.h"
-
+#include "EnemySpawnComponent.h"
+#include "Scene.h"
 namespace dae
 {
 	class Movement : public GameActorCommand {
@@ -82,5 +83,24 @@ namespace dae
 		}
 	private:
 		Controlls m_Control;
+	};
+
+	class StartGame : public GameActorCommand {
+	public:
+		StartGame(GameObject* actor) : GameActorCommand(actor)
+		{
+		}
+
+		void Execute(float /*deltaTime*/) override
+		{
+			dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
+			std::vector<dae::GameObject*> enemyWalls = currentScene->GetGameObjectsWithTag("EnemyWall");
+
+			for (auto& wall : enemyWalls)
+			{
+				wall->GetComponent<EnemySpawnComponent>()->SpawnEnemy();
+			}
+		}
+	private:
 	};
 }

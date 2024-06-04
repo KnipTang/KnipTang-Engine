@@ -76,7 +76,7 @@ void EnemyMovementAIComponent::StunEnemy()
 
 dae::GameObject* EnemyMovementAIComponent::GetClosestPlayer()
 {
-	m_Player = m_CurrentScene->GetGameObjectsWithTag("Player");
+	m_Player = m_CurrentScene->GetGameObjectsWithLayer("Player");
 
 	if (m_Player.empty())
 		return nullptr;

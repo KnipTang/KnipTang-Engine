@@ -8,14 +8,14 @@ void PengoCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 {
 	if (event == dae::GameCollisionEvent::Collision)
 	{
-		std::string tag = actor->GetOwner()->GetTag();
-		std::cout << "Begin OverLapping: " << m_pOwner->GetTag() << " With: ";
+		std::string layer = actor->GetOwner()->GetLayer();
+		std::cout << "Begin OverLapping: " << m_pOwner->GetLayer() << " With: ";
 		
-		if (tag == "Player")
+		if (layer == "Player")
 		{
 			std::cout << "Player\n";
 		}
-		else if (tag == "Enemy")
+		else if (layer == "Enemy")
 		{
 			std::cout << "Enemy\n";
 
@@ -27,7 +27,7 @@ void PengoCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 				m_pOwner->GetComponent<PengoComponent>()->SetPengoIsKilled();
 			}
 		}
-		else if (tag == "Wall" || tag == "HardWall")
+		else if (layer == "Wall")
 		{
 			std::cout << "Wall\n";
 

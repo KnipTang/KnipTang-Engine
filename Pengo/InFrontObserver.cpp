@@ -9,15 +9,15 @@ void InFrontObserver::NotifyCollision(dae::GameCollisionEvent event, dae::Collis
 {
 	if (event == dae::GameCollisionEvent::Collision)
 	{
-		std::string tag = actor->GetOwner()->GetTag();
+		std::string layer = actor->GetOwner()->GetLayer();
 
-		if (tag == "Player")
+		if (layer == "Player")
 		{
 		}
-		else if (tag == "Enemy")
+		else if (layer == "Enemy")
 		{
 		}
-		else if (tag == "Wall" || tag == "HardWall")
+		else if (layer == "Wall")
 		{
 			if (m_pOwner->GetParent() == nullptr)
 				return;

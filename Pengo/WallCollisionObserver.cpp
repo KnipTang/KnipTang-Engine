@@ -10,12 +10,12 @@ void WallCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::
 {
 	if (event == dae::GameCollisionEvent::Collision)
 	{
-		std::string tag = actor->GetOwner()->GetTag();
+		std::string layer = actor->GetOwner()->GetLayer();
 
-		if (tag == "Player")
+		if (layer == "Player")
 		{
 		}
-		if (tag == "Enemy")
+		if (layer == "Enemy")
 		{
 			if (m_pOwner->HasComponent<WallMovementComponent>())
 			{
@@ -40,7 +40,7 @@ void WallCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::
 				}
 			}
 		}
-		if (tag == "Wall" || tag == "HardWall")
+		if (layer == "Wall")
 		{
 			std::cout << "Wall\n";
 			if (m_pOwner->HasComponent<WallMovementComponent>())

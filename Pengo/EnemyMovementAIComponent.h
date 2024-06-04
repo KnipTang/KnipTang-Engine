@@ -10,7 +10,7 @@ public:
 	EnemyMovementAIComponent(dae::GameObject* gameObject, float speed = 16.f) : dae::Component(gameObject), m_Speed(speed)
 	{
 		m_CurrentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
-		m_Player = m_CurrentScene->GetGameObjectsWithTag("Player");
+		m_Player = m_CurrentScene->GetGameObjectsWithLayer("Player");
 	};
 
 	void StopMoving() { m_Moving = false; };

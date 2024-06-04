@@ -98,7 +98,7 @@ void load()
 	P2.get()->AddComponent(new dae::HealthComponent(P2.get()));
 	P2.get()->AddComponent(new dae::ScoreComponent(P2.get()));
 	P2.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P2.get()));
-	P2.get()->SetTag("Player");
+	P2.get()->SetLayer("Player");
 
 	Level m_Level{"Resources/Level.txt"};
 	std::vector<std::unique_ptr<dae::GameObject>> level = m_Level.LoadLevel();
@@ -109,25 +109,25 @@ void load()
 		auto border = std::make_unique<dae::GameObject>();
 		border.get()->SetGameObjectPosition(0, Config::MENUTOP_SIZE);
 		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 224.f, 8.f));
-		border.get()->SetTag("Wall");
+		border.get()->SetLayer("Wall");
 		borders.emplace_back(std::move(border));
 
 		border = std::make_unique<dae::GameObject>();
 		border.get()->SetGameObjectPosition(0, Config::MENUTOP_SIZE);
 		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 8.f, 256.f));
-		border.get()->SetTag("Wall");
+		border.get()->SetLayer("Wall");
 		borders.emplace_back(std::move(border));
 
 		border = std::make_unique<dae::GameObject>();
 		border.get()->SetGameObjectPosition(0, Config::MENUTOP_SIZE + 248.f);
 		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 224.f, 8.f));
-		border.get()->SetTag("Wall");
+		border.get()->SetLayer("Wall");
 		borders.emplace_back(std::move(border));
 
 		border = std::make_unique<dae::GameObject>();
 		border.get()->SetGameObjectPosition(216.f, Config::MENUTOP_SIZE);
 		border.get()->AddComponent(new dae::CollisionComponent(border.get(), 8.f, 256.f));
-		border.get()->SetTag("Wall");
+		border.get()->SetLayer("Wall");
 		borders.emplace_back(std::move(border));
 	}
 	//auto displayLives{ std::make_shared<dae::GameObject>() };

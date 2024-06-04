@@ -3,10 +3,17 @@
 #include "EnemyCollisionObserver.h"
 #include "CollisionComponent.h"
 #include "Animation.h"
+#include <Scene.h>
 
 EnemyComponent::EnemyComponent(dae::GameObject* gameObject) : dae::Component(gameObject)
 {
 
+}
+
+void EnemyComponent::Update(float)
+{
+	if (m_State != nullptr)
+		m_State->Update();
 }
 
 void EnemyComponent::SetHitByWallPos(glm::vec3 direction)
@@ -18,5 +25,22 @@ void EnemyComponent::SetHitByWallPos(glm::vec3 direction)
 
 void EnemyComponent::Dies()
 {
+	dae::GameObject* enemyWalls = GetEnemySpawnBlock();
+	if (enemyWalls != nullptr)
+	{
+		//Call enemy spawn component
+	}
+
 	GetOwner()->RemoveGameObject();
+}
+
+dae::GameObject* EnemyComponent::GetEnemySpawnBlock()
+{
+	dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
+	std::vector<dae::GameObject*> enemyWalls = currentScene->GetGameObjectsWithTag("EnemyWall");
+
+	if (enemyWalls.size() >= 1)
+		return enemyWalls.at(0);
+
+	return nullptr;
 }
