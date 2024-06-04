@@ -39,7 +39,17 @@
 
 void load()
 {
+	auto& startScene = dae::SceneManager::GetInstance().CreateScene("StartScreen");
+	
+	auto backGroundStartScreen = std::make_unique<dae::GameObject>();
+	backGroundStartScreen.get()->AddComponent(new dae::RenderComponent(backGroundStartScreen.get()));
+	backGroundStartScreen.get()->GetComponent<dae::RenderComponent>()->SetTexture("background.tga");
+	
+	startScene.Add(std::move(backGroundStartScreen));
+	dae::SceneManager::GetInstance().LoadScene("StartScreen");
+
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	dae::SceneManager::GetInstance().LoadScene("Demo");
 	//Background image
 	auto backGround = std::make_unique<dae::GameObject>();
 	backGround.get()->AddComponent(new dae::RenderComponent(backGround.get()));

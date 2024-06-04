@@ -96,11 +96,12 @@ namespace dae
 			dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
 			std::vector<dae::GameObject*> enemyWalls = currentScene->GetGameObjectsWithTag("EnemyWall");
 
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < m_EnemiesSpawnAtStart; i++)
 			{
 				enemyWalls.at(i)->GetComponent<EnemySpawnComponent>()->SpawnEnemy();
 			}
 		}
 	private:
+		int m_EnemiesSpawnAtStart = 3;
 	};
 }

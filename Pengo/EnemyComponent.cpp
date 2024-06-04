@@ -29,8 +29,8 @@ void EnemyComponent::Dies()
 	dae::GameObject* enemyWalls = GetEnemySpawnBlock();
 	if (enemyWalls != nullptr)
 	{
-		enemyWalls->GetComponent<EnemySpawnComponent>()->SpawnEnemy();
-		//Call enemy spawn component
+		if(enemyWalls->HasComponent<EnemySpawnComponent>())
+			enemyWalls->GetComponent<EnemySpawnComponent>()->SpawnEnemy();
 	}
 
 	GetOwner()->RemoveGameObject();

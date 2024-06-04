@@ -13,6 +13,9 @@ namespace dae
 	public:
 		Scene& CreateScene(const std::string& name);
 
+		Scene& LoadScene(const std::string& name);
+		void UnloadScene(const std::string& name);
+
 		void Update(float deltaTime);
 		void LateUpdate(float deltaTime);
 		void FixedUpdate(float fixedTimeStep);
@@ -25,5 +28,6 @@ namespace dae
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
 		std::vector<std::unique_ptr<Scene>> m_scenes;
+		std::vector<Scene*> m_ActiveScenes;
 	};
 }
