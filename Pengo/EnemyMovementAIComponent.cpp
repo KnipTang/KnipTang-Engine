@@ -7,7 +7,13 @@ void EnemyMovementAIComponent::FixedUpdate(float deltaTime)
 	if (GetOwner()->GetChildCount() > 0 || GetOwner()->GetParent() != nullptr)
 		return;
 
-	if (!m_Moving)
+	if (m_Stunned)
+	{
+		m_CurrentStunnedTime += deltaTime;
+		if (m_CurrentStunnedTime >= m_MaxStunnedTime)
+			m_Stunned = false;
+	}
+	else if (!m_Moving)
 	{
 		UpdateDirection();
 		RoundOffPosition();
@@ -62,6 +68,11 @@ void EnemyMovementAIComponent::UpdateDirection()
 	}
 }
 
+
+void EnemyMovementAIComponent::StunEnemy()
+{
+	m_Stunned = true;
+}
 
 dae::GameObject* EnemyMovementAIComponent::GetClosestPlayer()
 {

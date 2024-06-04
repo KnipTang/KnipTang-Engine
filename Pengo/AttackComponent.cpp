@@ -19,3 +19,11 @@ void AttackComponent::Attack()
 		}
 	}
 }
+
+void AttackComponent::JoyStickPressed()
+{
+	m_JoyStickPressed = true;
+
+	//if (m_ObjectInfront->HasComponent<WallMovementComponent>())
+	//	m_ObjectInfront->GetComponent<WallMovementComponent>()->Vibrate();
+}

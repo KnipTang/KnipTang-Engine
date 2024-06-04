@@ -18,6 +18,11 @@ public:
 
 	void SetHitWall(bool hit);
 
+	void RoundOffWallPos();
+
+	void Vibrate();
+	bool IsVibrating() { return m_Vibrate; }
+
 	WallMovementComponent(dae::GameObject* gameObject, float speed = 40.f) : dae::Component(gameObject), m_Speed(speed) { };
 	virtual ~WallMovementComponent() { }
 	WallMovementComponent(const WallMovementComponent& other) = delete;
@@ -38,5 +43,9 @@ private:
 	glm::vec3 m_StartPos;
 
 	dae::GameObject* m_MoverOwner;
+
+	bool m_Vibrate;
+	float m_CurrentVibrationTime = 0;
+	float m_MaxVibrationTime = 1.f;
 };
 

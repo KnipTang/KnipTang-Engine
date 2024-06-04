@@ -19,7 +19,12 @@ void WallCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::
 		{
 			if (m_pOwner->HasComponent<WallMovementComponent>())
 			{
-				if (m_pOwner->GetComponent<WallMovementComponent>()->IsWallMoving())
+				if (m_pOwner->GetComponent<WallMovementComponent>()->IsVibrating())
+				{
+					if (actor->GetOwner()->HasComponent<EnemyMovementAIComponent>())
+						actor->GetOwner()->GetComponent<EnemyMovementAIComponent>()->StunEnemy();
+				}
+				else if (m_pOwner->GetComponent<WallMovementComponent>()->IsWallMoving())
 				{
 					glm::vec3 currentDirection = m_pOwner->GetComponent<WallMovementComponent>()->GetDirection();
 

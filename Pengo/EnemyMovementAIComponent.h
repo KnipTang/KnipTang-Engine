@@ -12,6 +12,11 @@ public:
 		m_CurrentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
 		m_Player = m_CurrentScene->GetGameObjectsWithTag("Player");
 	};
+
+	void StopMoving() { m_Moving = false; };
+
+	void StunEnemy();
+
 	virtual ~EnemyMovementAIComponent() { }
 	EnemyMovementAIComponent(const EnemyMovementAIComponent& other) = delete;
 	EnemyMovementAIComponent(EnemyMovementAIComponent&& other) = delete;
@@ -37,4 +42,8 @@ private:
 
 	glm::vec3 m_Direction{ 1,0,0 };
 	glm::vec3 m_LastDirection{ 0,0,0 };
+
+	bool m_Stunned;
+	float m_CurrentStunnedTime = 0;
+	float m_MaxStunnedTime = 5;
 };

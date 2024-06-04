@@ -4,9 +4,25 @@
 #include "WallComponent.h"
 #include "GameConfig.h"
 #include <iostream>
+#include <cmath>
+#include <SDL.h>
 void WallMovementComponent::Update(float deltaTime)
 {
-	if (m_Moving && !m_HitWall)
+	if (m_Vibrate)
+	{
+		glm::vec3 objPos = GetOwner()->GetTransform()->GetWorldPosition();
+		float vibrationOffsetX = std::sin(SDL_GetTicks64() * 10.f) * 0.1f;
+		float vibrationOffsetY = std::sin(SDL_GetTicks64() * 10.f) * 0.1f;
+		objPos.x += vibrationOffsetX;
+		objPos.y += vibrationOffsetY;
+		GetOwner()->SetGameObjectPosition(objPos.x, objPos.y);
+
+		m_CurrentVibrationTime += deltaTime;
+		if (m_CurrentVibrationTime >= m_MaxVibrationTime)
+			m_Vibrate = false;
+	}
+
+	else if (m_Moving && !m_HitWall)
 	{
 		glm::vec3 objPos = GetOwner()->GetTransform()->GetWorldPosition();
 
@@ -24,15 +40,7 @@ void WallMovementComponent::Update(float deltaTime)
 	}
 	else if (GetOwner()->GetGameObjectPosition().x != round(GetOwner()->GetGameObjectPosition().x) || GetOwner()->GetGameObjectPosition().y != round(GetOwner()->GetGameObjectPosition().y))
 	{
-		glm::vec3 pos = GetOwner()->GetGameObjectPosition();
-		pos.x -= Config::BORDER_SIZE;
-		pos.y -= Config::BORDER_SIZE;
-		pos = { round(pos.x / Config::ELEMENT_SIZE) * Config::ELEMENT_SIZE, round(pos.y / Config::ELEMENT_SIZE) * Config::ELEMENT_SIZE, pos.z };
-		pos.x += Config::BORDER_SIZE;
-		pos.y += Config::BORDER_SIZE;
-		GetOwner()->SetGameObjectPosition(pos.x, pos.y);
-
-		m_Moving = false;
+		RoundOffWallPos();
 	}
 }
 
@@ -50,6 +58,13 @@ void WallMovementComponent::Move(glm::vec3 direction, dae::GameObject* moverOwne
 	if (m_Moving)
 	{
 		return;
+	}
+
+	if (m_Vibrate)
+	{
+		RoundOffWallPos();
+		m_HitWall = false;
+		m_Vibrate = false;
 	}
 
 	if (m_HitWall)
@@ -96,4 +111,26 @@ void WallMovementComponent::SetHitWall(bool hit)
 
 	m_HitWall = hit;
 	//m_Moving = !hit;
+}
+
+void WallMovementComponent::RoundOffWallPos()
+{
+	glm::vec3 pos = GetOwner()->GetGameObjectPosition();
+	pos.x -= Config::BORDER_SIZE;
+	pos.y -= Config::BORDER_SIZE;
+	pos = { round(pos.x / Config::ELEMENT_SIZE) * Config::ELEMENT_SIZE, round(pos.y / Config::ELEMENT_SIZE) * Config::ELEMENT_SIZE, pos.z };
+	pos.x += Config::BORDER_SIZE;
+	pos.y += Config::BORDER_SIZE;
+	GetOwner()->SetGameObjectPosition(pos.x, pos.y);
+
+	m_Moving = false;
+}
+
+void WallMovementComponent::Vibrate()
+{
+	if (GetOwner()->HasComponent<WallComponent>())
+		if (GetOwner()->GetComponent<WallComponent>()->IsWallDeleting())
+			return;
+
+	m_Vibrate = true;
 }

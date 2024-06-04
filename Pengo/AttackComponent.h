@@ -16,7 +16,7 @@ public:
 
 	void Attack();
 
-	void JoyStickPressed() { m_JoyStickPressed = true; };
+	void JoyStickPressed();
 
 	void SetAttackReady(bool value) 
 	{ 
