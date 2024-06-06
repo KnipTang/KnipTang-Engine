@@ -27,6 +27,9 @@ private:
 	dae::GameObject* GetClosestPlayer();
 	void UpdateDirection();
 	float CalculateDistanceSquared(const glm::vec3& pos1, const glm::vec3& pos2);
+	void InvertDirectionIfPlayerKilled(dae::GameObject* player);
+
+	void ClampMovement(glm::vec3& pos);
 
 	void RoundOffPosition();
 

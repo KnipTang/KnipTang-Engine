@@ -1,7 +1,12 @@
 #include "PengoState.h"
+#include "PengoComponent.h"
+#include "SceneManager.h"
+//#include "SceneManager.h"
 
 void DyingState::Enter(dae::GameObject* gameObject)
 {
+	m_PengoComp = gameObject->GetComponent<PengoComponent>();
+
 	Animation* animationComp = gameObject->GetComponent<Animation>();
 	if (animationComp != nullptr)
 	{
@@ -13,7 +18,22 @@ void DyingState::Enter(dae::GameObject* gameObject)
 		animationComp->SetStartSourceRect(dyingRect);
 	}
 
-	gameObject->RemoveComponent(gameObject->GetComponent<MovementComponent>());
+	HealthComponent* healthComp = gameObject->GetComponent<HealthComponent>();
+	if(healthComp)
+	{
+		int currentLives = healthComp->DamageLives();
+		if(currentLives <= 0)
+		{
+			dae::SceneManager::GetInstance().UnloadScene("Demo");
+			dae::SceneManager::GetInstance().LoadScene("StartScreen");
+		}
+		else
+		{
+			m_Respawning = true;
+		}
+	}
+
+	//gameObject->RemoveComponent(gameObject->GetComponent<MovementComponent>());
 }
 
 std::unique_ptr<PengoState> DyingState::HandleInput(dae::GameObject*, Controlls)
@@ -21,9 +41,21 @@ std::unique_ptr<PengoState> DyingState::HandleInput(dae::GameObject*, Controlls)
 	return std::make_unique<DyingState>();
 }
 
-std::unique_ptr<PengoState> DyingState::Update()
+std::unique_ptr<PengoState> DyingState::Update(float deltaTime)
 {
-	std::cout << "Dying :OO\n";
+	if(m_Respawning)
+	{
+		m_CurrentRespawnTime += deltaTime;
+	
+		if(m_CurrentRespawnTime >= m_MaxRespawnTime)
+		{
+			if (m_PengoComp != nullptr)
+			{
+				m_PengoComp->SetPengoIsKilled(false);
+			}
+		}
+	}
+
 	return std::make_unique<DyingState>();
 }
 
@@ -87,7 +119,14 @@ std::unique_ptr<PengoState> MoveState::HandleInput(dae::GameObject* gameObject, 
 
 void Idle::Enter(dae::GameObject* gameObject)
 {
-	gameObject->GetComponent<Animation>()->ToggleAnimation(false);
+	Animation* animationComp = gameObject->GetComponent<Animation>();
+	if (animationComp != nullptr)
+	{
+		animationComp->ToggleAnimation(false);
+
+		SDL_Rect currentStartingRect = { 16 * 0, 0, 16, 16 };
+		animationComp->SetStartSourceRect(currentStartingRect);
+	}
 }
 
 std::unique_ptr<PengoState> Idle::HandleInput(dae::GameObject* gameObject, Controlls control)

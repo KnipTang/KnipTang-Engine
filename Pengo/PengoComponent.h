@@ -1,12 +1,13 @@
 #pragma once
 #include <memory>
 #include "Component.h"
+#include "HealthComponent.h"
 #include "PengoState.h"
 
 class PengoComponent : public dae::Component
 {
 public:
-	void Update(float /*deltaTime*/) override;
+	void Update(float deltaTime) override;
 	void LateUpdate(float /*deltaTime*/) override {}
 	void FixedUpdate(float /*fixedTimeStep*/) override {}
 	void Render() const override {}
@@ -21,10 +22,14 @@ public:
 	void SetCurrentDirection(glm::vec3 direction) { m_CurrentDirection = direction; }
 	glm::vec3 GetCurrentDirection() { return m_CurrentDirection; }
 
-	void SetPengoIsKilled() 
+	void SetPengoIsKilled(bool value) 
 	{ 
-		m_IsDead = true; 
-		SetState(std::make_unique<DyingState>(GetOwner()));
+		m_IsDead = value;
+
+		if(m_IsDead)
+			SetState(std::make_unique<DyingState>(GetOwner()));
+		else
+			SetState(std::make_unique<Idle>(GetOwner()));
 	}
 	bool IsPengoKilled() { return m_IsDead; }
 

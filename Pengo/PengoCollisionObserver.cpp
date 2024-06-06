@@ -24,7 +24,7 @@ void PengoCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 
 			if (m_pOwner->HasComponent<PengoComponent>())
 			{
-				m_pOwner->GetComponent<PengoComponent>()->SetPengoIsKilled();
+				m_pOwner->GetComponent<PengoComponent>()->SetPengoIsKilled(true);
 			}
 		}
 		else if (layer == "Wall")

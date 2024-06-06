@@ -24,10 +24,11 @@ public:
 
 	virtual void Enter(dae::GameObject* gameObject) = 0;
 	virtual std::unique_ptr<PengoState> HandleInput(dae::GameObject* gameObject, Controlls control) = 0;
-	virtual std::unique_ptr<PengoState> Update() = 0;
+	virtual std::unique_ptr<PengoState> Update(float deltaTime) = 0;
 private: 
 };
 
+class PengoComponent;
 class DyingState : public PengoState
 {
 public:
@@ -38,7 +39,14 @@ public:
 	void Enter(dae::GameObject* gameObject) override;
 
 	std::unique_ptr<PengoState> HandleInput(dae::GameObject* /*gameObject*/, Controlls /*control*/) override;
-	std::unique_ptr<PengoState> Update() override;
+	std::unique_ptr<PengoState> Update(float deltaTime) override;
+
+private:
+	float m_MaxRespawnTime = 3;
+	float m_CurrentRespawnTime;
+	bool m_Respawning = false;
+
+	PengoComponent* m_PengoComp;
 };
 
 class PushingState : public PengoState
@@ -53,7 +61,7 @@ public:
 	{
 		return nullptr;
 	}
-	std::unique_ptr<PengoState> Update() override
+	std::unique_ptr<PengoState> Update(float) override
 	{ 
 		return nullptr;
 	}
@@ -72,7 +80,7 @@ public:
 	void Enter(dae::GameObject* gameObject, Controlls control);
 
 	std::unique_ptr<PengoState> HandleInput(dae::GameObject* gameObject, Controlls control) override;
-	std::unique_ptr<PengoState> Update() override
+	std::unique_ptr<PengoState> Update(float) override
 	{
 		return std::make_unique<MoveState>();
 	}
@@ -89,7 +97,7 @@ public:
 
 	std::unique_ptr<PengoState> HandleInput(dae::GameObject*, Controlls control) override;
 
-	std::unique_ptr<PengoState> Update() override
+	std::unique_ptr<PengoState> Update(float) override
 	{
 		return std::make_unique<PushingState>();
 	}

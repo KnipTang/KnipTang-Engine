@@ -71,7 +71,7 @@ void load()
 	//FPS
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
 	auto FPS = std::make_unique<dae::GameObject>();
-	FPS.get()->SetGameObjectPosition(0, 16);
+	FPS.get()->SetGameObjectPosition(100, 16);
 	FPS.get()->AddComponent(new dae::TextObject(FPS.get(), "0FPS", std::move(font)));
 	FPS.get()->AddComponent(new dae::FpsComponent(FPS.get(), FPS.get()->GetComponent<dae::TextObject>()));
 
@@ -106,7 +106,7 @@ void load()
 	P2.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 16*0, 16, 16);
 	P2.get()->SetGameObjectPosition(16 * 20, 16 * 15);
 	P2.get()->AddComponent(new dae::CollisionComponent(P2.get(), 16, 16));
-	P2.get()->AddComponent(new dae::HealthComponent(P2.get()));
+	P2.get()->AddComponent(new HealthComponent(P2.get()));
 	P2.get()->AddComponent(new dae::ScoreComponent(P2.get()));
 	P2.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P2.get()));
 	P2.get()->SetLayer("Player");

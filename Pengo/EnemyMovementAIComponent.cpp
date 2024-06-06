@@ -1,6 +1,10 @@
 #include "EnemyMovementAIComponent.h"
+
+#include <algorithm>
+
 #include "EnemyState.h"
 #include "EnemyComponent.h"
+#include "PengoComponent.h"
 
 void EnemyMovementAIComponent::FixedUpdate(float deltaTime)
 {
@@ -33,6 +37,7 @@ void EnemyMovementAIComponent::FixedUpdate(float deltaTime)
 		}
 
 		objPos += m_Direction * m_Speed * deltaTime;
+		ClampMovement(objPos);
 		GetOwner()->SetGameObjectPosition(objPos.x, objPos.y);
 	}
 }
@@ -57,6 +62,8 @@ void EnemyMovementAIComponent::UpdateDirection()
 	else {
 		m_Direction.y = (dy > 0) ? 1.0f : -1.0f;
 	}
+
+	InvertDirectionIfPlayerKilled(closestPlayer);
 
 	if (m_Direction != m_LastDirection)
 	{
@@ -105,6 +112,22 @@ dae::GameObject* EnemyMovementAIComponent::GetClosestPlayer()
 float EnemyMovementAIComponent::CalculateDistanceSquared(const glm::vec3& pos1, const glm::vec3& pos2) {
 	glm::vec3 diff = pos1 - pos2;
 	return glm::dot(diff, diff);
+}
+
+void EnemyMovementAIComponent::InvertDirectionIfPlayerKilled(dae::GameObject* player)
+{
+	PengoComponent* pengoComp = player->GetComponent<PengoComponent>();
+	if (pengoComp != nullptr)
+	{
+		if (pengoComp->IsPengoKilled())
+			m_Direction *= -1;
+	}
+}
+
+void EnemyMovementAIComponent::ClampMovement(glm::vec3& pos)
+{
+	pos.x = std::clamp(pos.x, 8.0f, 200.0f);
+	pos.y = std::clamp(pos.y, 40.0f, 264.0f);
 }
 
 void EnemyMovementAIComponent::RoundOffPosition()

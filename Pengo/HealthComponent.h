@@ -1,44 +1,50 @@
 #pragma once
 #include "Component.h"
+#include "StateDisplay.h"
 #include "Subject.h"
 #include "TextObject.h"
-namespace dae
+
+class HealthComponent : public dae::Component
 {
-	class HealthComponent : public Component, public Subject
+public:
+	int GetCurrentLives() { return m_CurrentLives; }
+	void SetCurrentLives(int lives) { m_CurrentLives = lives; }
+
+	int AddLives(int lives = 1) { m_CurrentLives += lives; return m_CurrentLives; }
+	int DamageLives(int lives = 1);
+
+	void Die();
+
+	void AddObserver(StateDisplay* observer) {
+		m_observers.push_back(std::unique_ptr<StateDisplay>(observer));
+	}
+	void RemoveObserver(StateDisplay* observer) {
+		auto it = std::find_if(m_observers.begin(), m_observers.end(),
+			[&observer](const std::unique_ptr<StateDisplay>& ptr) { return ptr.get() == observer; });
+
+		if (it != m_observers.end()) {
+			m_observers.erase(it);
+		}
+	}
+
+	void NotifyObservers(PengoEvents event) {
+		for (const auto& observer : m_observers)
+			observer->Notify(event, this);
+	}
+
+	HealthComponent(dae::GameObject* gameObject, int startLives = 1) : Component(gameObject), m_StartLives(startLives)
 	{
-	public:
-		void Update(float /*deltaTime*/) override {
-		}
-		void LateUpdate(float /*deltaTime*/) override {
-		}
-		void FixedUpdate(float /*fixedTimeStep*/) override {}
-		void Render() const override {}
+		m_CurrentLives = m_StartLives;
+	}
+	virtual ~HealthComponent() = default;
+	HealthComponent(const HealthComponent& other) = delete;
+	HealthComponent(HealthComponent&& other) = delete;
+	HealthComponent& operator=(const HealthComponent& other) = delete;
+	HealthComponent& operator=(HealthComponent&& other) = delete;
 
-		double GetHealth() { return m_CurrentHealth; }
-		void SetHealth(double health) { m_CurrentHealth = health; }
+private:
+	int m_CurrentLives;
+	int m_StartLives;
 
-		void AddHealth(double health) { m_CurrentHealth += health; }
-		void DecreaseHealth(double health);
-
-		int GetLives() { return m_CurrentLives; }
-		void SetLives(int lives) { m_CurrentLives = lives; }
-
-		void AddLives(int lives) { m_CurrentLives += lives; }
-		void DamageLives(int lives);
-
-		void Die();
-
-		HealthComponent(GameObject* gameObject) : Component(gameObject), Subject(gameObject) { }
-		virtual ~HealthComponent() { }
-		HealthComponent(const HealthComponent& other) = delete;
-		HealthComponent(HealthComponent&& other) = delete;
-		HealthComponent& operator=(const HealthComponent& other) = delete;
-		HealthComponent& operator=(HealthComponent&& other) = delete;
-
-	private:
-		double m_CurrentHealth = 5;
-
-		int m_CurrentLives = 3;
-		int m_StartLives = 3;
-	};
-}
+	std::vector<std::unique_ptr<StateDisplay>> m_observers;
+};

@@ -198,6 +198,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AttackComponent.cpp" />
+    <ClCompile Include="DisplayLivesComponent.cpp" />
     <ClCompile Include="EnemyCollisionObserver.cpp" />
     <ClCompile Include="EnemyComponent.cpp" />
     <ClCompile Include="EnemyMovementAIComponent.cpp" />
@@ -227,6 +228,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AttackComponent.h" />
+    <ClInclude Include="DisplayLivesComponent.h" />
     <ClInclude Include="EnemyCollisionObserver.h" />
     <ClInclude Include="EnemyComponent.h" />
     <ClInclude Include="EnemyMovementAIComponent.h" />

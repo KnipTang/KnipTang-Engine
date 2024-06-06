@@ -3,25 +3,30 @@
 #include "HealthComponent.h"
 #include "ResourceManager.h"
 #include "ScoreComponent.h"
-void dae::StateDisplay::Notify(GameEvent event, Subject* actor)
+
+void StateDisplay::Notify(PengoEvents event, dae::Component* actor)
 {
-	if (event == GameEvent::PlayerDied)
+	if (event == PengoEvents::PlayerHit)
+	{
+		std::cout << "PlayerHit";
+	}
+	if (event == PengoEvents::PlayerDied)
 	{
 		// Update the display or take appropriate action
-		std::string text = m_StateName + ": " + std::to_string(actor->GetGameObject()->GetComponent<dae::HealthComponent>()->GetLives());
+		std::string text = m_StateName + ": " + std::to_string(actor->GetOwner()->GetComponent<HealthComponent>()->GetCurrentLives());
 		m_TextObject->SetText(text);
 	}
-	if (event == GameEvent::PointsChanged)
+	if (event == PengoEvents::PointsChanged)
 	{
 		// Update the display or take appropriate action
-		std::string text = m_StateName + ": " + std::to_string(actor->GetGameObject()->GetComponent<ScoreComponent>()->GetPoints());
+		std::string text = m_StateName + ": " + std::to_string(actor->GetOwner()->GetComponent<dae::ScoreComponent>()->GetPoints());
 		m_TextObject->SetText(text);
 	}
 }
 
-dae::StateDisplay::StateDisplay(GameObject* gameObject, std::string state, double startValue) 
+StateDisplay::StateDisplay(dae::GameObject* gameObject, std::string state, double startValue) 
 	: Component(gameObject), m_StateName(state)
 {
-	m_TextObject = new TextObject(GetOwner(), std::string(m_StateName + ": " + std::to_string(static_cast<int>(startValue))), ResourceManager::GetInstance().LoadFont("Lingua.otf", 15));
+	m_TextObject = new dae::TextObject(GetOwner(), std::string(m_StateName + ": " + std::to_string(static_cast<int>(startValue))), dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15));
 	GetOwner()->AddComponent(m_TextObject);
 }

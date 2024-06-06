@@ -1,10 +1,10 @@
 #include "PengoComponent.h"
 
 
-void PengoComponent::Update(float)
+void PengoComponent::Update(float deltaTime)
 {
     if (m_State != nullptr)
-        m_State->Update();
+        m_State->Update(deltaTime);
 }
 
 void PengoComponent::HandleInput(Controlls control)
