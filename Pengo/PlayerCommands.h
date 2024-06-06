@@ -94,9 +94,9 @@ namespace dae
 		void Execute(float /*deltaTime*/) override
 		{
 			dae::SceneManager::GetInstance().UnloadScene("StartScreen");
-			dae::Scene& currentScene = dae::SceneManager::GetInstance().LoadScene("Demo");
+			dae::Scene* currentScene = dae::SceneManager::GetInstance().LoadScene("Demo");
 
-			std::vector<dae::GameObject*> enemyWalls = currentScene.GetGameObjectsWithTag("EnemyWall");
+			std::vector<dae::GameObject*> enemyWalls = currentScene->GetGameObjectsWithTag("EnemyWall");
 			
 			if (m_EnemiesSpawnAtStart > enemyWalls.size())
 				m_EnemiesSpawnAtStart = enemyWalls.size();

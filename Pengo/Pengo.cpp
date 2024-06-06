@@ -39,7 +39,7 @@
 
 void load()
 {
-	auto& startScene = dae::SceneManager::GetInstance().CreateScene("StartScreen");
+	auto startScene = dae::SceneManager::GetInstance().CreateScene("StartScreen");
 	
 	auto backGroundStartScreen = std::make_unique<dae::GameObject>();
 	backGroundStartScreen.get()->AddComponent(new dae::RenderComponent(backGroundStartScreen.get()));
@@ -47,10 +47,10 @@ void load()
 	
 	dae::InputManager::GetInstance().BindCommand(SDLK_p, dae::InputActionType::IsUp, std::make_unique<dae::StartGame>(backGroundStartScreen.get()));
 
-	startScene.Add(std::move(backGroundStartScreen));
+	startScene->Add(std::move(backGroundStartScreen));
 	dae::SceneManager::GetInstance().LoadScene("StartScreen");
 
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	auto scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 	//Background image
 	auto backGround = std::make_unique<dae::GameObject>();
 	backGround.get()->AddComponent(new dae::RenderComponent(backGround.get()));
@@ -209,19 +209,19 @@ void load()
 	//scene.Add(std::move(P2_Explain));
 	//scene.Add(std::move(Sound_Explain));
 
-	scene.Add(std::move(GameBackground));
+	scene->Add(std::move(GameBackground));
 	//scene.Add(std::move(P2));
 	for(auto& object : level)
 	{
-		scene.Add(std::move(object));
+		scene->Add(std::move(object));
 	}
 	for (auto& bord : borders)
 	{
-		scene.Add(std::move(bord));
+		scene->Add(std::move(bord));
 	}
-	scene.Add(std::move(FPS));
-	scene.Add(std::move(menuBottom));
-	scene.Add(std::move(menuTop));
+	scene->Add(std::move(FPS));
+	scene->Add(std::move(menuBottom));
+	scene->Add(std::move(menuTop));
 
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_A), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
