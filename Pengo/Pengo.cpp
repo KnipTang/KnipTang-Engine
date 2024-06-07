@@ -44,7 +44,9 @@ void load()
 	auto backGroundStartScreen = std::make_unique<dae::GameObject>();
 	backGroundStartScreen.get()->AddComponent(new dae::RenderComponent(backGroundStartScreen.get()));
 	backGroundStartScreen.get()->GetComponent<dae::RenderComponent>()->SetTexture("background.tga");
-	
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
+	backGroundStartScreen.get()->AddComponent(new dae::TextObject(backGroundStartScreen.get(), "STARTSCREEN", std::move(font)));
+
 	dae::InputManager::GetInstance().BindCommand(SDLK_p, dae::InputActionType::IsUp, std::make_unique<dae::StartGame>(backGroundStartScreen.get()));
 
 	startScene->Add(std::move(backGroundStartScreen));
@@ -61,13 +63,13 @@ void load()
 	DAElogo.get()->AddComponent(new dae::RenderComponent(DAElogo.get()));
 	DAElogo.get()->GetComponent<dae::RenderComponent>()->SetTexture("logo.tga");
 	DAElogo.get()->SetGameObjectPosition(216, 180);
-
+	
 	//Text
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto text = std::make_unique<dae::GameObject>();
 	text.get()->SetGameObjectPosition(80, 20);
 	text.get()->AddComponent(new dae::TextObject(text.get(), "Programming 4 Assignment", std::move(font)));
-
+	
 	//FPS
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
 	auto FPS = std::make_unique<dae::GameObject>();
@@ -80,10 +82,15 @@ void load()
 	menuBottom.get()->SetGameObjectPosition(Config::BORDER_SIZE, Config::MENUTOP_SIZE + 256.f);
 	menuBottom.get()->AddComponent(new dae::TextObject(menuBottom.get(), "ACT 1", std::move(font)));
 	
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
-	auto menuTop = std::make_unique<dae::GameObject>();
-	menuTop.get()->SetGameObjectPosition(Config::BORDER_SIZE, 0);
-	menuTop.get()->AddComponent(new dae::TextObject(menuTop.get(), "1P         0 HI 20000 2P          0", std::move(font)));
+	auto menuUI = std::make_unique<dae::GameObject>();
+	menuUI.get()->SetGameObjectPosition(Config::BORDER_SIZE, 0);
+	
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
+	auto player1_UI = std::make_unique<dae::GameObject>();
+	player1_UI.get()->AddComponent(new dae::TextObject(player1_UI.get(), "1P", std::move(font)));
+	player1_UI.get()->SetGameObjectPosition(16, 0);
+
+	player1_UI.get()->SetParent(menuUI.get(), false);
 
 	//font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	//auto P1_Explain = std::make_unique<dae::GameObject>();
@@ -221,8 +228,8 @@ void load()
 	}
 	scene->Add(std::move(FPS));
 	scene->Add(std::move(menuBottom));
-	scene->Add(std::move(menuTop));
-
+	scene->Add(std::move(menuUI));
+	scene->Add(std::move(player1_UI));
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_A), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_X), dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P1.get(), P1.get()->GetComponent<dae::HealthComponent>()));

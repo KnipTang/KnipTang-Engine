@@ -7,15 +7,15 @@ void DyingState::Enter(dae::GameObject* gameObject)
 {
 	m_PengoComp = gameObject->GetComponent<PengoComponent>();
 
-	Animation* animationComp = gameObject->GetComponent<Animation>();
-	if (animationComp != nullptr)
+	m_AniComp = gameObject->GetComponent<Animation>();
+	if (m_AniComp != nullptr)
 	{
-		animationComp->ToggleAnimation(true);
+		m_AniComp->ToggleAnimation(true);
 
 		SDL_Rect dyingRect{};
 		dyingRect = { 0, 16 * 2, 16, 16 };
 
-		animationComp->SetStartSourceRect(dyingRect);
+		m_AniComp->SetStartSourceRect(dyingRect);
 	}
 
 	HealthComponent* healthComp = gameObject->GetComponent<HealthComponent>();
@@ -43,12 +43,17 @@ std::unique_ptr<PengoState> DyingState::HandleInput(dae::GameObject*, Controlls)
 
 std::unique_ptr<PengoState> DyingState::Update(float deltaTime)
 {
-	if(m_Respawning)
+	if (m_Respawning)
 	{
 		m_CurrentRespawnTime += deltaTime;
-	
-		if(m_CurrentRespawnTime >= m_MaxRespawnTime)
+
+		if (m_CurrentRespawnTime >= m_MaxRespawnTime)
 		{
+			if (m_AniComp != nullptr)
+			{
+				SDL_Rect currentStartingRect = { 16 * 0, 0, 16, 16 };
+				m_AniComp->SetStartSourceRect(currentStartingRect);
+			}
 			if (m_PengoComp != nullptr)
 			{
 				m_PengoComp->SetPengoIsKilled(false);
@@ -123,9 +128,6 @@ void Idle::Enter(dae::GameObject* gameObject)
 	if (animationComp != nullptr)
 	{
 		animationComp->ToggleAnimation(false);
-
-		SDL_Rect currentStartingRect = { 16 * 0, 0, 16, 16 };
-		animationComp->SetStartSourceRect(currentStartingRect);
 	}
 }
 

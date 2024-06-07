@@ -22,13 +22,14 @@ public:
 	PengoState() {};
 	virtual ~PengoState() {}
 
-	virtual void Enter(dae::GameObject* gameObject) = 0;
-	virtual std::unique_ptr<PengoState> HandleInput(dae::GameObject* gameObject, Controlls control) = 0;
-	virtual std::unique_ptr<PengoState> Update(float deltaTime) = 0;
+	virtual void Enter(dae::GameObject*) {};
+	virtual std::unique_ptr<PengoState> HandleInput(dae::GameObject*, Controlls) { return std::make_unique<PengoState>(); };
+	virtual std::unique_ptr<PengoState> Update(float) { return std::make_unique<PengoState>(); };
 private: 
 };
 
 class PengoComponent;
+class Animation;
 class DyingState : public PengoState
 {
 public:
@@ -44,8 +45,9 @@ public:
 private:
 	float m_MaxRespawnTime = 3;
 	float m_CurrentRespawnTime;
-	bool m_Respawning = false;
+	bool  m_Respawning;
 
+	Animation* m_AniComp;
 	PengoComponent* m_PengoComp;
 };
 
