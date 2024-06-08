@@ -9,6 +9,7 @@ namespace dae
 		SoundMuteCommand() : Command()
 		{
 			ss = &SoundServiceLocator::get_sound_system();
+			ss->Mute();
 		}
 
 		void Execute(float /*deltaTime*/) override

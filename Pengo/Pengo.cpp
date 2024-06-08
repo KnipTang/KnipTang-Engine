@@ -39,6 +39,7 @@
 #include "GameConfig.h"
 #include "LoggingSoundSystem.h"
 #include "TimerComponent.h"
+#include "HighScoreComponent.h"
 
 void load()
 {
@@ -178,9 +179,14 @@ void load()
 	score_UI.get()->SetGameObjectPosition(100, 0);
 	score_UI.get()->SetLayer("Score");
 
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
+	auto highScore_UI = std::make_unique<dae::GameObject>();
+	highScore_UI.get()->AddComponent(new dae::TextObject(highScore_UI.get(), "0", std::move(font)));
+	highScore_UI.get()->SetGameObjectPosition(150, 0);
+
 	player1_UI.get()->SetParent(menuUI.get(), false);
 	score_UI.get()->SetParent(menuUI.get(), false);
-
+	highScore_UI.get()->SetParent(menuUI.get(), false);
 
 	dae::SoundServiceLocator::register_sound_system(
 		std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SDLSoundSystem>("Resources/")));
@@ -271,12 +277,18 @@ void load()
 	gameTimer.get()->AddComponent(new TimerComponent(gameTimer.get()));
 	gameTimer.get()->SetLayer("Timer");
 
+	auto highScore = std::make_unique<dae::GameObject>();
+	highScore.get()->AddComponent(new HighScoreComponent(highScore.get(), "Resources/HighScore.txt", highScore_UI.get()->GetComponent<dae::TextObject>()));
+	highScore.get()->SetLayer("HighScore");
+
 	auto score = std::make_unique<dae::GameObject>();
-	score.get()->AddComponent(new ScoreComponent(score.get(), score_UI.get()->GetComponent<dae::TextObject>()));
+	HighScoreComponent* highScoreComp = highScore.get()->GetComponent<HighScoreComponent>();
+	score.get()->AddComponent(new ScoreComponent(score.get(), highScoreComp, score_UI.get()->GetComponent<dae::TextObject>()));
 	score.get()->SetLayer("Score");
 
 	gameStatsScene->Add(std::move(gameTimer));
 	gameStatsScene->Add(std::move(score));
+	gameStatsScene->Add(std::move(highScore));
 
 	dae::SceneManager::GetInstance().LoadScene("GameStats");
 
@@ -297,12 +309,19 @@ void load()
 	scoreUI_EndScreen.get()->SetGameObjectPosition(100, 100);
 	scoreUI_EndScreen->SetLayer("Score");
 
+	auto highScoreUI_EndScreen = std::make_unique<dae::GameObject>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
+	highScoreUI_EndScreen.get()->AddComponent(new dae::TextObject(highScoreUI_EndScreen.get(), "0", std::move(font)));
+	highScoreUI_EndScreen.get()->SetGameObjectPosition(100, 200);
+	highScoreUI_EndScreen->SetLayer("HighScore");
+
 	auto EndScreenConfig = std::make_unique<dae::GameObject>();
 	EndScreenConfig.get()->AddComponent(new EndScreenComponent(EndScreenConfig.get()));
 	EndScreenConfig->SetLayer("Config");
 
 	endScene->Add(std::move(backGroundEndScreen));
 	endScene->Add(std::move(scoreUI_EndScreen));
+	endScene->Add(std::move(highScoreUI_EndScreen));
 	endScene->Add(std::move(EndScreenConfig));
 
 
@@ -322,6 +341,7 @@ void load()
 	scene->Add(std::move(menuUI));
 	scene->Add(std::move(player1_UI));
 	scene->Add(std::move(score_UI));
+	scene->Add(std::move(highScore_UI));
 }
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");

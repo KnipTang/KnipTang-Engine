@@ -29,10 +29,6 @@ void EnemyComponent::SetHitByWallPos(glm::vec3 direction)
 
 void EnemyComponent::Dies()
 {
-	dae::Scene* statsScene = dae::SceneManager::GetInstance().GetSceneByName("GameStats");
-	dae::GameObject* score = statsScene->GetGameObjectWithLayer("Score");
-	score->GetComponent<ScoreComponent>()->AddScore(500);
-
 	dae::GameObject* enemyWalls = GetEnemySpawnBlock();
 	if (enemyWalls != nullptr)
 	{

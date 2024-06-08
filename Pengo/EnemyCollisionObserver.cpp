@@ -5,6 +5,7 @@
 #include "WallMovementComponent.h"
 #include "WallComponent.h"
 #include "EnemyMovementAIComponent.h"
+#include "ScoreComponent.h"
 
 void EnemyCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::CollisionComponent* actor)
 {
@@ -35,6 +36,10 @@ void EnemyCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 					return;
 				if (m_pOwner->GetParent() != actor->GetOwner())
 				{
+					dae::Scene* statsScene = dae::SceneManager::GetInstance().GetSceneByName("GameStats");
+					dae::GameObject* score = statsScene->GetGameObjectWithLayer("Score");
+					score->GetComponent<ScoreComponent>()->AddScore(500);
+
 					m_pOwner->GetComponent<EnemyComponent>()->Dies();
 				}
 			}

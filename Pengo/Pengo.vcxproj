@@ -205,6 +205,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClCompile Include="EnemyMovementAIComponent.cpp" />
     <ClCompile Include="EnemySpawnComponent.cpp" />
     <ClCompile Include="EnemyState.cpp" />
+    <ClCompile Include="HighScoreComponent.cpp" />
     <ClCompile Include="InFrontObserver.cpp" />
     <ClCompile Include="InFrontViewComponent.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -238,6 +239,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClInclude Include="EnemySpawnComponent.h" />
     <ClInclude Include="EnemyState.h" />
     <ClInclude Include="GameCommands.h" />
+    <ClInclude Include="HighScoreComponent.h" />
     <ClInclude Include="InFrontObserver.h" />
     <ClInclude Include="InFrontViewComponent.h" />
     <ClInclude Include="Enemy.h" />

@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "HighScoreComponent.h"
 #include "Subject.h"
 #include "TextObject.h"
 
@@ -16,9 +17,13 @@ public:
 
 	void AddScore(int score);
 
-	void SetDisplayComponent(dae::TextObject* displayComp) { m_DisplayComponent = displayComp; }
+	void SetDisplayComponent(dae::TextObject* displayComp) { m_DisplayComponent = displayComp; UpdateDisplay();}
 
-	ScoreComponent(dae::GameObject* gameObject, dae::TextObject* textObject = nullptr) : Component(gameObject), m_DisplayComponent(textObject) {}
+	ScoreComponent(dae::GameObject* gameObject, HighScoreComponent* highScoreComp = nullptr, dae::TextObject* textObject = nullptr) : Component(gameObject), m_HighScoreComp(highScoreComp), m_DisplayComponent(textObject)
+	{
+		if(highScoreComp != nullptr)
+			m_CurrentHighScore = m_HighScoreComp->GetHighScore();
+	}
 	virtual ~ScoreComponent() { }
 	ScoreComponent(const ScoreComponent& other) = delete;
 	ScoreComponent(ScoreComponent&& other) = delete;
@@ -27,8 +32,12 @@ public:
 
 private:
 	void UpdateDisplay();
+	void UpdateHighScore();
 
 	int m_CurrentScore = 0;
+	int m_CurrentHighScore;
+
 	dae::TextObject* m_DisplayComponent;
+	HighScoreComponent* m_HighScoreComp;
 };
 

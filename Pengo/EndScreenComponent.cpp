@@ -30,6 +30,14 @@ void EndScreenComponent::SetupEndScreen()
 	scoreComp->SetDisplayComponent(textScoreObject);
 
 	scoreComp->AddScore(CalculateBonusScore());
+
+
+	dae::GameObject* HighScoreObj = m_EndScene->GetGameObjectWithLayer("HighScore");
+	dae::TextObject* textHighScoreObject = HighScoreObj->GetComponent<dae::TextObject>();
+	HighScoreComponent* HighScoreComp = m_GameStatsScene->GetGameObjectWithLayer("HighScore")->GetComponent<HighScoreComponent>();
+
+	HighScoreComp->SetDisplayComponent(textHighScoreObject);
+	//HighScoreComp->SetHighScore();
 }
 
 int EndScreenComponent::CalculateBonusScore()
