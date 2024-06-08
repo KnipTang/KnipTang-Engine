@@ -1,63 +1,61 @@
 #pragma once
 #include <iostream>
 #include "Command.h"
-#include "HealthComponent.h"
-#include "ScoreComponent.h"
+#include "SceneManager.h"
+#include "Level.h"
+#include "EnemySpawnComponent.h"
 
-namespace dae
+enum class GameModes
 {
-	class StartGameCommand : public GameActorCommand
+	Single,
+	CoOp,
+	Versus
+};
+
+class StartGameCommand : public dae::Command
+{
+public:
+	StartGameCommand(GameModes mode) : Command(), m_GameMode(mode) {}
+
+	void Execute(float /*deltaTime*/) override
 	{
-	public:
-		StartGameCommand(GameObject* actor) : GameActorCommand(actor) {}
+		dae::SceneManager::GetInstance().UnloadScene("StartScreen");
+		dae::SceneManager::GetInstance().LoadScene("GameStats");
+		dae::SceneManager::GetInstance().LoadScene("GameLayout");
+		dae::Scene* currentScene = dae::SceneManager::GetInstance().LoadScene("LevelScene");
 
-		void Execute(float /*deltaTime*/) override
+		if (m_GameMode == GameModes::CoOp)
 		{
-			std::cout << "Jump";
-		}
-	};
+			Level levelCoOp{ "Resources/CoOp.txt" };
+			std::vector<std::unique_ptr<dae::GameObject>> level = levelCoOp.LoadLevel();
 
-	class JumpCommand : public GameActorCommand {
-	public:
-		JumpCommand(GameObject* actor) : GameActorCommand(actor) {}
-	
-		void Execute(float /*deltaTime*/) override
-		{
-			std::cout << "Jump";
+			for (auto& object : level)
+			{
+				currentScene->Add(std::move(object));
+			}
 		}
-	};
-	
-	class FireCommand : public GameActorCommand {
-	public:
-		FireCommand(GameObject* actor) : GameActorCommand(actor) {}
-	
-		void Execute(float /*deltaTime*/) override
+		else if (m_GameMode == GameModes::Versus)
 		{
-			std::cout << "Fire";
+			Level levelCoOp{ "Resources/Versus.txt" };
+			std::vector<std::unique_ptr<dae::GameObject>> level = levelCoOp.LoadLevel();
+
+			for (auto& object : level)
+			{
+				currentScene->Add(std::move(object));
+			}
 		}
-	};
-	
-	class Damage : public GameActorCommand {
-	public:
-		Damage(GameObject* actor, HealthComponent* healthComponent) : GameActorCommand(actor), m_HealthComponent(healthComponent) {}
-	
-		void Execute(float /*deltaTime*/) override
+
+		std::vector<dae::GameObject*> enemyWalls = currentScene->GetGameObjectsWithTag("EnemyWall");
+
+		if (m_EnemiesSpawnAtStart > enemyWalls.size())
+			m_EnemiesSpawnAtStart = enemyWalls.size();
+
+		for (size_t i = 0; i < m_EnemiesSpawnAtStart; i++)
 		{
-			m_HealthComponent->DamageLives(1);
+			enemyWalls.at(i)->GetComponent<EnemySpawnComponent>()->SpawnEnemy();
 		}
-	private:
-		HealthComponent* m_HealthComponent;
-	};
-	
-	class PointIncrease : public GameActorCommand {
-	public:
-		PointIncrease(GameObject* actor, ScoreComponent* pointsComponent) : GameActorCommand(actor), m_PointsComponent(pointsComponent) {}
-	
-		void Execute(float /*deltaTime*/) override
-		{
-			m_PointsComponent->AddScore(100);
-		}
-	private:
-		ScoreComponent* m_PointsComponent;
-	};
-}
+	}
+private:
+	size_t m_EnemiesSpawnAtStart = 3;
+	GameModes m_GameMode;
+};

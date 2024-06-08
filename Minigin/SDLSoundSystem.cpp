@@ -67,9 +67,9 @@ dae::SDLSoundSystem::Impl::~Impl()
 
 void dae::SDLSoundSystem::Impl::Update()
 {
-	m_Future.wait();
-
 	if (m_Head == m_Tail) return;
+
+	m_Future.wait();
 
 	PlayMessage localHead;
 

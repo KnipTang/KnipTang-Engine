@@ -128,7 +128,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 	std::thread soundThread([&]() {
 		while (doContinue) {
-			SoundServiceLocator::get_sound_system().Update();
+			SoundServiceLocator::get_sound_system()->Update();
 		}
 	});
 
@@ -165,6 +165,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		std::this_thread::sleep_for(sleepTime);
 	}
 
-	SoundServiceLocator::get_sound_system().Stop();
+	SoundServiceLocator::get_sound_system()->Stop();
 	soundThread.join();
 }

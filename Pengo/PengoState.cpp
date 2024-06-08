@@ -24,7 +24,8 @@ void DyingState::Enter(dae::GameObject* gameObject)
 		int currentLives = healthComp->DamageLives();
 		if(currentLives <= 0)
 		{
-			dae::SceneManager::GetInstance().UnloadScene("Demo");
+			dae::SceneManager::GetInstance().UnloadScene("GameLayout");
+			dae::SceneManager::GetInstance().UnloadScene("LevelScene");
 			dae::SceneManager::GetInstance().LoadScene("EndScene");
 		}
 		else

@@ -32,7 +32,11 @@ void PengoCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 
 			if (m_pOwner->HasComponent<PengoComponent>())
 			{
-				m_pOwner->GetComponent<PengoComponent>()->SetPengoIsKilled(true);
+				if(!m_pOwner->GetComponent<PengoComponent>()->IsPengoKilled())
+				{
+					m_pOwner->GetComponent<PengoComponent>()->SetPengoIsKilled(true);
+					actor->GetOwner()->SetGameObjectPosition(200, 264);
+				}
 			}
 		}
 		else if (layer == "Wall")

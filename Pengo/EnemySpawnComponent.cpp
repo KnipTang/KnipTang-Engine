@@ -36,10 +36,9 @@ void EnemySpawnComponent::SpawnEnemy()
 	enemy.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new EnemyCollisionObserver(enemy.get()));
 	enemy.get()->SetLayer("Enemy");
 
-	dae::SceneManager::GetInstance().GetSceneByName("Demo")->Add(std::move(enemy));
+	dae::SceneManager::GetInstance().GetSceneByName("LevelScene")->Add(std::move(enemy));
 
-	dae::SoundSystem* ss = &dae::SoundServiceLocator::get_sound_system();
-	ss->play("Snow-BeeSpawning.mp3", 10);
+	dae::SoundServiceLocator::get_sound_system()->play("Snow-BeeSpawning.mp3", 10);
 
 	//GetOwner()->GetComponent<WallComponent>()->DeleteWall();
 }

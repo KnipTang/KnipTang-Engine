@@ -41,5 +41,5 @@ void WallComponent::PlayBreakWall()
 		m_AnimationComp->SetFlipTime(0.1f);
 	}
 
-	dae::SoundServiceLocator::get_sound_system().play("IceBlockDestroyed.mp3", 10);
+	dae::SoundServiceLocator::get_sound_system()->play("IceBlockDestroyed.mp3", 10);
 }

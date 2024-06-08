@@ -37,24 +37,25 @@ void EnemyComponent::Dies()
 	}
 	else
 	{
-		dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
+		dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("LevelScene");
 		size_t amountEnemies = currentScene->GetGameObjectsWithLayer("Enemy").size();
 
 		if (amountEnemies <= 1)
 		{
-			dae::SceneManager::GetInstance().UnloadScene("Demo");
+			dae::SceneManager::GetInstance().UnloadScene("GameLayout");
+			dae::SceneManager::GetInstance().UnloadScene("LevelScene");
 			dae::SceneManager::GetInstance().LoadScene("EndScene");
 		}
 	}
 
-	dae::SoundServiceLocator::get_sound_system().play("Snow-BeeSquashed.mp3", 10);
+	dae::SoundServiceLocator::get_sound_system()->play("Snow-BeeSquashed.mp3", 10);
 
 	GetOwner()->RemoveGameObject();
 }
 
 dae::GameObject* EnemyComponent::GetEnemySpawnBlock()
 {
-	dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
+	dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("LevelScene");
 	std::vector<dae::GameObject*> enemyWalls = currentScene->GetGameObjectsWithTag("EnemyWall");
 
 	if (enemyWalls.size() >= 1)

@@ -40,6 +40,7 @@
 #include "LoggingSoundSystem.h"
 #include "TimerComponent.h"
 #include "HighScoreComponent.h"
+#include "GameCommands.h"
 
 void load()
 {
@@ -51,9 +52,9 @@ void load()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	backGroundStartScreen.get()->AddComponent(new dae::TextObject(backGroundStartScreen.get(), "STARTSCREEN", std::move(font)));
 
-	dae::InputManager::GetInstance().BindCommand(SDLK_1, dae::InputActionType::IsUp, std::make_unique<StartGame>(backGroundStartScreen.get(), GameModes::Single));
-	dae::InputManager::GetInstance().BindCommand(SDLK_2, dae::InputActionType::IsUp, std::make_unique<StartGame>(backGroundStartScreen.get(), GameModes::CoOp));
-	dae::InputManager::GetInstance().BindCommand(SDLK_3, dae::InputActionType::IsUp, std::make_unique<StartGame>(backGroundStartScreen.get(), GameModes::Versus));
+	dae::InputManager::GetInstance().BindCommand(SDLK_1, dae::InputActionType::IsUp, std::make_unique<StartGameCommand>(GameModes::Single));
+	dae::InputManager::GetInstance().BindCommand(SDLK_2, dae::InputActionType::IsUp, std::make_unique<StartGameCommand>(GameModes::CoOp));
+	dae::InputManager::GetInstance().BindCommand(SDLK_3, dae::InputActionType::IsUp, std::make_unique<StartGameCommand>(GameModes::Versus));
 
 	dae::InputManager::GetInstance().BindCommand(SDLK_m, dae::InputActionType::IsUp, std::make_unique<SoundMuteCommand>());
 
@@ -62,7 +63,7 @@ void load()
 	startScene->Add(std::move(backGroundStartScreen));
 	dae::SceneManager::GetInstance().LoadScene("StartScreen");
 
-	auto scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	auto scene = dae::SceneManager::GetInstance().CreateScene("GameLayout");
 	//Background image
 	auto backGround = std::make_unique<dae::GameObject>();
 	backGround.get()->AddComponent(new dae::RenderComponent(backGround.get()));
@@ -196,8 +197,7 @@ void load()
 
 	dae::SoundServiceLocator::register_sound_system(
 		std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SDLSoundSystem>("Resources/")));
-	dae::SoundSystem* ss = &dae::SoundServiceLocator::get_sound_system();
-	ss->play("MainBGM.mp3", 5, -1);
+	//dae::SoundServiceLocator::get_sound_system()->play("MainBGM.mp3", 5, -1);
 	/*
 	displayLives = std::make_shared<dae::GameObject>();
 	displayLives.get()->SetGameObjectPosition(0, 190);
@@ -258,6 +258,7 @@ void load()
 
 	//dae::InputManager::GetInstance().BindCommand(SDLK_F1, dae::InputActionType::IsUp, std::make_unique<SkipLevel>(nullptr, levelScene, levelLayouts));
 	
+	dae::Scene* levelScene = dae::SceneManager::GetInstance().CreateScene("LevelScene");
 	Level m_Level{ "Resources/Level1.txt" };
 	std::vector<std::unique_ptr<dae::GameObject>> level = m_Level.LoadLevel();
 
@@ -348,11 +349,11 @@ void load()
 	//scene.Add(std::move(P2));
 	for(auto& object : level)
 	{
-		scene->Add(std::move(object));
+		levelScene->Add(std::move(object));
 	}
 	for (auto& bord : borders)
 	{
-		scene->Add(std::move(bord));
+		levelScene->Add(std::move(bord));
 	}
 	scene->Add(std::move(FPS));
 	scene->Add(std::move(menuBottom));
