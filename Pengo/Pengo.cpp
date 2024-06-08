@@ -53,6 +53,9 @@ void load()
 
 	dae::InputManager::GetInstance().BindCommand(SDLK_1, dae::InputActionType::IsUp, std::make_unique<StartGame>(backGroundStartScreen.get(), GameModes::Single));
 	dae::InputManager::GetInstance().BindCommand(SDLK_2, dae::InputActionType::IsUp, std::make_unique<StartGame>(backGroundStartScreen.get(), GameModes::CoOp));
+	dae::InputManager::GetInstance().BindCommand(SDLK_3, dae::InputActionType::IsUp, std::make_unique<StartGame>(backGroundStartScreen.get(), GameModes::Versus));
+
+	dae::InputManager::GetInstance().BindCommand(SDLK_m, dae::InputActionType::IsUp, std::make_unique<SoundMuteCommand>());
 
 
 

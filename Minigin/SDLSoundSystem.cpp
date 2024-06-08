@@ -150,7 +150,7 @@ void dae::SDLSoundSystem::Impl::Mute()
 
 	m_Muted = !m_Muted;
 
-	for (int i = m_Head; i != m_Tail; i = (i + 1) % MAX_PENDING)
+	for (int i = m_Head; i != m_Tail; i = (i) % MAX_PENDING)
 	{
 		pending_[i].volume = 0;
 	}

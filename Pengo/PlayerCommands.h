@@ -88,7 +88,8 @@ private:
 enum class GameModes
 {
 	Single,
-	CoOp
+	CoOp,
+	Versus
 };
 
 class StartGame : public dae::GameActorCommand {
@@ -107,6 +108,16 @@ public:
 		if(m_GameMode == GameModes::CoOp)
 		{
 			Level levelCoOp{ "Resources/CoOp.txt" };
+			std::vector<std::unique_ptr<dae::GameObject>> level = levelCoOp.LoadLevel();
+
+			for (auto& object : level)
+			{
+				currentScene->Add(std::move(object));
+			}
+		}
+		else if (m_GameMode == GameModes::Versus)
+		{
+			Level levelCoOp{ "Resources/Versus.txt" };
 			std::vector<std::unique_ptr<dae::GameObject>> level = levelCoOp.LoadLevel();
 
 			for (auto& object : level)

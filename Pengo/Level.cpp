@@ -96,8 +96,11 @@ void Level::HandleElement(std::string element)
     case 4: // HardWall
         PlaceHardWall();
         break;
-    case 5: // Player2
+    case 5: // Player2 (CoOp)
         PlacePlayer2();
+        break;
+    case 6: // PlayableEnemy (Versus)
+        PlacePlayableEnemy();
         break;
     default:
         break;
@@ -115,7 +118,7 @@ void Level::PlacePlayer()
     player.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
     player.get()->AddComponent(new Animation(player.get(), false, 1, true));
     player.get()->SetGameObjectPosition(m_PosX, m_PosY);
-    player.get()->AddComponent(new dae::CollisionComponent(player.get(), 1.f, 1.f, 8.f, 8.f));
+    player.get()->AddComponent(new dae::CollisionComponent(player.get(), 4.f, 4.f, 6.f, 6.f));
     player.get()->AddComponent(new HealthComponent(player.get(), 4));
     player.get()->AddComponent(new MovementComponent(player.get()));
     player.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(player.get()));
@@ -147,7 +150,7 @@ void Level::PlacePlayer2()
     player.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
     player.get()->AddComponent(new Animation(player.get(), false, 1, true));
     player.get()->SetGameObjectPosition(m_PosX, m_PosY);
-    player.get()->AddComponent(new dae::CollisionComponent(player.get(), 1.f, 1.f, 8.f, 8.f));
+    player.get()->AddComponent(new dae::CollisionComponent(player.get(), 4.f, 4.f, 6.f, 6.f));
     player.get()->AddComponent(new HealthComponent(player.get(), 4));
     player.get()->AddComponent(new MovementComponent(player.get()));
     player.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(player.get()));
@@ -166,6 +169,28 @@ void Level::PlacePlayer2()
 
     m_GameObjects.emplace_back(std::move(player));
     m_GameObjects.emplace_back(std::move(InFront));
+}
+
+void Level::PlacePlayableEnemy()
+{
+    auto player = std::make_unique<dae::GameObject>();
+
+    player.get()->AddComponent(new dae::RenderComponent(player.get()));
+    player.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+    player.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 16 * 8, 16, 16);
+    player.get()->SetGameObjectPosition(m_PosX, m_PosY);
+    player.get()->AddComponent(new Animation(player.get(), true, 2, true));
+    player.get()->AddComponent(new EnemyComponent(player.get()));
+    player.get()->GetComponent<EnemyComponent>()->SetState(std::make_unique<SpawningState>(player.get()));
+    player.get()->AddComponent(new dae::CollisionComponent(player.get(), 14.f, 14.f, 1.f, 1.f));
+    player.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new EnemyCollisionObserver(player.get()));
+    player.get()->AddComponent(new MovementComponent(player.get()));
+    player.get()->SetLayer("Enemy");
+    player.get()->SetTag("PlayableEnemy");
+
+    Player2Bindings(player.get());
+
+    m_GameObjects.emplace_back(std::move(player));
 }
 
 void Level::PlaceWall()
@@ -230,7 +255,6 @@ void Level::Player1Bindings(dae::GameObject* player)
     dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
     dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
     dae::InputManager::GetInstance().BindCommand(SDLK_e, dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
-    dae::InputManager::GetInstance().BindCommand(SDLK_m, dae::InputActionType::IsUp, std::make_unique<dae::SoundMuteCommand>());
 
     dae::InputManager::GetInstance().BindCommand(DWORD(0),WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
     dae::InputManager::GetInstance().BindCommand(DWORD(0),WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));

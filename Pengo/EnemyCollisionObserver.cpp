@@ -5,6 +5,7 @@
 #include "WallMovementComponent.h"
 #include "WallComponent.h"
 #include "EnemyMovementAIComponent.h"
+#include "MovementComponent.h"
 #include "ScoreComponent.h"
 
 void EnemyCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae::CollisionComponent* actor)
@@ -15,6 +16,8 @@ void EnemyCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 
 		if (layer == "Player")
 		{
+			if (m_pOwner->GetTag() == "PlayableEnemy")
+				m_pOwner->SetGameObjectPosition(200, 264);
 		}
 		if (layer == "Enemy")
 		{
@@ -60,7 +63,11 @@ void EnemyCollisionObserver::NotifyCollision(dae::GameCollisionEvent event, dae:
 				if(actor->GetOwner()->HasComponent<WallComponent>())
 				{
 					actor->GetOwner()->GetComponent<WallComponent>()->DeleteWall();
-					actor->GetOwner()->SetParent(m_pOwner, true);
+
+					if (m_pOwner->GetTag() == "PlayableEnemy")
+						m_pOwner->GetComponent<MovementComponent>()->StunForSeconds(0.1f);
+					else
+						actor->GetOwner()->SetParent(m_pOwner, true);
 				}
 			}
 		}

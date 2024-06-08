@@ -1,4 +1,6 @@
 #pragma once
+#include <chrono>
+
 #include "Component.h"
 #include "GameObject.h"
 #include "CollisionComponent.h"
@@ -18,6 +20,8 @@ public:
 
 	void SetHitWall(bool hit) { m_HitWall = hit; StopMoving(); }
 
+	void StunForSeconds(float seconds);
+
 	MovementComponent(dae::GameObject* gameObject, float speed = 40.f) : dae::Component(gameObject), m_Speed(speed) { };
 	virtual ~MovementComponent() { }
 	MovementComponent(const MovementComponent& other) = delete;
@@ -34,6 +38,10 @@ private:
 
 	bool m_Moving = false;
 	float m_TraveledElementLength = 0;
+
+	bool m_Stunned;
+	std::chrono::time_point<std::chrono::steady_clock> m_StunStartTime;
+	float m_StunDuration;
 
 	glm::vec3 m_StartPos;
 };

@@ -22,9 +22,11 @@ private:
 	void HandleElement(std::string element);
 	void PlaceWall();
 	void PlacePlayer();
-	void PlacePlayer2();
 	void PlaceHardWall();
 	void PlaceEnemyWall();
+
+	void PlacePlayer2();
+	void PlacePlayableEnemy();
 
 	void Player1Bindings(dae::GameObject* player);
 	void Player2Bindings(dae::GameObject* player);

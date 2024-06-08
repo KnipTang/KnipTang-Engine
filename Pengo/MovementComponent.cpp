@@ -4,7 +4,15 @@
 #include <memory>
 void MovementComponent::Update(float deltaTime)
 {
-	if (m_Moving && !m_HitWall)
+	if (m_Stunned) 
+	{
+		auto now = std::chrono::steady_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - m_StunStartTime).count();
+		if (duration >= m_StunDuration) {
+			m_Stunned = false;
+		}
+	}
+	else if (m_Moving && !m_HitWall)
 	{
 		glm::vec3 objPos = GetOwner()->GetTransform()->GetWorldPosition();
 	
@@ -41,7 +49,7 @@ void MovementComponent::LateUpdate(float)
 
 void MovementComponent::Move(float , glm::vec3 direction)
 {
-	if (m_Moving)
+	if (m_Moving || m_Stunned)
 	{
 		return;
 	}
@@ -63,6 +71,13 @@ void MovementComponent::Move(float , glm::vec3 direction)
 
 	m_StartPos = GetOwner()->GetTransform()->GetWorldPosition();
 
+}
+
+void MovementComponent::StunForSeconds(float seconds)
+{
+	m_Stunned = true;
+	m_StunStartTime = std::chrono::steady_clock::now();
+	m_StunDuration = seconds;
 }
 
 void MovementComponent::StopMoving()
