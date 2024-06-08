@@ -12,6 +12,7 @@ public:
 
 	std::vector<std::unique_ptr<dae::GameObject>> LoadLevel();
 
+
 	Level(const Level& other) = delete;
 	Level(Level&& other) = delete;
 	Level& operator=(const Level& other) = delete;
@@ -19,11 +20,14 @@ public:
 private:
 	void HandleLine(std::string line);
 	void HandleElement(std::string element);
-	void PlacePlayer();
 	void PlaceWall();
-	void PlaceEnemy();
+	void PlacePlayer();
+	void PlacePlayer2();
 	void PlaceHardWall();
 	void PlaceEnemyWall();
+
+	void Player1Bindings(dae::GameObject* player);
+	void Player2Bindings(dae::GameObject* player);
 
 	int m_Element = 16;
 	int m_MapBorder = 8;

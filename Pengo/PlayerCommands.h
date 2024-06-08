@@ -85,9 +85,15 @@ private:
 	Controlls m_Control;
 };
 
+enum class GameModes
+{
+	Single,
+	CoOp
+};
+
 class StartGame : public dae::GameActorCommand {
 public:
-	StartGame(dae::GameObject* actor) : GameActorCommand(actor)
+	StartGame(dae::GameObject* actor, GameModes mode) : GameActorCommand(actor), m_GameMode(mode)
 	{
 	}
 
@@ -97,6 +103,17 @@ public:
 		dae::SceneManager::GetInstance().LoadScene("GameStats");
 		dae::Scene* currentScene = dae::SceneManager::GetInstance().LoadScene("Demo");
 		//dae::Scene* currentScene = dae::SceneManager::GetInstance().LoadScene("levelScene");
+
+		if(m_GameMode == GameModes::CoOp)
+		{
+			Level levelCoOp{ "Resources/CoOp.txt" };
+			std::vector<std::unique_ptr<dae::GameObject>> level = levelCoOp.LoadLevel();
+
+			for (auto& object : level)
+			{
+				currentScene->Add(std::move(object));
+			}
+		}
 
 		std::vector<dae::GameObject*> enemyWalls = currentScene->GetGameObjectsWithTag("EnemyWall");
 		
@@ -110,6 +127,7 @@ public:
 	}
 private:
 	size_t m_EnemiesSpawnAtStart = 3;
+	GameModes m_GameMode;
 };
 
 //class SkipLevel : public dae::GameActorCommand {

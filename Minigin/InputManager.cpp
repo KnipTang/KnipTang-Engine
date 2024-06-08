@@ -100,6 +100,8 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
+		if (e.key.keysym.sym > SDL_NUM_SCANCODES)
+			continue;
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
@@ -159,6 +161,9 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 
 	for (auto& [key, binding] : keyBindings)
 	{
+		if (key > SDL_NUM_SCANCODES)
+			continue;
+
 		auto& [inputAction, command] = binding;
 
 		if (inputAction == InputActionType::IsDown && keysPressedThisFrame[key])

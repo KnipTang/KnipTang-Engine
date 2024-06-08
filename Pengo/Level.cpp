@@ -96,6 +96,9 @@ void Level::HandleElement(std::string element)
     case 4: // HardWall
         PlaceHardWall();
         break;
+    case 5: // Player2
+        PlacePlayer2();
+        break;
     default:
         break;
     }
@@ -103,49 +106,65 @@ void Level::HandleElement(std::string element)
 
 void Level::PlacePlayer()
 {
-    auto P1 = std::make_unique<dae::GameObject>();
+    auto player = std::make_unique<dae::GameObject>();
 
-    P1.get()->AddComponent(new PengoComponent(P1.get()));
-    P1.get()->AddComponent(new AttackComponent(P1.get()));
-    P1.get()->AddComponent(new dae::RenderComponent(P1.get()));
-    P1.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
-    P1.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
-    P1.get()->AddComponent(new Animation(P1.get(), false, 1, true));
-    P1.get()->SetGameObjectPosition(m_PosX, m_PosY);
-    P1.get()->AddComponent(new dae::CollisionComponent(P1.get(), 1.f, 1.f, 8.f, 8.f));
-    P1.get()->AddComponent(new HealthComponent(P1.get(), 4));
-    StateDisplay* display = new StateDisplay(P1.get(), "hi", 2);
-    P1.get()->GetComponent<HealthComponent>()->AddObserver(display);
-    P1.get()->AddComponent(new MovementComponent(P1.get()));
-    P1.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P1.get()));
-    P1.get()->SetLayer("Player");
+    player.get()->AddComponent(new PengoComponent(player.get()));
+    player.get()->AddComponent(new AttackComponent(player.get()));
+    player.get()->AddComponent(new dae::RenderComponent(player.get()));
+    player.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+    player.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
+    player.get()->AddComponent(new Animation(player.get(), false, 1, true));
+    player.get()->SetGameObjectPosition(m_PosX, m_PosY);
+    player.get()->AddComponent(new dae::CollisionComponent(player.get(), 1.f, 1.f, 8.f, 8.f));
+    player.get()->AddComponent(new HealthComponent(player.get(), 4));
+    player.get()->AddComponent(new MovementComponent(player.get()));
+    player.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(player.get()));
+    player.get()->SetLayer("Player");
+    player.get()->SetTag("Player1");
 
     auto InFront = std::make_unique<dae::GameObject>();
-    //InFront.get()->AddComponent(new dae::RenderComponent(InFront.get()));
     InFront.get()->SetGameObjectPosition(0, 16.f);
-    //InFront.get()->GetComponent<dae::RenderComponent>()->SetTexture("Red.png");
-    //InFront.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 5, 5);
     InFront.get()->AddComponent(new dae::CollisionComponent(InFront.get(), 1.f, 1.f));
     InFront.get()->AddComponent(new InFrontViewComponent(InFront.get()));
     InFront.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new InFrontObserver(InFront.get()));
 
-    InFront.get()->SetParent(P1.get(), false);
+    InFront.get()->SetParent(player.get(), false);
 
-    dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsPressed, std::make_unique<Movement>(P1.get(), Controlls::UP));
-    dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<Movement>(P1.get(), Controlls::DOWN));
-    dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<Movement>(P1.get(), Controlls::LEFT));
-    dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<Movement>(P1.get(), Controlls::RIGHT));
-    dae::InputManager::GetInstance().BindCommand(SDLK_e, dae::InputActionType::IsPressed, std::make_unique<Attack>(P1.get(), Controlls::ATTACK));
-    dae::InputManager::GetInstance().BindCommand(SDLK_p, dae::InputActionType::IsUp, std::make_unique<StartGame>(P1.get()));
-    dae::InputManager::GetInstance().BindCommand(SDLK_m, dae::InputActionType::IsUp, std::make_unique<dae::SoundMuteCommand>());
+    Player1Bindings(player.get());
 
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(P1.get(), Controlls::UP));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(P1.get(), Controlls::DOWN));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<Movement>(P1.get(), Controlls::LEFT));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<Movement>(P1.get(), Controlls::RIGHT));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<Attack>(P1.get(), Controlls::ATTACK));
+    m_GameObjects.emplace_back(std::move(player));    
+    m_GameObjects.emplace_back(std::move(InFront));
+}
 
-    m_GameObjects.emplace_back(std::move(P1));    
+void Level::PlacePlayer2()
+{
+    auto player = std::make_unique<dae::GameObject>();
+
+    player.get()->AddComponent(new PengoComponent(player.get()));
+    player.get()->AddComponent(new AttackComponent(player.get()));
+    player.get()->AddComponent(new dae::RenderComponent(player.get()));
+    player.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
+    player.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(16 * 0, 16 * 0, 16, 16);
+    player.get()->AddComponent(new Animation(player.get(), false, 1, true));
+    player.get()->SetGameObjectPosition(m_PosX, m_PosY);
+    player.get()->AddComponent(new dae::CollisionComponent(player.get(), 1.f, 1.f, 8.f, 8.f));
+    player.get()->AddComponent(new HealthComponent(player.get(), 4));
+    player.get()->AddComponent(new MovementComponent(player.get()));
+    player.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(player.get()));
+    player.get()->SetLayer("Player");
+    player.get()->SetTag("Player2");
+
+    auto InFront = std::make_unique<dae::GameObject>();
+    InFront.get()->SetGameObjectPosition(0, 16.f);
+    InFront.get()->AddComponent(new dae::CollisionComponent(InFront.get(), 1.f, 1.f));
+    InFront.get()->AddComponent(new InFrontViewComponent(InFront.get()));
+    InFront.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new InFrontObserver(InFront.get()));
+
+    InFront.get()->SetParent(player.get(), false);
+
+    Player2Bindings(player.get());
+
+    m_GameObjects.emplace_back(std::move(player));
     m_GameObjects.emplace_back(std::move(InFront));
 }
 
@@ -166,40 +185,6 @@ void Level::PlaceWall()
     wall.get()->SetTag("NormalWall");
 
     m_GameObjects.emplace_back(std::move(wall));
-}
-
-void Level::PlaceEnemy()
-{
-    //auto wall = std::make_unique<dae::GameObject>();
-    //
-    //wall.get()->AddComponent(new WallComponent(wall.get()));
-    //wall.get()->AddComponent(new dae::RenderComponent(wall.get()));
-    //wall.get()->GetComponent<dae::RenderComponent>()->SetTexture("LevelsSheet.png");
-    //wall.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(708, 48, 16, 16);
-    //wall.get()->SetGameObjectPosition(m_PosX, m_PosY);
-    //wall.get()->AddComponent(new Animation(wall.get(), false, 9));
-    //wall.get()->GetComponent<WallComponent>()->DeleteWall();
-    //wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
-    //wall.get()->AddComponent(new WallMovementComponent(wall.get()));
-    //wall.get()->SetTag("Wall");
-
-    //auto enemy = std::make_unique<dae::GameObject>();
-    //
-    //enemy.get()->AddComponent(new EnemyComponent(enemy.get()));
-    //enemy.get()->AddComponent(new dae::RenderComponent(enemy.get()));
-    //enemy.get()->GetComponent<dae::RenderComponent>()->SetTexture("CharactersSheet.png");
-    //enemy.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 16 * 8, 16, 16);
-    //enemy.get()->SetGameObjectPosition(static_cast<float>(m_PosX), static_cast<float>(m_PosY));
-    //enemy.get()->AddComponent(new Animation(enemy.get(), true, 5, false));
-   //// enemy.get()->AddComponent(new EnemySpawnComponent(enemy.get()));
-    //enemy.get()->AddComponent(new dae::CollisionComponent(enemy.get(), 16.f, 16.f));
-    //enemy.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new EnemyCollisionObserver(enemy.get()));
-    //enemy.get()->SetLayer("Enemy");
-    
-   // wall.get()->SetParent(enemy.get(), true);
-
-    //m_GameObjects.emplace_back(std::move(enemy));
-    //m_GameObjects.emplace_back(std::move(wall));
 }
 
 void Level::PlaceEnemyWall()
@@ -236,4 +221,35 @@ void Level::PlaceHardWall()
     wall.get()->SetTag("HardWall");
 
     m_GameObjects.emplace_back(std::move(wall));
+}
+
+void Level::Player1Bindings(dae::GameObject* player)
+{
+    dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
+    dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
+    dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
+    dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
+    dae::InputManager::GetInstance().BindCommand(SDLK_e, dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
+    dae::InputManager::GetInstance().BindCommand(SDLK_m, dae::InputActionType::IsUp, std::make_unique<dae::SoundMuteCommand>());
+
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
+}
+
+void Level::Player2Bindings(dae::GameObject* player)
+{
+    dae::InputManager::GetInstance().BindCommand(SDLK_i, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
+    dae::InputManager::GetInstance().BindCommand(SDLK_k, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
+    dae::InputManager::GetInstance().BindCommand(SDLK_j, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
+    dae::InputManager::GetInstance().BindCommand(SDLK_l, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
+    dae::InputManager::GetInstance().BindCommand(SDLK_o, dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
+
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
+    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
 }

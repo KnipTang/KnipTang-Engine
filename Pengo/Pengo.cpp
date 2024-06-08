@@ -51,7 +51,10 @@ void load()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	backGroundStartScreen.get()->AddComponent(new dae::TextObject(backGroundStartScreen.get(), "STARTSCREEN", std::move(font)));
 
-	dae::InputManager::GetInstance().BindCommand(SDLK_p, dae::InputActionType::IsUp, std::make_unique<StartGame>(backGroundStartScreen.get()));
+	dae::InputManager::GetInstance().BindCommand(SDLK_1, dae::InputActionType::IsUp, std::make_unique<StartGame>(backGroundStartScreen.get(), GameModes::Single));
+	dae::InputManager::GetInstance().BindCommand(SDLK_2, dae::InputActionType::IsUp, std::make_unique<StartGame>(backGroundStartScreen.get(), GameModes::CoOp));
+
+
 
 	startScene->Add(std::move(backGroundStartScreen));
 	dae::SceneManager::GetInstance().LoadScene("StartScreen");
