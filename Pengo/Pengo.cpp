@@ -290,8 +290,6 @@ void load()
 	gameStatsScene->Add(std::move(score));
 	gameStatsScene->Add(std::move(highScore));
 
-	dae::SceneManager::GetInstance().LoadScene("GameStats");
-
 
 
 
@@ -302,6 +300,7 @@ void load()
 	backGroundEndScreen.get()->GetComponent<dae::RenderComponent>()->SetTexture("background.tga");
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	backGroundEndScreen.get()->AddComponent(new dae::TextObject(backGroundEndScreen.get(), "ENDSCREEN", std::move(font)));
+	endScene->Add(std::move(backGroundEndScreen));
 
 	auto scoreUI_EndScreen = std::make_unique<dae::GameObject>();
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
@@ -312,17 +311,30 @@ void load()
 	auto highScoreUI_EndScreen = std::make_unique<dae::GameObject>();
 	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	highScoreUI_EndScreen.get()->AddComponent(new dae::TextObject(highScoreUI_EndScreen.get(), "0", std::move(font)));
-	highScoreUI_EndScreen.get()->SetGameObjectPosition(100, 200);
 	highScoreUI_EndScreen->SetLayer("HighScore");
+
+	for (int i = 0; i < 5; i++)
+	{
+		font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
+		auto highScoreUI_Text = std::make_unique<dae::GameObject>();
+		highScoreUI_Text.get()->AddComponent(new dae::TextObject(highScoreUI_Text.get(), "0", std::move(font)));
+		highScoreUI_Text.get()->SetGameObjectPosition(100, 150.f + (i * 20.f));
+		highScoreUI_Text.get()->SetParent(highScoreUI_EndScreen.get(), false);
+
+		endScene->Add(std::move(highScoreUI_Text));
+	}
+
+	//highScoreUI_EndScreen.get()->AddComponent(new dae::TextObject(highScoreUI_EndScreen.get(), "0", std::move(font)));
+	//highScoreUI_EndScreen.get()->SetGameObjectPosition(100, 200);
+	//highScoreUI_EndScreen->SetLayer("HighScore");
 
 	auto EndScreenConfig = std::make_unique<dae::GameObject>();
 	EndScreenConfig.get()->AddComponent(new EndScreenComponent(EndScreenConfig.get()));
 	EndScreenConfig->SetLayer("Config");
 
-	endScene->Add(std::move(backGroundEndScreen));
 	endScene->Add(std::move(scoreUI_EndScreen));
-	endScene->Add(std::move(highScoreUI_EndScreen));
 	endScene->Add(std::move(EndScreenConfig));
+	endScene->Add(std::move(highScoreUI_EndScreen));
 
 
 

@@ -5,7 +5,7 @@ class TimerComponent : public dae::Component
 public:
 	void Update(float deltaTime) override;
 
-	double GetCurrentTime() { return m_CurrentTime; }
+	double GetCurrentGameTime() { return m_CurrentTime; }
 
 	TimerComponent(dae::GameObject* gameObject) : dae::Component(gameObject) {}
 	virtual ~TimerComponent() { }

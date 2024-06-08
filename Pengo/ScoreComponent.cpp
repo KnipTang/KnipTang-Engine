@@ -25,9 +25,10 @@ void ScoreComponent::UpdateHighScore()
 	if (m_HighScoreComp == nullptr)
 		return;
 
-	if (m_CurrentScore > m_CurrentHighScore)
+	if (m_CurrentScore > m_CurrentLowestHighScore)
 	{
-		m_CurrentHighScore = m_CurrentScore;
-		m_HighScoreComp->SetHighScore(m_CurrentHighScore);
+		m_CurrentLowestHighScore = m_CurrentScore;
+		m_HighScoreComp->SetHighScore(m_CurrentLowestHighScore);
+		m_HighScoreComp->NewHighScore(m_CurrentLowestHighScore);
 	}
 }

@@ -94,6 +94,7 @@ public:
 	void Execute(float /*deltaTime*/) override
 	{
 		dae::SceneManager::GetInstance().UnloadScene("StartScreen");
+		dae::SceneManager::GetInstance().LoadScene("GameStats");
 		dae::Scene* currentScene = dae::SceneManager::GetInstance().LoadScene("Demo");
 		//dae::Scene* currentScene = dae::SceneManager::GetInstance().LoadScene("levelScene");
 

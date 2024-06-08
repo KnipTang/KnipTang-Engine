@@ -22,7 +22,7 @@ public:
 	ScoreComponent(dae::GameObject* gameObject, HighScoreComponent* highScoreComp = nullptr, dae::TextObject* textObject = nullptr) : Component(gameObject), m_HighScoreComp(highScoreComp), m_DisplayComponent(textObject)
 	{
 		if(highScoreComp != nullptr)
-			m_CurrentHighScore = m_HighScoreComp->GetHighScore();
+			m_CurrentLowestHighScore = m_HighScoreComp->GetLowestHighScore();
 	}
 	virtual ~ScoreComponent() { }
 	ScoreComponent(const ScoreComponent& other) = delete;
@@ -35,7 +35,7 @@ private:
 	void UpdateHighScore();
 
 	int m_CurrentScore = 0;
-	int m_CurrentHighScore;
+	int m_CurrentLowestHighScore;
 
 	dae::TextObject* m_DisplayComponent;
 	HighScoreComponent* m_HighScoreComp;

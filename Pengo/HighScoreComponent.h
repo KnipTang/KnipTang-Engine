@@ -15,6 +15,8 @@ public:
 	int GetHighScore() { return m_HighScore; }
 	void SetHighScore(int highScore);
 
+	int GetLowestHighScore() { return m_HighScoreList.back(); }
+
 	void SetDisplayComponent(dae::TextObject* displayComp) { m_DisplayComponent = displayComp; UpdateDisplay(); }
 	dae::TextObject* GetDisplayComponent()
 	{
@@ -23,22 +25,32 @@ public:
 		return nullptr;
 	}
 
+	void NewHighScore(int highScore);
+
+	void UpdateDisplayList();
+
 	HighScoreComponent(dae::GameObject* gameObject, const std::string filePath, dae::TextObject* textObject = nullptr);
-	virtual ~HighScoreComponent() { WriteHighScore(m_HighScore); }
+	virtual ~HighScoreComponent() { WriteHighScore(); }
 	HighScoreComponent(const HighScoreComponent& other) = delete;
 	HighScoreComponent(HighScoreComponent&& other) = delete;
 	HighScoreComponent& operator=(const HighScoreComponent& other) = delete;
 	HighScoreComponent& operator=(HighScoreComponent&& other) = delete;
 
 private:
-	int ReadHighScore();
-	void WriteHighScore(int highScore) const;
+	std::vector<int> ReadHighScore();
+	void WriteHighScore();
+
+	int GetHighestHighScore(std::vector<int> highScoreList);
 
 	void UpdateDisplay();
+
 
 	std::string m_FilePath;
 
 	int m_HighScore;
+	std::vector<int> m_HighScoreList;
+
+	bool m_NewHighScore;
 
 	dae::TextObject* m_DisplayComponent;
 };

@@ -37,13 +37,14 @@ void EndScreenComponent::SetupEndScreen()
 	HighScoreComponent* HighScoreComp = m_GameStatsScene->GetGameObjectWithLayer("HighScore")->GetComponent<HighScoreComponent>();
 
 	HighScoreComp->SetDisplayComponent(textHighScoreObject);
+	HighScoreComp->UpdateDisplayList();
 	//HighScoreComp->SetHighScore();
 }
 
 int EndScreenComponent::CalculateBonusScore()
 {
 	TimerComponent* timerComp = m_GameStatsScene->GetGameObjectWithLayer("Timer")->GetComponent<TimerComponent>();
-	int currentTime = static_cast<int>(timerComp->GetCurrentTime());
+	int currentTime = static_cast<int>(timerComp->GetCurrentGameTime());
 
 	if(currentTime <= m_MaxBonusTime)
 	{

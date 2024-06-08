@@ -1,10 +1,15 @@
 #include "HighScoreComponent.h"
 #include <fstream>
 #include <iostream>
+#include <algorithm>
+#include <sstream>
+#include "ResourceManager.h"
 
 HighScoreComponent::HighScoreComponent(dae::GameObject* gameObject, const std::string filePath, dae::TextObject* textObject) : Component(gameObject), m_FilePath(filePath), m_DisplayComponent(textObject)
 {
-	SetHighScore(ReadHighScore());
+	m_HighScoreList = ReadHighScore();
+	int highScore = GetHighestHighScore(m_HighScoreList);
+	SetHighScore(highScore);
 }
 
 void HighScoreComponent::SetHighScore(int highScore)
@@ -14,9 +19,9 @@ void HighScoreComponent::SetHighScore(int highScore)
 	UpdateDisplay();
 }
 
-int HighScoreComponent::ReadHighScore()
+std::vector<int> HighScoreComponent::ReadHighScore()
 {
-	int highScore;
+	std::vector<int> highScoreList;
 
 	std::ifstream file(m_FilePath);
 	if (!file.is_open())
@@ -25,18 +30,22 @@ int HighScoreComponent::ReadHighScore()
 		throw std::runtime_error("Failed to open high score file");
 	}
 
-	file >> highScore;
-	if (file.fail())
+	int highScore;
+	while (file >> highScore)
 	{
-		std::cerr << "Failed to read high score from file: " << m_FilePath << std::endl;
-		throw std::runtime_error("Failed to read high score from file");
+		highScoreList.emplace_back(highScore);
 	}
 
-	return highScore;
+	std::sort(highScoreList.begin(), highScoreList.end(), std::greater<int>());
+
+	return highScoreList;
 }
 
-void HighScoreComponent::WriteHighScore(int highScore) const
+void HighScoreComponent::WriteHighScore()
 {
+	if(!m_NewHighScore)
+		return;
+
 	std::ofstream file(m_FilePath);
 	if (!file.is_open())
 	{
@@ -44,7 +53,11 @@ void HighScoreComponent::WriteHighScore(int highScore) const
 		throw std::runtime_error("Failed to open high score file for writing");
 	}
 
-	file << highScore;
+	for (int score : m_HighScoreList)
+	{
+		file << score << std::endl;
+	}
+
 	if (file.fail())
 	{
 		std::cerr << "Failed to write high score to file: " << m_FilePath << std::endl;
@@ -52,8 +65,55 @@ void HighScoreComponent::WriteHighScore(int highScore) const
 	}
 }
 
+int HighScoreComponent::GetHighestHighScore(std::vector<int> highScoreList)
+{
+	if (highScoreList.empty())
+	{
+		return 0; // Or some other appropriate value or action
+	}
+	return highScoreList.front();
+}
+
 void HighScoreComponent::UpdateDisplay()
 {
 	if (m_DisplayComponent != nullptr)
 		m_DisplayComponent->SetText(std::to_string(m_HighScore));
+}
+
+void HighScoreComponent::UpdateDisplayList()
+{
+
+	dae::GameObject* displayOwner = m_DisplayComponent->GetOwner();
+	
+	if (displayOwner->GetChildCount() <= 0)
+		return;
+	
+	int childrenCount = static_cast<int>(displayOwner->GetChildCount());
+	
+	for (int i = 0; i < childrenCount; i++)
+	{
+		dae::TextObject* childDisplayComp = displayOwner->GetChildAt(i)->GetComponent<dae::TextObject>();
+	
+		if (childDisplayComp == nullptr)
+			continue;
+
+		childDisplayComp->SetText(std::to_string(m_HighScoreList.at(i)));
+	}
+		//std::ostringstream oss;
+		//for (const int score : m_HighScoreList)
+		//{
+		//	oss << score << '\n';
+		//}
+		//m_DisplayComponent->SetText(oss.str());
+	
+}
+
+void HighScoreComponent::NewHighScore(int highScore)
+{
+	m_NewHighScore = true;
+
+	m_HighScoreList.pop_back();
+	m_HighScoreList.emplace_back(highScore);
+
+	std::sort(m_HighScoreList.begin(), m_HighScoreList.end(), std::greater<int>());
 }
