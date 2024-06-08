@@ -51,8 +51,7 @@ void EnemyComponent::Dies()
 		}
 	}
 
-	dae::SoundSystem* ss = &dae::SoundServiceLocator::get_sound_system();
-	ss->play("Snow-BeeSquashed.mp3", 10);
+	dae::SoundServiceLocator::get_sound_system().play("Snow-BeeSquashed.mp3", 10);
 
 	GetOwner()->RemoveGameObject();
 }

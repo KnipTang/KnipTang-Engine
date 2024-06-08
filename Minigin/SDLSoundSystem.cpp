@@ -14,6 +14,7 @@ public:
 	
 	void Stop();
 
+	void Mute();
 
 	Impl(const Impl& other) = delete;
 	Impl(Impl&& other) = delete;
@@ -27,6 +28,8 @@ private:
 	std::promise<void> m_Promise;
 	std::future<void> m_Future;
 
+	bool m_PromiseSet;
+
 	std::string m_dataPath;
 
 	static const int MAX_PENDING = 16;
@@ -36,15 +39,20 @@ private:
 
 	int m_Head;
 	int m_Tail;
+
+	bool m_Muted;
 };
 
 dae::SDLSoundSystem::Impl::Impl(const std::string& dataPath)
 {
 	m_Future = m_Promise.get_future();
+	m_PromiseSet = false;
 
 	m_dataPath = dataPath;
 	m_Head = 0;
 	m_Tail = 0;
+
+	m_Muted = false;
 
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 	{
@@ -75,6 +83,7 @@ void dae::SDLSoundSystem::Impl::Update()
 
 		m_Promise = std::promise<void>();
 		m_Future = m_Promise.get_future();
+		m_PromiseSet = false;
 	}
 
 	Mix_Chunk* soundEffect = Mix_LoadWAV(localHead.name.c_str());
@@ -88,6 +97,9 @@ void dae::SDLSoundSystem::Impl::Update()
 
 void dae::SDLSoundSystem::Impl::play(const std::string name, const int volume, const int loops)
 {
+	if (m_Muted)
+		return;
+
 	std::lock_guard<std::mutex> lock(m_Mutex);
 
 	std::string path = m_dataPath + name;
@@ -109,7 +121,11 @@ void dae::SDLSoundSystem::Impl::play(const std::string name, const int volume, c
 	pending_[m_Tail].loops = loops;
 	m_Tail = (m_Tail + 1) % MAX_PENDING;
 
-	m_Promise.set_value();
+	if (!m_PromiseSet)
+	{
+		m_Promise.set_value();
+		m_PromiseSet = true;
+	}
 }
 
 void dae::SDLSoundSystem::Impl::StartSound(Mix_Chunk* soundEffect, const int volume, const int loops)
@@ -121,7 +137,28 @@ void dae::SDLSoundSystem::Impl::StartSound(Mix_Chunk* soundEffect, const int vol
 
 void dae::SDLSoundSystem::Impl::Stop()
 {
-	m_Promise.set_value();
+	if (!m_PromiseSet)
+	{
+		m_Promise.set_value();
+		m_PromiseSet = true;
+	}
+}
+
+void dae::SDLSoundSystem::Impl::Mute()
+{
+	std::lock_guard<std::mutex> lock(m_Mutex);
+
+	m_Muted = !m_Muted;
+
+	for (int i = m_Head; i != m_Tail; i = (i + 1) % MAX_PENDING)
+	{
+		pending_[i].volume = 0;
+	}
+
+	//for (int channel = 0; channel < MIX_CHANNELS; ++channel)
+	//{
+	//	Mix_Volume(channel, 0);
+	//}
 }
 
 dae::SDLSoundSystem::SDLSoundSystem(const std::string& dataPath)
@@ -147,4 +184,9 @@ void dae::SDLSoundSystem::play(const std::string name, const int volume, const i
 void dae::SDLSoundSystem::Stop()
 {
 	m_Pimpl.get()->Stop();
+}
+
+void dae::SDLSoundSystem::Mute()
+{
+	m_Pimpl.get()->Mute();
 }

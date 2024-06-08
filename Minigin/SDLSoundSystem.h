@@ -19,6 +19,8 @@ namespace dae
 
 		void Stop() override;
 
+		void Mute() override;
+
 		SDLSoundSystem(const SDLSoundSystem& other) = delete;
 		SDLSoundSystem(SDLSoundSystem&& other) = delete;
 		SDLSoundSystem& operator=(const SDLSoundSystem& other) = delete;

@@ -13,6 +13,7 @@ namespace dae
 		void Update() override {}
 		void play(const std::string name, const int, const int) override;
 		void Stop() override {};
+		void Mute() override {};
 
 		NullSoundSystem(const NullSoundSystem& other) = delete;
 		NullSoundSystem(NullSoundSystem&& other) = delete;

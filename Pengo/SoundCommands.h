@@ -4,16 +4,16 @@
 #include <chrono>
 namespace dae
 {
-	class SoundCommand final : public Command {
+	class SoundMuteCommand final : public Command {
 	public:
-		SoundCommand() : Command()
+		SoundMuteCommand() : Command()
 		{
 			ss = &SoundServiceLocator::get_sound_system();
 		}
 
 		void Execute(float /*deltaTime*/) override
 		{
-			ss->play("slash.mp3", 10, 1);
+			ss->Mute();
 		}
 	private:
 		SoundSystem* ss;

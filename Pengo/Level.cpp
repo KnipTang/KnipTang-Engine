@@ -22,6 +22,7 @@
 #include "WallComponent.h"
 #include "GameConfig.h"
 #include "EnemySpawnComponent.h"
+#include "SoundCommands.h"
 #include "StateDisplay.h"
 
 Level::Level(std::string filePath) : m_FilePath(filePath)
@@ -136,6 +137,7 @@ void Level::PlacePlayer()
     dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<Movement>(P1.get(), Controlls::RIGHT));
     dae::InputManager::GetInstance().BindCommand(SDLK_e, dae::InputActionType::IsPressed, std::make_unique<Attack>(P1.get(), Controlls::ATTACK));
     dae::InputManager::GetInstance().BindCommand(SDLK_p, dae::InputActionType::IsUp, std::make_unique<StartGame>(P1.get()));
+    dae::InputManager::GetInstance().BindCommand(SDLK_m, dae::InputActionType::IsUp, std::make_unique<dae::SoundMuteCommand>());
 
     dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(P1.get(), Controlls::UP));
     dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(P1.get(), Controlls::DOWN));

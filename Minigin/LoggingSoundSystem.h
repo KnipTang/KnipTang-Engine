@@ -23,6 +23,8 @@ namespace dae
 
 		void Stop() override { _real_ss->Stop(); };
 
+		void Mute() override { _real_ss->Mute(); };
+
 		LoggingSoundSystem(const LoggingSoundSystem& other) = delete;
 		LoggingSoundSystem(LoggingSoundSystem&& other) = delete;
 		LoggingSoundSystem& operator=(const LoggingSoundSystem& other) = delete;

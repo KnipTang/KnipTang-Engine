@@ -185,7 +185,7 @@ void load()
 	dae::SoundServiceLocator::register_sound_system(
 		std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SDLSoundSystem>("Resources/")));
 	dae::SoundSystem* ss = &dae::SoundServiceLocator::get_sound_system();
-	ss->play("MainBGM.mp3", 10, -1);
+	ss->play("MainBGM.mp3", 5, -1);
 	/*
 	displayLives = std::make_shared<dae::GameObject>();
 	displayLives.get()->SetGameObjectPosition(0, 190);
@@ -219,7 +219,7 @@ void load()
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(-1, 0, 0)));
 	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<dae::Movement>(P2.get(), glm::vec3(1, 0, 0)));
 
-	dae::InputManager::GetInstance().BindCommand(SDLK_j, dae::InputActionType::IsUp, std::make_unique<dae::SoundCommand>());
+	//dae::InputManager::GetInstance().BindCommand(SDLK_m, dae::InputActionType::IsUp, std::make_unique<dae::SoundMuteCommand>());
 
 	//scene.Add(std::move(backGround));
 	//scene.Add(std::move(DAElogo));
