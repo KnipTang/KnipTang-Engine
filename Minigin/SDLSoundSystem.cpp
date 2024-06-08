@@ -35,7 +35,6 @@ private:
 	static const int MAX_PENDING = 16;
 
 	PlayMessage pending_[MAX_PENDING];
-	int numPending_;
 
 	int m_Head;
 	int m_Tail;
@@ -97,9 +96,6 @@ void dae::SDLSoundSystem::Impl::Update()
 
 void dae::SDLSoundSystem::Impl::play(const std::string name, const int volume, const int loops)
 {
-	if (m_Muted)
-		return;
-
 	std::lock_guard<std::mutex> lock(m_Mutex);
 
 	std::string path = m_dataPath + name;
@@ -150,15 +146,10 @@ void dae::SDLSoundSystem::Impl::Mute()
 
 	m_Muted = !m_Muted;
 
-	for (int i = m_Head; i != m_Tail; i = (i) % MAX_PENDING)
+	for (int channel = 0; channel < MIX_CHANNELS; ++channel)
 	{
-		pending_[i].volume = 0;
+		Mix_Volume(channel, m_Muted ? 0 : MIX_MAX_VOLUME);
 	}
-
-	//for (int channel = 0; channel < MIX_CHANNELS; ++channel)
-	//{
-	//	Mix_Volume(channel, 0);
-	//}
 }
 
 dae::SDLSoundSystem::SDLSoundSystem(const std::string& dataPath)
