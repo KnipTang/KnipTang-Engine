@@ -36,8 +36,6 @@ private:
 
 	int m_Head;
 	int m_Tail;
-
-	int m_Loops;
 };
 
 dae::SDLSoundSystem::Impl::Impl(const std::string& dataPath)

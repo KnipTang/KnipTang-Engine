@@ -37,6 +37,7 @@
 #include "EndScreenComponent.h"
 #include "Level.h"
 #include "GameConfig.h"
+#include "LoggingSoundSystem.h"
 #include "TimerComponent.h"
 
 void load()
@@ -181,8 +182,10 @@ void load()
 	score_UI.get()->SetParent(menuUI.get(), false);
 
 
+	dae::SoundServiceLocator::register_sound_system(
+		std::make_unique<dae::LoggingSoundSystem>(std::make_unique<dae::SDLSoundSystem>("Resources/")));
 	dae::SoundSystem* ss = &dae::SoundServiceLocator::get_sound_system();
-	ss->play("slash.mp3", 10, 2);
+	ss->play("MainBGM.mp3", 10, -1);
 	/*
 	displayLives = std::make_shared<dae::GameObject>();
 	displayLives.get()->SetGameObjectPosition(0, 190);

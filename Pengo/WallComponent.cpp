@@ -1,6 +1,7 @@
 #include "WallComponent.h"
 #include "GameObject.h"
 #include "Animation.h"
+#include "SoundServiceLocator.h"
 
 WallComponent::WallComponent(dae::GameObject* gameObject) : dae::Component(gameObject)
 {
@@ -39,4 +40,7 @@ void WallComponent::PlayBreakWall()
 		m_AnimationComp->SetMaxFrames(8);
 		m_AnimationComp->SetFlipTime(0.1f);
 	}
+
+	dae::SoundSystem* ss = &dae::SoundServiceLocator::get_sound_system();
+	ss->play("IceBlockDestroyed.mp3", 10);
 }

@@ -7,6 +7,7 @@
 #include "EnemySpawnComponent.h"
 #include "ScoreComponent.h"
 #include "GameObject.h"
+#include "SoundServiceLocator.h"
 
 EnemyComponent::EnemyComponent(dae::GameObject* gameObject) : dae::Component(gameObject)
 {
@@ -49,6 +50,9 @@ void EnemyComponent::Dies()
 			dae::SceneManager::GetInstance().LoadScene("EndScene");
 		}
 	}
+
+	dae::SoundSystem* ss = &dae::SoundServiceLocator::get_sound_system();
+	ss->play("Snow-BeeSquashed.mp3", 10);
 
 	GetOwner()->RemoveGameObject();
 }

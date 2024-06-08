@@ -19,7 +19,7 @@ namespace dae
 
 		virtual void Update() = 0;
 
-		virtual void play(const std::string name, const int volume, const int loops) = 0;
+		virtual void play(const std::string name, const int volume, const int loops = 0) = 0;
 		virtual void Stop() = 0;
 
 		SoundSystem(const SoundSystem& other) = delete;
