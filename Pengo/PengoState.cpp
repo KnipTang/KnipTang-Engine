@@ -25,7 +25,7 @@ void DyingState::Enter(dae::GameObject* gameObject)
 		if(currentLives <= 0)
 		{
 			dae::SceneManager::GetInstance().UnloadScene("Demo");
-			dae::SceneManager::GetInstance().LoadScene("StartScreen");
+			dae::SceneManager::GetInstance().LoadScene("EndScene");
 		}
 		else
 		{

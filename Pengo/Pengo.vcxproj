@@ -199,6 +199,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AttackComponent.cpp" />
     <ClCompile Include="DisplayLivesComponent.cpp" />
+    <ClCompile Include="EndScreenComponent.cpp" />
     <ClCompile Include="EnemyCollisionObserver.cpp" />
     <ClCompile Include="EnemyComponent.cpp" />
     <ClCompile Include="EnemyMovementAIComponent.cpp" />
@@ -219,6 +220,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="SoundCommands.cpp" />
     <ClCompile Include="StateDisplay.cpp" />
+    <ClCompile Include="TimerComponent.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="WallCollisionObserver.cpp" />
     <ClCompile Include="WallComponent.cpp" />
@@ -229,6 +231,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AttackComponent.h" />
     <ClInclude Include="DisplayLivesComponent.h" />
+    <ClInclude Include="EndScreenComponent.h" />
     <ClInclude Include="EnemyCollisionObserver.h" />
     <ClInclude Include="EnemyComponent.h" />
     <ClInclude Include="EnemyMovementAIComponent.h" />
@@ -251,6 +254,7 @@ xcopy "$(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.txt" "$(Out
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="SoundCommands.h" />
     <ClInclude Include="StateDisplay.h" />
+    <ClInclude Include="TimerComponent.h" />
     <ClInclude Include="Wall.h" />
     <ClInclude Include="WallCollisionObserver.h" />
     <ClInclude Include="WallComponent.h" />

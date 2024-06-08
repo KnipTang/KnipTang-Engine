@@ -12,6 +12,10 @@ public:
 
 	std::vector<std::unique_ptr<dae::GameObject>> LoadLevel();
 
+	Level(const Level& other) = delete;
+	Level(Level&& other) = delete;
+	Level& operator=(const Level& other) = delete;
+	Level& operator=(Level&& other) = delete;
 private:
 	void HandleLine(std::string line);
 	void HandleElement(std::string element);

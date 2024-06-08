@@ -28,10 +28,9 @@ void EnemyComponent::SetHitByWallPos(glm::vec3 direction)
 
 void EnemyComponent::Dies()
 {
-	dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
-
-	dae::GameObject* scoreUI = currentScene->GetGameObjectWithLayer("Score");
-	scoreUI->GetComponent<ScoreComponent>()->AddScore(500);
+	dae::Scene* statsScene = dae::SceneManager::GetInstance().GetSceneByName("GameStats");
+	dae::GameObject* score = statsScene->GetGameObjectWithLayer("Score");
+	score->GetComponent<ScoreComponent>()->AddScore(500);
 
 	dae::GameObject* enemyWalls = GetEnemySpawnBlock();
 	if (enemyWalls != nullptr)
@@ -41,12 +40,13 @@ void EnemyComponent::Dies()
 	}
 	else
 	{
+		dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
 		size_t amountEnemies = currentScene->GetGameObjectsWithLayer("Enemy").size();
 
 		if (amountEnemies <= 1)
 		{
 			dae::SceneManager::GetInstance().UnloadScene("Demo");
-			dae::SceneManager::GetInstance().LoadScene("StartScreen");
+			dae::SceneManager::GetInstance().LoadScene("EndScene");
 		}
 	}
 

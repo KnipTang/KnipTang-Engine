@@ -16,6 +16,8 @@ public:
 
 	void AddScore(int score);
 
+	void SetDisplayComponent(dae::TextObject* displayComp) { m_DisplayComponent = displayComp; }
+
 	ScoreComponent(dae::GameObject* gameObject, dae::TextObject* textObject = nullptr) : Component(gameObject), m_DisplayComponent(textObject) {}
 	virtual ~ScoreComponent() { }
 	ScoreComponent(const ScoreComponent& other) = delete;

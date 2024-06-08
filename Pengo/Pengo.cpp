@@ -34,8 +34,10 @@
 #include "Wall.h"
 #include "Enemy.h"
 #include "Animation.h"
+#include "EndScreenComponent.h"
 #include "Level.h"
 #include "GameConfig.h"
+#include "TimerComponent.h"
 
 void load()
 {
@@ -47,7 +49,7 @@ void load()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	backGroundStartScreen.get()->AddComponent(new dae::TextObject(backGroundStartScreen.get(), "STARTSCREEN", std::move(font)));
 
-	dae::InputManager::GetInstance().BindCommand(SDLK_p, dae::InputActionType::IsUp, std::make_unique<dae::StartGame>(backGroundStartScreen.get()));
+	dae::InputManager::GetInstance().BindCommand(SDLK_p, dae::InputActionType::IsUp, std::make_unique<StartGame>(backGroundStartScreen.get()));
 
 	startScene->Add(std::move(backGroundStartScreen));
 	dae::SceneManager::GetInstance().LoadScene("StartScreen");
@@ -77,21 +79,6 @@ void load()
 	FPS.get()->AddComponent(new dae::TextObject(FPS.get(), "0FPS", std::move(font)));
 	FPS.get()->AddComponent(new dae::FpsComponent(FPS.get(), FPS.get()->GetComponent<dae::TextObject>()));
 
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 8);
-	auto menuBottom = std::make_unique<dae::GameObject>();
-	menuBottom.get()->SetGameObjectPosition(Config::BORDER_SIZE, Config::MENUTOP_SIZE + 256.f);
-	menuBottom.get()->AddComponent(new dae::TextObject(menuBottom.get(), "ACT 1", std::move(font)));
-	
-	auto menuUI = std::make_unique<dae::GameObject>();
-	menuUI.get()->SetGameObjectPosition(Config::BORDER_SIZE, 0);
-	
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
-	auto player1_UI = std::make_unique<dae::GameObject>();
-	player1_UI.get()->AddComponent(new dae::TextObject(player1_UI.get(), "1P", std::move(font)));
-	player1_UI.get()->SetGameObjectPosition(16, 0);
-
-	player1_UI.get()->SetParent(menuUI.get(), false);
-
 	//font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	//auto P1_Explain = std::make_unique<dae::GameObject>();
 	//P1_Explain.get()->SetGameObjectPosition(0, 100);
@@ -114,12 +101,9 @@ void load()
 	P2.get()->SetGameObjectPosition(16 * 20, 16 * 15);
 	P2.get()->AddComponent(new dae::CollisionComponent(P2.get(), 16, 16));
 	P2.get()->AddComponent(new HealthComponent(P2.get()));
-	P2.get()->AddComponent(new dae::ScoreComponent(P2.get()));
+	P2.get()->AddComponent(new ScoreComponent(P2.get()));
 	P2.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P2.get()));
 	P2.get()->SetLayer("Player");
-
-	Level m_Level{"Resources/Level.txt"};
-	std::vector<std::unique_ptr<dae::GameObject>> level = m_Level.LoadLevel();
 
 	//Borders
 	std::vector<std::unique_ptr<dae::GameObject>> borders;
@@ -174,6 +158,28 @@ void load()
 	GameBackground.get()->GetComponent<dae::RenderComponent>()->SetSourceRect(0, 0, 224, 256);
 	GameBackground.get()->SetGameObjectPosition(16 * 0, Config::MENUTOP_SIZE);
 
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 8);
+	auto menuBottom = std::make_unique<dae::GameObject>();
+	menuBottom.get()->SetGameObjectPosition(Config::BORDER_SIZE, Config::MENUTOP_SIZE + 256.f);
+	menuBottom.get()->AddComponent(new dae::TextObject(menuBottom.get(), "ACT 1", std::move(font)));
+	
+	auto menuUI = std::make_unique<dae::GameObject>();
+	menuUI.get()->SetGameObjectPosition(Config::BORDER_SIZE, 0);
+	
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
+	auto player1_UI = std::make_unique<dae::GameObject>();
+	player1_UI.get()->AddComponent(new dae::TextObject(player1_UI.get(), "1P", std::move(font)));
+	player1_UI.get()->SetGameObjectPosition(16, 0);
+
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 12);
+	auto score_UI = std::make_unique<dae::GameObject>();
+	score_UI.get()->AddComponent(new dae::TextObject(score_UI.get(), "0", std::move(font)));
+	score_UI.get()->SetGameObjectPosition(100, 0);
+	score_UI.get()->SetLayer("Score");
+
+	player1_UI.get()->SetParent(menuUI.get(), false);
+	score_UI.get()->SetParent(menuUI.get(), false);
+
 	/*
 	displayLives = std::make_shared<dae::GameObject>();
 	displayLives.get()->SetGameObjectPosition(0, 190);
@@ -216,6 +222,85 @@ void load()
 	//scene.Add(std::move(P2_Explain));
 	//scene.Add(std::move(Sound_Explain));
 
+	//dae::Scene* levelScene = dae::SceneManager::GetInstance().CreateScene("levelScene");
+	//
+	//Level* m_Level1 = new Level( "Resources/Level1.txt" );
+	//Level* m_Level2 = new Level("Resources/Level2.txt");
+	//
+	//std::vector<Level*> levelLayouts{ m_Level1, m_Level2 };
+	//
+	//std::vector<std::unique_ptr<dae::GameObject>> level1 = m_Level1->LoadLevel();
+	//
+	//for (auto& object : level1)
+	//{
+	//	levelScene->Add(std::move(object));
+	//}
+	//
+	//dae::SceneManager::GetInstance().LoadScene("levelScene");
+
+	//dae::InputManager::GetInstance().BindCommand(SDLK_F1, dae::InputActionType::IsUp, std::make_unique<SkipLevel>(nullptr, levelScene, levelLayouts));
+	
+	Level m_Level{ "Resources/Level1.txt" };
+	std::vector<std::unique_ptr<dae::GameObject>> level = m_Level.LoadLevel();
+
+
+
+
+
+	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_A), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_X), dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P1.get(), P1.get()->GetComponent<dae::HealthComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_z, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P2.get(), P2.get()->GetComponent<dae::ScoreComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_x, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P2.get(), P2.get()->GetComponent<dae::ScoreComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_c, dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P2.get(), P2.get()->GetComponent<dae::HealthComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_t, dae::InputActionType::IsDown, std::make_unique<dae::Damage>(go.get(), go.get()->GetComponent<dae::HealthComponent>()));
+	//dae::InputManager::GetInstance().BindCommand(SDLK_x, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(go.get(), go.get()->GetComponent<dae::ScoreComponent>()));
+
+	//if (g_SteamAchievements)
+	//	g_SteamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
+
+	auto gameStatsScene = dae::SceneManager::GetInstance().CreateScene("GameStats");
+
+	auto gameTimer = std::make_unique<dae::GameObject>();
+	gameTimer.get()->AddComponent(new TimerComponent(gameTimer.get()));
+	gameTimer.get()->SetLayer("Timer");
+
+	auto score = std::make_unique<dae::GameObject>();
+	score.get()->AddComponent(new ScoreComponent(score.get(), score_UI.get()->GetComponent<dae::TextObject>()));
+	score.get()->SetLayer("Score");
+
+	gameStatsScene->Add(std::move(gameTimer));
+	gameStatsScene->Add(std::move(score));
+
+	dae::SceneManager::GetInstance().LoadScene("GameStats");
+
+
+
+
+	auto endScene = dae::SceneManager::GetInstance().CreateScene("EndScene");
+
+	auto backGroundEndScreen = std::make_unique<dae::GameObject>();
+	backGroundEndScreen.get()->AddComponent(new dae::RenderComponent(backGroundEndScreen.get()));
+	backGroundEndScreen.get()->GetComponent<dae::RenderComponent>()->SetTexture("background.tga");
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
+	backGroundEndScreen.get()->AddComponent(new dae::TextObject(backGroundEndScreen.get(), "ENDSCREEN", std::move(font)));
+
+	auto scoreUI_EndScreen = std::make_unique<dae::GameObject>();
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
+	scoreUI_EndScreen.get()->AddComponent(new dae::TextObject(scoreUI_EndScreen.get(), "0", std::move(font)));
+	scoreUI_EndScreen.get()->SetGameObjectPosition(100, 100);
+	scoreUI_EndScreen->SetLayer("Score");
+
+	auto EndScreenConfig = std::make_unique<dae::GameObject>();
+	EndScreenConfig.get()->AddComponent(new EndScreenComponent(EndScreenConfig.get()));
+	EndScreenConfig->SetLayer("Config");
+
+	endScene->Add(std::move(backGroundEndScreen));
+	endScene->Add(std::move(scoreUI_EndScreen));
+	endScene->Add(std::move(EndScreenConfig));
+
+
+
 	scene->Add(std::move(GameBackground));
 	//scene.Add(std::move(P2));
 	for(auto& object : level)
@@ -230,17 +315,7 @@ void load()
 	scene->Add(std::move(menuBottom));
 	scene->Add(std::move(menuUI));
 	scene->Add(std::move(player1_UI));
-	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
-	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_A), dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P1.get(), P1.get()->GetComponent<dae::ScoreComponent>()));
-	//dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_X), dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P1.get(), P1.get()->GetComponent<dae::HealthComponent>()));
-	//dae::InputManager::GetInstance().BindCommand(SDLK_z, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P2.get(), P2.get()->GetComponent<dae::ScoreComponent>()));
-	//dae::InputManager::GetInstance().BindCommand(SDLK_x, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(P2.get(), P2.get()->GetComponent<dae::ScoreComponent>()));
-	//dae::InputManager::GetInstance().BindCommand(SDLK_c, dae::InputActionType::IsDown, std::make_unique<dae::Damage>(P2.get(), P2.get()->GetComponent<dae::HealthComponent>()));
-	//dae::InputManager::GetInstance().BindCommand(SDLK_t, dae::InputActionType::IsDown, std::make_unique<dae::Damage>(go.get(), go.get()->GetComponent<dae::HealthComponent>()));
-	//dae::InputManager::GetInstance().BindCommand(SDLK_x, dae::InputActionType::IsDown, std::make_unique<dae::PointIncrease>(go.get(), go.get()->GetComponent<dae::ScoreComponent>()));
-
-	//if (g_SteamAchievements)
-	//	g_SteamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
+	scene->Add(std::move(score_UI));
 }
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");

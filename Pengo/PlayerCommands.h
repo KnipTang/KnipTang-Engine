@@ -95,6 +95,7 @@ public:
 	{
 		dae::SceneManager::GetInstance().UnloadScene("StartScreen");
 		dae::Scene* currentScene = dae::SceneManager::GetInstance().LoadScene("Demo");
+		//dae::Scene* currentScene = dae::SceneManager::GetInstance().LoadScene("levelScene");
 
 		std::vector<dae::GameObject*> enemyWalls = currentScene->GetGameObjectsWithTag("EnemyWall");
 		
@@ -110,31 +111,29 @@ private:
 	size_t m_EnemiesSpawnAtStart = 3;
 };
 
-class SkipLevel : public dae::GameActorCommand {
-public:
-	SkipLevel(dae::GameObject* actor, std::vector<dae::GameObject*> level) : GameActorCommand(actor), m_Level(level)
-	{
-		m_LevelLayouts =
-		{
-			{ "Resources/Level1.txt" },
-			{ "Resources/Level2.txt" },
-		};
-	}
-
-	void Execute(float /*deltaTime*/) override
-	{
-		m_CurrentLevelIndex++;
-
-		m_Level.clear();
-		auto level = m_LevelLayouts.at(m_CurrentLevelIndex).LoadLevel();
-
-		for (auto& object : level)
-		{
-			m_Level.emplace_back(object.get());
-		}
-	}
-private:
-	int m_CurrentLevelIndex = 0;
-	std::vector<Level> m_LevelLayouts;
-	std::vector<dae::GameObject*> m_Level;
-};
+//class SkipLevel : public dae::GameActorCommand {
+//public:
+//	SkipLevel(dae::GameObject* actor, dae::Scene* scene, std::vector<Level*> levelLayouts)
+//		: GameActorCommand(actor), m_LevelLayouts(levelLayouts)
+//	{
+//		m_Scene = scene;
+//	}
+//
+//	void Execute(float /*deltaTime*/) override
+//	{
+//		//m_CurrentLevelIndex++;
+//		//
+//		//m_Scene->RemoveAll();
+//		//
+//		//auto level = m_LevelLayouts.at(m_CurrentLevelIndex).LoadLevel();
+//		//
+//		//for (auto& object : level)
+//		//{
+//		//	m_Scene->Add(std::move(object));
+//		//}
+//	}
+//private:
+//	int m_CurrentLevelIndex = 0;
+//	std::vector<Level*> m_LevelLayouts;
+//	dae::Scene* m_Scene;
+//};
