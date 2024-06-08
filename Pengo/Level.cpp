@@ -232,11 +232,11 @@ void Level::Player1Bindings(dae::GameObject* player)
     dae::InputManager::GetInstance().BindCommand(SDLK_e, dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
     dae::InputManager::GetInstance().BindCommand(SDLK_m, dae::InputActionType::IsUp, std::make_unique<dae::SoundMuteCommand>());
 
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
+    dae::InputManager::GetInstance().BindCommand(DWORD(0),WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
+    dae::InputManager::GetInstance().BindCommand(DWORD(0),WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
+    dae::InputManager::GetInstance().BindCommand(DWORD(0),WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
+    dae::InputManager::GetInstance().BindCommand(DWORD(0),WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
+    dae::InputManager::GetInstance().BindCommand(DWORD(0),WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
 }
 
 void Level::Player2Bindings(dae::GameObject* player)
@@ -247,9 +247,9 @@ void Level::Player2Bindings(dae::GameObject* player)
     dae::InputManager::GetInstance().BindCommand(SDLK_l, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
     dae::InputManager::GetInstance().BindCommand(SDLK_o, dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
 
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
-    dae::InputManager::GetInstance().BindCommand(WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
+    dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
+    dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
+    dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
+    dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
+    dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
 }

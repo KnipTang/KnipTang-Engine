@@ -25,7 +25,7 @@ namespace dae
 		~InputManager();
 
 		void BindCommand(int key, InputActionType inputAction, std::unique_ptr<Command> command);
-		void BindCommand(WORD button, InputActionType inputAction, std::unique_ptr<Command> command);
+		void BindCommand(DWORD controllerIndex, WORD button, InputActionType inputAction, std::unique_ptr<Command> command);
 
 		bool ProcessInput(float deltaTime);
 	private:
