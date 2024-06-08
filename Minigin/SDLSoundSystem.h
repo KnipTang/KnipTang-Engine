@@ -15,7 +15,7 @@ namespace dae
 
 		void Update() override;
 
-		void play(const std::string name, const int volume) override;
+		void play(const std::string name, const int volume, const int loops) override;
 
 		void Stop() override;
 

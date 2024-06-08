@@ -16,9 +16,9 @@ namespace dae
 		{
 			_real_ss->Update();
 		}
-		void play(const std::string name, const int volume) override {
-			_real_ss->play(name, volume);
-			std::cout << "playing " << name << " at volume " << volume << std::endl;
+		void play(const std::string name, const int volume, const int loops) override {
+			_real_ss->play(name, volume, loops);
+			std::cout << "playing " << name << " at volume " << volume << " loops " << loops << std::endl;
 		}
 
 		void Stop() override { _real_ss->Stop(); };

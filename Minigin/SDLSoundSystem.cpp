@@ -10,11 +10,10 @@ public:
 
 	void Update();
 	
-	void play(const std::string name, const int volume);
+	void play(const std::string name, const int volume, const int loops);
 	
 	void Stop();
 
-	void StartSound(Mix_Chunk* soundEffect, const int volume);
 
 	Impl(const Impl& other) = delete;
 	Impl(Impl&& other) = delete;
@@ -22,6 +21,8 @@ public:
 	Impl& operator=(Impl&& other) = delete;
 
 private:
+	void StartSound(Mix_Chunk* soundEffect, const int volume, const int loops);
+
 	std::mutex m_Mutex;
 	std::promise<void> m_Promise;
 	std::future<void> m_Future;
@@ -35,6 +36,8 @@ private:
 
 	int m_Head;
 	int m_Tail;
+
+	int m_Loops;
 };
 
 dae::SDLSoundSystem::Impl::Impl(const std::string& dataPath)
@@ -63,23 +66,29 @@ void dae::SDLSoundSystem::Impl::Update()
 
 	if (m_Head == m_Tail) return;
 
-	std::lock_guard<std::mutex> lock(m_Mutex);
+	PlayMessage localHead;
 
-	Mix_Chunk* soundEffect = Mix_LoadWAV(pending_[m_Head].name.c_str());
+	{
+		std::lock_guard<std::mutex> lock(m_Mutex);
+
+		localHead = pending_[m_Head];
+
+		m_Head = (m_Head + 1) % MAX_PENDING;
+
+		m_Promise = std::promise<void>();
+		m_Future = m_Promise.get_future();
+	}
+
+	Mix_Chunk* soundEffect = Mix_LoadWAV(localHead.name.c_str());
 	if (!soundEffect)
 	{
 		std::cerr << "Failed to load sound effect! SDL_mixer Error: " << Mix_GetError() << std::endl;
 		return;
 	}
-	StartSound(soundEffect, pending_[m_Head].volume);
-
-	m_Head = (m_Head + 1) % MAX_PENDING;
-
-	m_Promise = std::promise<void>();
-	m_Future = m_Promise.get_future();
+	StartSound(soundEffect, localHead.volume, localHead.loops);
 }
 
-void dae::SDLSoundSystem::Impl::play(const std::string name, const int volume)
+void dae::SDLSoundSystem::Impl::play(const std::string name, const int volume, const int loops)
 {
 	std::lock_guard<std::mutex> lock(m_Mutex);
 
@@ -90,7 +99,7 @@ void dae::SDLSoundSystem::Impl::play(const std::string name, const int volume)
 		if (pending_[i].name == path)
 		{
 			pending_[i].volume = std::max(volume, pending_[i].volume);
-
+			pending_[i].loops = loops;
 			return;
 		}
 	}
@@ -99,16 +108,17 @@ void dae::SDLSoundSystem::Impl::play(const std::string name, const int volume)
 
 	pending_[m_Tail].name = path;
 	pending_[m_Tail].volume = volume;
+	pending_[m_Tail].loops = loops;
 	m_Tail = (m_Tail + 1) % MAX_PENDING;
 
 	m_Promise.set_value();
 }
 
-void dae::SDLSoundSystem::Impl::StartSound(Mix_Chunk* soundEffect, const int volume)
+void dae::SDLSoundSystem::Impl::StartSound(Mix_Chunk* soundEffect, const int volume, const int loops)
 {
 	Mix_VolumeChunk(soundEffect, volume);
 
-	Mix_PlayChannel(-1, soundEffect, 0);
+	Mix_PlayChannel(-1, soundEffect, loops);
 }
 
 void dae::SDLSoundSystem::Impl::Stop()
@@ -131,9 +141,9 @@ void dae::SDLSoundSystem::Update()
 	m_Pimpl.get()->Update();
 }
 
-void dae::SDLSoundSystem::play(const std::string name, const int volume)
+void dae::SDLSoundSystem::play(const std::string name, const int volume, const int loops)
 {
-	m_Pimpl.get()->play(name, volume);
+	m_Pimpl.get()->play(name, volume, loops);
 }
 
 void dae::SDLSoundSystem::Stop()

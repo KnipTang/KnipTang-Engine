@@ -4,6 +4,6 @@ dae::NullSoundSystem::~NullSoundSystem()
 {
 }
 
-void dae::NullSoundSystem::play(const std::string name, const int)
+void dae::NullSoundSystem::play(const std::string name, const int, const int)
 {
 }

@@ -13,7 +13,7 @@ namespace dae
 
 		void Execute(float /*deltaTime*/) override
 		{
-			ss->play("slash.mp3", 10);
+			ss->play("slash.mp3", 10, 1);
 		}
 	private:
 		SoundSystem* ss;
