@@ -112,10 +112,9 @@ void Level::PlacePlayer()
     P1.get()->AddComponent(new Animation(P1.get(), false, 1, true));
     P1.get()->SetGameObjectPosition(m_PosX, m_PosY);
     P1.get()->AddComponent(new dae::CollisionComponent(P1.get(), 1.f, 1.f, 8.f, 8.f));
-    P1.get()->AddComponent(new HealthComponent(P1.get(), 3));
+    P1.get()->AddComponent(new HealthComponent(P1.get(), 4));
     StateDisplay* display = new StateDisplay(P1.get(), "hi", 2);
     P1.get()->GetComponent<HealthComponent>()->AddObserver(display);
-    P1.get()->AddComponent(new dae::ScoreComponent(P1.get()));
     P1.get()->AddComponent(new MovementComponent(P1.get()));
     P1.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(P1.get()));
     P1.get()->SetLayer("Player");

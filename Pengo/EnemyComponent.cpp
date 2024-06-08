@@ -5,6 +5,8 @@
 #include "Animation.h"
 #include <Scene.h>
 #include "EnemySpawnComponent.h"
+#include "ScoreComponent.h"
+#include "GameObject.h"
 
 EnemyComponent::EnemyComponent(dae::GameObject* gameObject) : dae::Component(gameObject)
 {
@@ -26,6 +28,11 @@ void EnemyComponent::SetHitByWallPos(glm::vec3 direction)
 
 void EnemyComponent::Dies()
 {
+	dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
+
+	dae::GameObject* scoreUI = currentScene->GetGameObjectWithLayer("Score");
+	scoreUI->GetComponent<ScoreComponent>()->AddScore(500);
+
 	dae::GameObject* enemyWalls = GetEnemySpawnBlock();
 	if (enemyWalls != nullptr)
 	{
@@ -34,7 +41,6 @@ void EnemyComponent::Dies()
 	}
 	else
 	{
-		dae::Scene* currentScene = dae::SceneManager::GetInstance().GetSceneByName("Demo");
 		size_t amountEnemies = currentScene->GetGameObjectsWithLayer("Enemy").size();
 
 		if (amountEnemies <= 1)

@@ -24,6 +24,9 @@ namespace dae
 		std::vector<GameObject*> GetGameObjectsWithTag(std::string tag);
 		std::vector<GameObject*> GetGameObjectsWithLayer(std::string layer);
 
+		GameObject* GetGameObjectWithTag(std::string tag);
+		GameObject* GetGameObjectWithLayer(std::string layer);
+
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;

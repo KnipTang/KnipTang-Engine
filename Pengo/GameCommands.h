@@ -55,7 +55,7 @@ namespace dae
 	
 		void Execute(float /*deltaTime*/) override
 		{
-			m_PointsComponent->AddPoints(100);
+			m_PointsComponent->AddScore(100);
 		}
 	private:
 		ScoreComponent* m_PointsComponent;

@@ -1,20 +1,19 @@
 #include "ScoreComponent.h"
 
-void dae::ScoreComponent::SetPoints(int points)
+void ScoreComponent::SetScore(int score)
 {
-	m_CurrentPoints = points;
-
-	NotifyObservers(GameEvent::PointsChanged);
+	m_CurrentScore = score;
+	UpdateDisplay();
 }
 
-void dae::ScoreComponent::AddPoints(int points)
+void ScoreComponent::AddScore(int score)
 {
-	m_CurrentPoints += points;
+	m_CurrentScore += score;
+	UpdateDisplay();
+}
 
-	NotifyObservers(GameEvent::PointsChanged);
-
-	if (m_CurrentPoints >= 500) {
-		NotifyObservers(GameEvent::Winner);
-	}
-
+void ScoreComponent::UpdateDisplay()
+{
+	if (m_DisplayComponent != nullptr)
+		m_DisplayComponent->SetText(std::to_string(m_CurrentScore));
 }

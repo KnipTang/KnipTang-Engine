@@ -19,7 +19,7 @@ void StateDisplay::Notify(PengoEvents event, dae::Component* actor)
 	if (event == PengoEvents::PointsChanged)
 	{
 		// Update the display or take appropriate action
-		std::string text = m_StateName + ": " + std::to_string(actor->GetOwner()->GetComponent<dae::ScoreComponent>()->GetPoints());
+		std::string text = m_StateName + ": " + std::to_string(actor->GetOwner()->GetComponent<ScoreComponent>()->GetScore());
 		m_TextObject->SetText(text);
 	}
 }

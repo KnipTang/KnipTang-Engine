@@ -1,30 +1,32 @@
 #pragma once
 #include "Component.h"
 #include "Subject.h"
-namespace dae
+#include "TextObject.h"
+
+class ScoreComponent : public dae::Component
 {
-    class ScoreComponent : public Component, public Subject
-    {
-	public:
-		void Update(float /*deltaTime*/) override { }
-		void LateUpdate(float /*deltaTime*/) override {}
-		void FixedUpdate(float /*fixedTimeStep*/) override {}
-		void Render() const override {}
+public:
+	void Update(float /*deltaTime*/) override { }
+	void LateUpdate(float /*deltaTime*/) override {}
+	void FixedUpdate(float /*fixedTimeStep*/) override {}
+	void Render() const override {}
 
-		int GetPoints() { return m_CurrentPoints; }
-		void SetPoints(int points);
+	int GetScore() { return m_CurrentScore; }
+	void SetScore(int score);
 
-		void AddPoints(int points);
+	void AddScore(int score);
 
-		ScoreComponent(GameObject* gameObject) : Component(gameObject), Subject(gameObject) {}
-		virtual ~ScoreComponent() { }
-		ScoreComponent(const ScoreComponent& other) = delete;
-		ScoreComponent(ScoreComponent&& other) = delete;
-		ScoreComponent& operator=(const ScoreComponent& other) = delete;
-		ScoreComponent& operator=(ScoreComponent&& other) = delete;
+	ScoreComponent(dae::GameObject* gameObject, dae::TextObject* textObject = nullptr) : Component(gameObject), m_DisplayComponent(textObject) {}
+	virtual ~ScoreComponent() { }
+	ScoreComponent(const ScoreComponent& other) = delete;
+	ScoreComponent(ScoreComponent&& other) = delete;
+	ScoreComponent& operator=(const ScoreComponent& other) = delete;
+	ScoreComponent& operator=(ScoreComponent&& other) = delete;
 
-	private:
-		int m_CurrentPoints = 0;
-    };
-}
+private:
+	void UpdateDisplay();
+
+	int m_CurrentScore = 0;
+	dae::TextObject* m_DisplayComponent;
+};
 

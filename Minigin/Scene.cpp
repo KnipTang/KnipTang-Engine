@@ -170,3 +170,45 @@ std::vector<GameObject*> dae::Scene::GetGameObjectsWithLayer(std::string layer)
 
 	return gameobjectsWithLayer;
 }
+
+GameObject* dae::Scene::GetGameObjectWithTag(std::string tag)
+{
+	for (const auto& object : m_objects)
+	{
+		if (object->GetTag() == tag)
+		{
+			return object.get();
+		}
+	}
+
+	for (const auto& object : m_pendingAdditions)
+	{
+		if (object->GetTag() == tag)
+		{
+			return object.get();
+		}
+	}
+
+	return nullptr;
+}
+
+GameObject* dae::Scene::GetGameObjectWithLayer(std::string layer)
+{
+	for (const auto& object : m_objects)
+	{
+		if (object->GetLayer() == layer)
+		{
+			return object.get();
+		}
+	}
+
+	for (const auto& object : m_pendingAdditions)
+	{
+		if (object->GetLayer() == layer)
+		{
+			return object.get();
+		}
+	}
+
+	return nullptr;
+}
