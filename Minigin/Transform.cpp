@@ -1,26 +1,17 @@
 #include "Transform.h"
-
 #include "GameObject.h"
-#include <iostream>
 
 void dae::Transform::SetWorldPosition(const float x, const float y, const float z)
 {
 	SetLocalPosition(glm::vec3{ x, y, z });
-	//m_WorldPosition.x = x;
-	//m_WorldPosition.y = y;
-	//m_WorldPosition.z = z;
 }
 void dae::Transform::SetWorldPosition(const float x, const float y)
 {
 	SetLocalPosition(glm::vec3{ x, y, 0 });
-	//m_WorldPosition.x = x;
-	//m_WorldPosition.y = y;
-	//m_WorldPosition.z = 0;
 }
 
 void dae::Transform::SetWorldPosition(glm::vec3 pos)
 {
-	//m_WorldPosition = pos;
 	SetLocalPosition(pos);
 }
 

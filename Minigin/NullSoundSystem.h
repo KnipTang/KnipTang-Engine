@@ -7,7 +7,7 @@ namespace dae
 	{
 	public:
 		NullSoundSystem() = default;
-		~NullSoundSystem() override;
+		~NullSoundSystem() override = default;
 
 		NullSoundSystem(const NullSoundSystem& other) = delete;
 		NullSoundSystem(NullSoundSystem&& other) = delete;
@@ -15,7 +15,7 @@ namespace dae
 		NullSoundSystem& operator=(NullSoundSystem&& other) = delete;
 
 		void Update() override {}
-		void play(const std::string name, const int, const int) override;
+		void play(const std::string name, const int, const int) override {}
 		void Stop() override {}
 		void Mute() override {}
 	};

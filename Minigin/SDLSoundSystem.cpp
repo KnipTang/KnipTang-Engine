@@ -11,6 +11,11 @@ public:
 	Impl(const std::string& dataPath);
 	~Impl();
 
+	Impl(const Impl& other) = delete;
+	Impl(Impl&& other) = delete;
+	Impl& operator=(const Impl& other) = delete;
+	Impl& operator=(Impl&& other) = delete;
+
 	void Update();
 	
 	void play(const std::string name, const int volume, const int loops);
@@ -18,11 +23,6 @@ public:
 	void Stop();
 
 	void Mute();
-
-	Impl(const Impl& other) = delete;
-	Impl(Impl&& other) = delete;
-	Impl& operator=(const Impl& other) = delete;
-	Impl& operator=(Impl&& other) = delete;
 
 private:
 	void StartSound(Mix_Chunk* soundEffect, const int volume, const int loops);

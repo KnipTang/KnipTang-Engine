@@ -4,6 +4,12 @@
 #include "Transform.h"
 #include "TextObject.h"
 #include "Texture2D.h"
+
+dae::RenderComponent::RenderComponent(GameObject* gameObject) :
+	Component(gameObject)
+{
+}
+
 void dae::RenderComponent::Render() const
 {
 	Renderer::GetInstance().RenderTexture(*m_texture, GetOwner()->GetGameObjectPosition().x, GetOwner()->GetGameObjectPosition().y, m_SourceRect);
@@ -20,11 +26,4 @@ void dae::RenderComponent::SetSourceRect(const int x, const int y, const int wid
 	m_SourceRect.y = y;
 	m_SourceRect.w = widthSrc;
 	m_SourceRect.h = heightSrc;
-}
-
-dae::RenderComponent::RenderComponent(GameObject* gameObject) :
-	Component(gameObject)
-{
-	//SDL_Rect src{ 0, 0, -1, -1 };
-	//m_SourceRect = src;
 }

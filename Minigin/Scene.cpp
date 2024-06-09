@@ -43,13 +43,11 @@ void Scene::LateUpdate(float deltaTime)
 		object->LateUpdate(deltaTime);
 	}
 
-	//Delete gameobjects that are marked to be deleted
 	for (auto& object : m_objects)
 	{
 		if (object == nullptr) continue;
 		if (object.get()->IsRemoveGameObjectTrue())
 		{
-			//object.get()->RemoveAllComponent();
 			m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
 		}
 	}
@@ -80,7 +78,6 @@ void Scene::Render() const
 
 void Scene::CollisionDetection()
 {
-	// Iterate over all pairs of objects that could potentially collide
 	for (size_t i = 0; i < m_objects.size(); ++i)
 	{
 		auto* collisionComponent1 = m_objects[i]->GetComponent<CollisionComponent>();
@@ -93,41 +90,17 @@ void Scene::CollisionDetection()
 			if (!collisionComponent2)
 				continue;
 
-			//ToDo
-			//add check if object 1 is close to object 2 otherwise don't test intersects
-
-			// Check for collision between the two collision components
 			if (collisionComponent1->Intersects(*collisionComponent2))
 			{
 				collisionComponent2->Intersects(*collisionComponent1);
-				//std::cout << "Collisonnnn";
-				// Handle the collision;
-				//HandleCollision(collisionComponent1, collisionComponent2);
 			}
-			//if )
-			//{
-			//	//std::cout << "Collisonnnn";
-			//	// Handle the collision;
-			//	//HandleCollision(collisionComponent1, collisionComponent2);
-			//}
 		}
 	}
 }
 
-std::vector<GameObject*> dae::Scene::GetGameObjectsWithTag(std::string tag)
+std::vector<GameObject*> Scene::GetGameObjectsWithTag(std::string tag)
 {
 	std::vector<GameObject*> gameobjectsWithTag;
-
-	//for (const auto& object : GettonTegsObject)
-	//{
-	//	if (object->GetTag() == tag)
-	//		gameobjectsWithTag.emplace_back(object.get());
-	//}
-	//
-	//if (gameobjectsWithTag.size() > 0)
-	//{
-	//	return gameobjectsWithTag;
-	//}
 
 	for (const auto& object : m_objects)
 	{
@@ -148,7 +121,7 @@ std::vector<GameObject*> dae::Scene::GetGameObjectsWithTag(std::string tag)
 	return gameobjectsWithTag;
 }
 
-std::vector<GameObject*> dae::Scene::GetGameObjectsWithLayer(std::string layer)
+std::vector<GameObject*> Scene::GetGameObjectsWithLayer(std::string layer)
 {
 	std::vector<GameObject*> gameobjectsWithLayer;
 
@@ -171,7 +144,7 @@ std::vector<GameObject*> dae::Scene::GetGameObjectsWithLayer(std::string layer)
 	return gameobjectsWithLayer;
 }
 
-GameObject* dae::Scene::GetGameObjectWithTag(std::string tag)
+GameObject* Scene::GetGameObjectWithTag(std::string tag)
 {
 	for (const auto& object : m_objects)
 	{
@@ -192,7 +165,7 @@ GameObject* dae::Scene::GetGameObjectWithTag(std::string tag)
 	return nullptr;
 }
 
-GameObject* dae::Scene::GetGameObjectWithLayer(std::string layer)
+GameObject* Scene::GetGameObjectWithLayer(std::string layer)
 {
 	for (const auto& object : m_objects)
 	{

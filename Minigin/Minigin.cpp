@@ -10,14 +10,12 @@
 
 #include <chrono>
 #include <thread>
-#include <vector>
 #include <steam_api.h>
 
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include <iostream>
 #include <memory>
 #include <Xinput.h>
 
@@ -151,17 +149,10 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 		sceneManager.Update(deltaTime);
 
-
-		//SoundServiceLocator::get_sound_system().Update();
-
-
 		sceneManager.LateUpdate(deltaTime);
 		renderer.Render();
 
-		//SteamAPI_RunCallbacks();
-		// Calculate the sleep time until the next frame
 		const auto sleepTime = currentTime + targetFrameTime - std::chrono::high_resolution_clock::now();
-		
 		std::this_thread::sleep_for(sleepTime);
 	}
 

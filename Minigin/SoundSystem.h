@@ -13,7 +13,7 @@ namespace dae
 	{
 	public:
 		SoundSystem() = default;
-		virtual ~SoundSystem();
+		virtual ~SoundSystem() = default;
 
 		SoundSystem(const SoundSystem& other) = delete;
 		SoundSystem(SoundSystem&& other) = delete;

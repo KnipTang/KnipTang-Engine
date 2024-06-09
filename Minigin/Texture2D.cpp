@@ -1,7 +1,6 @@
 #include <SDL.h>
 #include "Texture2D.h"
 
-
 dae::Texture2D::~Texture2D()
 {
 	SDL_DestroyTexture(m_texture);

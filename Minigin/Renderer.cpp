@@ -1,13 +1,10 @@
 #include <stdexcept>
 #include "Renderer.h"
-
 #include "imgui.h"
-#include "imgui_plot.h"
 #include "SceneManager.h"
 #include "Texture2D.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_sdl2.h"
-#include <iostream>
 
 int GetOpenGLDriverIndex()
 {
@@ -87,7 +84,6 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.y = static_cast<int>(y);
 
 	if (srcRect.w == -1 || srcRect.h == -1) {
-		// If widthSrc or heightSrc is -1, use the entire texture
 		SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
 		SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 	}

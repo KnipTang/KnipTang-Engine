@@ -13,7 +13,7 @@ void dae::TextObject::Update(float /*deltaTime*/)
 {
 	if (m_needsUpdate)
 	{
-		const SDL_Color color = { 255,255,255,255 }; // only white text is supported now
+		const SDL_Color color = { 255,255,255,255 };
 		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), color);
 		if (surf == nullptr) 
 		{
@@ -39,11 +39,8 @@ void dae::TextObject::Render() const
 	}
 }
 
-// This implementation uses the "dirty flag" pattern
 void dae::TextObject::SetText(const std::string& text)
 {
 	m_text = text;
 	m_needsUpdate = true;
 }
-
-
