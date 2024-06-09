@@ -14,6 +14,14 @@ namespace dae
 	class RenderComponent final: public Component
 	{
 	public:
+		RenderComponent(GameObject* gameObject);
+		~RenderComponent() override {}
+
+		RenderComponent(const RenderComponent& other) = delete;
+		RenderComponent(RenderComponent&& other) = delete;
+		RenderComponent& operator=(const RenderComponent& other) = delete;
+		RenderComponent& operator=(RenderComponent&& other) = delete;
+
 		void Update(float /*deltaTime*/) override {}
 		void LateUpdate(float /*deltaTime*/) override {};
 		void FixedUpdate(float /*fixedTimeStep*/) override {};
@@ -24,13 +32,6 @@ namespace dae
 		void SetSourceRect(SDL_Rect sourceRect) { SetSourceRect(sourceRect.x, sourceRect.y, sourceRect.w, sourceRect.h); }
 		void SetSourceRect(const int x, const int y, const int widthSrc, const int heightSrc);
 		SDL_Rect GetSourceRect() { return m_SourceRect; }
-
-		RenderComponent(GameObject* gameObject);
-		~RenderComponent() override {}
-		RenderComponent(const RenderComponent& other) = delete;
-		RenderComponent(RenderComponent&& other) = delete;
-		RenderComponent& operator=(const RenderComponent& other) = delete;
-		RenderComponent& operator=(RenderComponent&& other) = delete;
 
 	private:
 		std::unique_ptr<Texture2D> m_texture{};

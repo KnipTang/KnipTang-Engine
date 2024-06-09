@@ -22,6 +22,7 @@ namespace dae
 		//Component(/*GameObject* pParent*/) : /*m_pOwner(pParent)*/ {};
 		Component(GameObject* gameObject) : m_pOwner(gameObject) {}
 		virtual ~Component() = default;
+
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;
 		Component& operator=(const Component& other) = delete;

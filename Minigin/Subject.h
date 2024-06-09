@@ -9,6 +9,14 @@ namespace dae
 	class Subject
 	{
 	public:
+		Subject(GameObject* gameObject) : m_GameObject(gameObject) {}
+		virtual ~Subject() = default;
+
+		Subject(const Subject& other) = delete;
+		Subject(Subject&& other) = delete;
+		Subject& operator=(const Subject& other) = delete;
+		Subject& operator=(Subject&& other) = delete;
+
 		void AddObserver(Observer* observer) {
 			m_observers.push_back(std::unique_ptr<Observer>(observer));
 		}
@@ -23,19 +31,10 @@ namespace dae
 
 		GameObject* GetGameObject() { return m_GameObject; }
 
-		Subject(GameObject* gameObject) : m_GameObject(gameObject) {}
-		virtual ~Subject() {}
-		Subject(const Subject& other) = delete;
-		Subject(Subject&& other) = delete;
-		Subject& operator=(const Subject& other) = delete;
-		Subject& operator=(Subject&& other) = delete;
-
 		void NotifyObservers(GameEvent event) {
 			for (const auto& observer : m_observers)
 				observer->Notify(event, this);
 		}
-
-		//std::vector<std::unique_ptr<Observer>>& GetObservers() { return m_observers; }
 
 	private:
 		std::vector<std::unique_ptr<Observer>> m_observers;

@@ -7,6 +7,14 @@ namespace dae
 	class Transform final : public Component
 	{
 	public:
+		Transform(GameObject* gameObject) : Component(gameObject) { m_WorldPosition = { 0,0,0 }; m_LocalPosition = { 0,0,0 }; }
+		~Transform() override = default;
+
+		Transform(const Transform& other) = delete;
+		Transform(Transform&& other) = delete;
+		Transform& operator=(const Transform& other) = delete;
+		Transform& operator=(Transform&& other) = delete;
+
 		void Update(float /*deltaTime*/) override {}
 		void LateUpdate(float /*deltaTime*/) override {}
 		void FixedUpdate(float /*fixedTimeStep*/) override {}
@@ -23,7 +31,6 @@ namespace dae
 
 		void SetPositionDirty();
 
-		Transform(GameObject* gameObject) : Component(gameObject) { m_WorldPosition = { 0,0,0 }; m_LocalPosition = { 0,0,0 }; }
 	private:
 		void UpdateWorldPosition();
 

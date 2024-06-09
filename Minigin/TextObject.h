@@ -13,6 +13,14 @@ namespace dae
 	class TextObject final : public Component
 	{
 	public:
+		TextObject(GameObject* gameObject, const std::string& text, std::unique_ptr<Font> font);
+
+		virtual ~TextObject() = default;
+		TextObject(const TextObject& other) = delete;
+		TextObject(TextObject&& other) = delete;
+		TextObject& operator=(const TextObject& other) = delete;
+		TextObject& operator=(TextObject&& other) = delete;
+
 		void Update(float deltaTime) override;
 		void LateUpdate(float /*deltaTime*/) override {}
 		void FixedUpdate(float /*fixedTimeStep*/) override {}
@@ -20,12 +28,6 @@ namespace dae
 
 		void SetText(const std::string& text);
 
-		TextObject(GameObject* gameObject, const std::string& text, std::unique_ptr<Font> font);
-		virtual ~TextObject() = default;
-		TextObject(const TextObject& other) = delete;
-		TextObject(TextObject&& other) = delete;
-		TextObject& operator=(const TextObject& other) = delete;
-		TextObject& operator=(TextObject&& other) = delete;
 	private:
 		bool m_needsUpdate;
 		std::string m_text;

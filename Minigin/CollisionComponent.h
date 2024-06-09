@@ -17,33 +17,12 @@ namespace dae
         CollisionComponent(GameObject* gameObject, float width, float height, float left = 0, float top = 0)
             : Component(gameObject), m_Width(width), m_Height(height), m_Left(left), m_Top(top)
         { }
+        virtual ~CollisionComponent() = default;
 
-        void Update(float /*deltaTime*/) override {}
-        void LateUpdate(float /*deltaTime*/) override {}
-        void FixedUpdate(float /*fixedTimeStep*/) override {}
-        void Render() const override
-        {
-
-            
-            //// Get the position of the game object
-            //glm::vec2 position = GetOwner()->GetGameObjectPosition();
-            //position.x += m_Left;
-            //position.y += m_Top;
-            //// Create a rectangle representing the collider
-            //RECT rect;
-            //rect.left = static_cast<LONG>(position.x);
-            //rect.right = static_cast<LONG>(position.x + m_Width);
-            //rect.bottom = static_cast<LONG>(position.y);
-            //rect.top = static_cast<LONG>(position.y + m_Height);
-            //// Get the device context
-            //HDC hdc = GetDC(nullptr);
-            //// Draw the rectangle
-            //Rectangle(hdc, rect.left, rect.top, rect.right, rect.bottom);
-            //// Release the device context
-            //ReleaseDC(nullptr, hdc);
-            
-        }
-
+        CollisionComponent(const CollisionComponent& other) = delete;
+        CollisionComponent(CollisionComponent&& other) = delete;
+        CollisionComponent& operator=(const CollisionComponent& other) = delete;
+        CollisionComponent& operator=(CollisionComponent&& other) = delete;
 
         void SetSize(float width, float height) 
         { 
@@ -80,7 +59,6 @@ namespace dae
         float m_Left{};
         float m_Top{};
         std::vector<std::unique_ptr<CollisionObserver>> m_observers;
-        //GameObject* m_GameObject;
     };
 }
 

@@ -13,6 +13,9 @@ namespace dae
 			_ss_instance = ss == nullptr ? std::make_unique<NullSoundSystem>() : std::move(ss);
 		}
 
+		SoundServiceLocator() = default;
+		~SoundServiceLocator() = default;
+
 		SoundServiceLocator(const SoundServiceLocator& other) = delete;
 		SoundServiceLocator(SoundServiceLocator&& other) = delete;
 		SoundServiceLocator& operator=(const SoundServiceLocator& other) = delete;

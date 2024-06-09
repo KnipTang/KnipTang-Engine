@@ -22,7 +22,12 @@ namespace dae
 	{
 	public:
 		InputManager();
-		~InputManager();
+		~InputManager() override;
+
+		InputManager(const InputManager& other) = delete;
+		InputManager(InputManager&& other) = delete;
+		InputManager& operator=(const InputManager& other) = delete;
+		InputManager& operator=(InputManager&& other) = delete;
 
 		void BindCommand(SDL_Scancode key, InputActionType inputAction, std::unique_ptr<Command> command);
 		void BindCommand(DWORD controllerIndex, WORD button, InputActionType inputAction, std::unique_ptr<Command> command);
