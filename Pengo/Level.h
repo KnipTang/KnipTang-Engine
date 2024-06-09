@@ -31,6 +31,8 @@ private:
 	void Player1Bindings(dae::GameObject* player);
 	void Player2Bindings(dae::GameObject* player);
 
+	void LoadBorder();
+
 	int m_Element = 16;
 	int m_MapBorder = 8;
 

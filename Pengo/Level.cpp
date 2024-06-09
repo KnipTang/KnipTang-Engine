@@ -32,8 +32,13 @@ Level::Level(std::string filePath) : m_FilePath(filePath)
 
 std::vector<std::unique_ptr<dae::GameObject>> Level::LoadLevel()
 {
+    m_GameObjects.clear();
+
+    LoadBorder();
+
     std::ifstream inputFile(m_FilePath);
     std::string line;
+    m_CurrentRow = 0;
 
     if (inputFile.is_open()) {
         while (std::getline(inputFile, line)) 
@@ -265,15 +270,50 @@ void Level::Player1Bindings(dae::GameObject* player)
 
 void Level::Player2Bindings(dae::GameObject* player)
 {
-   // dae::InputManager::GetInstance().BindCommand(SDLK_i, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
-   // dae::InputManager::GetInstance().BindCommand(SDLK_k, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
-   // dae::InputManager::GetInstance().BindCommand(SDLK_j, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
-   // dae::InputManager::GetInstance().BindCommand(SDLK_l, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
-   // dae::InputManager::GetInstance().BindCommand(SDLK_o, dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
+    dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_UP, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
+    dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_DOWN, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
+    dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_LEFT, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
+    dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_RIGHT, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
+    dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_RSHIFT, dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
 
     dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
     dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
     dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_DPAD_LEFT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
     dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_DPAD_RIGHT), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
     dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_B), dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
+}
+
+void Level::LoadBorder()
+{
+    std::vector<std::unique_ptr<dae::GameObject>> borders;
+    {
+        auto border = std::make_unique<dae::GameObject>();
+        border.get()->SetGameObjectPosition(0, Config::MENUTOP_SIZE);
+        border.get()->AddComponent(new dae::CollisionComponent(border.get(), 224.f, 8.f));
+        border.get()->SetLayer("Wall");
+        borders.emplace_back(std::move(border));
+
+        border = std::make_unique<dae::GameObject>();
+        border.get()->SetGameObjectPosition(0, Config::MENUTOP_SIZE);
+        border.get()->AddComponent(new dae::CollisionComponent(border.get(), 8.f, 256.f));
+        border.get()->SetLayer("Wall");
+        borders.emplace_back(std::move(border));
+
+        border = std::make_unique<dae::GameObject>();
+        border.get()->SetGameObjectPosition(0, Config::MENUTOP_SIZE + 248.f);
+        border.get()->AddComponent(new dae::CollisionComponent(border.get(), 224.f, 8.f));
+        border.get()->SetLayer("Wall");
+        borders.emplace_back(std::move(border));
+
+        border = std::make_unique<dae::GameObject>();
+        border.get()->SetGameObjectPosition(216.f, Config::MENUTOP_SIZE);
+        border.get()->AddComponent(new dae::CollisionComponent(border.get(), 8.f, 256.f));
+        border.get()->SetLayer("Wall");
+        borders.emplace_back(std::move(border));
+    }
+
+    for (auto& bord : borders)
+    {
+        m_GameObjects.emplace_back(std::move(bord));
+    }
 }

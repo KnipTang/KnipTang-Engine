@@ -65,16 +65,13 @@ public:
 	NextLevel(dae::Scene* scene, std::vector<std::unique_ptr<Level>> levelLayouts)
 		: Command(), m_Scene(scene), m_LevelLayouts(std::move(levelLayouts))
 	{
-		//for (auto levelLayout : levelLayouts)
-		//{
-		//	m_LevelLayouts.emplace_back(levelLayout.get());
-		//}
+
 	}
 
 	void Execute(float /*deltaTime*/) override
 	{
-		m_CurrentLevelIndex++;
-		
+		m_CurrentLevelIndex = (m_CurrentLevelIndex + 1) % m_LevelLayouts.size();
+
 		m_Scene->RemoveAll();
 		
 		auto level = m_LevelLayouts.at(m_CurrentLevelIndex)->LoadLevel();
@@ -83,9 +80,21 @@ public:
 		{
 			m_Scene->Add(std::move(object));
 		}
+
+		std::vector<dae::GameObject*> enemyWalls = m_Scene->GetGameObjectsWithTag("EnemyWall");
+
+		if (m_EnemiesSpawnAtStart > enemyWalls.size())
+			m_EnemiesSpawnAtStart = enemyWalls.size();
+
+		for (size_t i = 0; i < m_EnemiesSpawnAtStart; i++)
+		{
+			enemyWalls.at(i)->GetComponent<EnemySpawnComponent>()->SpawnEnemy();
+		}
 	}
 private:
 	int m_CurrentLevelIndex = 0;
 	std::vector<std::unique_ptr<Level>> m_LevelLayouts;
 	dae::Scene* m_Scene;
+
+	size_t m_EnemiesSpawnAtStart = 3;
 };

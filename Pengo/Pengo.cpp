@@ -358,10 +358,10 @@ void load()
 	{
 		levelScene->Add(std::move(object));
 	}
-	for (auto& bord : borders)
-	{
-		levelScene->Add(std::move(bord));
-	}
+	//for (auto& bord : borders)
+	//{
+	//	levelScene->Add(std::move(bord));
+	//}
 	scene->Add(std::move(FPS));
 	scene->Add(std::move(menuBottom));
 	scene->Add(std::move(menuUI));
