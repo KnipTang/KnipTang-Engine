@@ -5,15 +5,20 @@
 namespace dae
 {
 	class Texture2D;
-	/**
-	 * Simple RAII wrapper for the SDL renderer
-	 */
 	class Renderer final : public Singleton<Renderer>
 	{
 		SDL_Renderer* m_renderer{};
 		SDL_Window* m_window{};
 		SDL_Color m_clearColor{};	
 	public:
+		Renderer() = default;
+		~Renderer() override = default;
+
+		Renderer(const Renderer& other) = delete;
+		Renderer(Renderer&& other) = delete;
+		Renderer& operator=(const Renderer& other) = delete;
+		Renderer& operator=(Renderer&& other) = delete;
+
 		void Init(SDL_Window* window);
 		void Render() const;
 		void Destroy();

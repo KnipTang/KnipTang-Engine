@@ -1,4 +1,7 @@
 #include "StateDisplay.h"
+#include "GameObject.h"
+#include <iostream>
+#include "Component.h"
 #include "TextObject.h"
 #include "HealthComponent.h"
 #include "ResourceManager.h"

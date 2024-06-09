@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 #include <memory>
-#include "GameObject.h"
-#include "Transform.h"
 #include "Component.h"
 #include "Texture2D.h"
 #include "Font.h"
@@ -15,15 +13,13 @@ namespace dae
 	public:
 		TextObject(GameObject* gameObject, const std::string& text, std::unique_ptr<Font> font);
 
-		virtual ~TextObject() = default;
+		~TextObject() override = default;
 		TextObject(const TextObject& other) = delete;
 		TextObject(TextObject&& other) = delete;
 		TextObject& operator=(const TextObject& other) = delete;
 		TextObject& operator=(TextObject&& other) = delete;
 
 		void Update(float deltaTime) override;
-		void LateUpdate(float /*deltaTime*/) override {}
-		void FixedUpdate(float /*fixedTimeStep*/) override {}
 		void Render() const override;
 
 		void SetText(const std::string& text);

@@ -10,6 +10,8 @@
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
 #include <InputManager.h>
+#include <Xinput.h>
+
 #include "PlayerCommands.h"
 #include "InFrontViewComponent.h"
 #include "InFrontObserver.h"

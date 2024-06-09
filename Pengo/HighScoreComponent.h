@@ -1,6 +1,7 @@
 #pragma once
 #include <Component.h>
 #include <string>
+#include <vector>
 
 #include "TextObject.h"
 

@@ -1,14 +1,11 @@
 #pragma once
-#include <cmath>
 #define NOMINMAX
-#include <windows.h>
-#include <windef.h>
 #include <glm/vec2.hpp>
 #include "CollisionObserver.h"
 #include "Component.h"
 #include "GameObject.h"
 #include <memory>
-#include <iostream>
+
 namespace dae
 {
     class CollisionComponent : public Component
@@ -17,7 +14,7 @@ namespace dae
         CollisionComponent(GameObject* gameObject, float width, float height, float left = 0, float top = 0)
             : Component(gameObject), m_Width(width), m_Height(height), m_Left(left), m_Top(top)
         { }
-        virtual ~CollisionComponent() = default;
+    	~CollisionComponent() override = default;
 
         CollisionComponent(const CollisionComponent& other) = delete;
         CollisionComponent(CollisionComponent&& other) = delete;

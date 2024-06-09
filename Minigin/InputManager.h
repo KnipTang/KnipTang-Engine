@@ -6,9 +6,6 @@
 #include "InputManager.h"
 #define NOMINMAX
 #include <Windows.h>
-#include <Xinput.h>
-#include <backends/imgui_impl_sdl2.h>
-#include <iostream>
 #include <memory>
 namespace dae
 {
@@ -41,5 +38,4 @@ namespace dae
 		bool keysPressedThisFrame[SDL_NUM_SCANCODES] = { false };
 		bool keysReleasedThisFrame[SDL_NUM_SCANCODES] = { false };
 	};
-
 }

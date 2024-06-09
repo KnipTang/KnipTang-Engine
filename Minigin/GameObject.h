@@ -10,6 +10,14 @@ namespace dae
 	class GameObject final
 	{
 	public:
+		GameObject() = default;
+		~GameObject() = default;
+
+		GameObject(const GameObject& other) = delete;
+		GameObject(GameObject&& other) = delete;
+		GameObject& operator=(const GameObject& other) = delete;
+		GameObject& operator=(GameObject&& other) = delete;
+
 		void Update(float deltaTime);
 		void LateUpdate(float deltaTime);
 		void FixedUpdate(float fixedTimeStep);
@@ -50,7 +58,6 @@ namespace dae
 
 		void RemoveGameObject();
 		bool IsRemoveGameObjectTrue() { return m_RemoveGameObject; }
-		//void RemoveParent(GameObject* parent, bool keepWorldPosition)
 
 		void SetGameObjectPosition(float posX, float posY) { return m_Transform.SetWorldPosition(posX, posY); }
 		glm::vec3 GetGameObjectPosition() { return m_Transform.GetWorldPosition(); }
@@ -63,12 +70,6 @@ namespace dae
 		void SetLayer(std::string layer) { m_Layer = layer; }
 		std::string GetLayer() { return m_Layer; }
 
-		GameObject() = default;
-		~GameObject() = default;
-		GameObject(const GameObject& other) = delete;
-		GameObject(GameObject&& other) = delete;
-		GameObject& operator=(const GameObject& other) = delete;
-		GameObject& operator=(GameObject&& other) = delete;
 	private:
 		void AddChild(GameObject* child);
 		void RemoveChild(GameObject* child);

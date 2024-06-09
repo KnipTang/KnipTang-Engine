@@ -8,6 +8,14 @@
 class dae::InputManager::ControllerPimpl
 {
 public:
+	ControllerPimpl() = default;
+	~ControllerPimpl() = default;
+
+	ControllerPimpl(const ControllerPimpl& other) = delete;
+	ControllerPimpl(ControllerPimpl&& other) = delete;
+	ControllerPimpl& operator=(const ControllerPimpl& other) = delete;
+	ControllerPimpl& operator=(ControllerPimpl&& other) = delete;
+
 	bool ProcessInput(float deltaTime)
 	{
 		for (DWORD i = 0; i < XUSER_MAX_COUNT; ++i) {
@@ -74,30 +82,6 @@ dae::InputManager::~InputManager()
 
 bool dae::InputManager::ProcessInput(float deltaTime)
 {
-
-	//const Uint8* previousKeyboardState = SDL_GetKeyboardState(NULL);
-	//const Uint8* currentKeyboardState = SDL_GetKeyboardState(NULL);
-
-	//Uint8 keyboardChanges[SDL_NUM_SCANCODES];
-	//for (int i = 0; i < SDL_NUM_SCANCODES; ++i) {
-	//	keyboardChanges[i] = currentKeyboardState[i] ^ previousKeyboardState[i];
-	//}
-	//
-	//for (int i = 0; i < SDL_NUM_SCANCODES; ++i) {
-	//	if (keyboardChanges[i] && currentKeyboardState[i]) {
-	//		keysPressedThisFrame[i] = true;
-	//		keysReleasedThisFrame[i] = false;
-	//	}
-	//	else if (keyboardChanges[i] && !currentKeyboardState[i]) {
-	//		keysPressedThisFrame[i] = false;
-	//		keysReleasedThisFrame[i] = true;
-	//	}
-	//	else {
-	//		keysPressedThisFrame[i] = false;
-	//		keysReleasedThisFrame[i] = false;
-	//	}
-	//}
-
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		if (e.key.keysym.scancode > SDL_NUM_SCANCODES)
@@ -105,7 +89,7 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
-		if (e.type == SDL_KEYDOWN /* && !e.key.repeat*/)
+		if (e.type == SDL_KEYDOWN)
 		{
 			keysPressedThisFrame[e.key.keysym.scancode] = true;
 		}
@@ -115,49 +99,7 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 			std::fill(std::begin(keysPressedThisFrame), std::end(keysPressedThisFrame), false);
 			keysReleasedThisFrame[e.key.keysym.scancode] = true;
 		}
-
-		/*
-		if (e.type == SDL_KEYDOWN)
-		{
-			int keyCode = e.key.keysym.sym;
-			auto it = keyBindings.find(keyCode);
-			if (it != keyBindings.end())
-			{
-				switch (it->second.first)
-				{
-				case InputActionType::IsDown:
-					if (!keysPressedThisFrame[it->first])
-						it->second.second->Execute(deltaTime);
-					break;
-				case InputActionType::IsUp:
-					if (keysReleasedThisFrame[it->first])
-						it->second.second->Execute(deltaTime);
-					break;
-				case InputActionType::IsPressed:
-					it->second.second->Execute(deltaTime);
-					break;
-				}
-			}
-		}
-		if (e.type == SDL_KEYUP)
-		{
-			int keyCode = e.key.keysym.sym;
-			auto it = keyBindings.find(keyCode);
-			if (it != keyBindings.end())
-			{
-				switch (it->second.first)
-				{
-				case InputActionType::IsUp:
-					if (!keysReleasedThisFrame[it->first])
-						it->second.second->Execute(deltaTime);
-					break;
-				}
-			}
-		}
-		*/
 	}
-
-	//const Uint8* state = SDL_GetKeyboardState(NULL);
 
 	for (auto& [key, binding] : keyBindings)
 	{

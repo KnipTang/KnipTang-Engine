@@ -1,11 +1,10 @@
 #pragma once
-#include <iostream>
+#include <memory>
 #include <vector>
 #include "Component.h"
 #include "Observer.h"
 namespace dae
 {
-	//SUBJECT
 	class Subject
 	{
 	public:

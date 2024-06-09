@@ -13,9 +13,16 @@ namespace dae
 		void Init(const std::string& data);
 		std::unique_ptr<Texture2D> LoadTexture(const std::string& file) const;
 		std::unique_ptr<Font> LoadFont(const std::string& file, unsigned int size) const;
+
+		ResourceManager(const ResourceManager& other) = delete;
+		ResourceManager(ResourceManager&& other) = delete;
+		ResourceManager& operator=(const ResourceManager& other) = delete;
+		ResourceManager& operator=(ResourceManager&& other) = delete;
 	private:
 		friend class Singleton<ResourceManager>;
 		ResourceManager() = default;
+		~ResourceManager() override = default;
+
 		std::string m_dataPath;
 	};
 }

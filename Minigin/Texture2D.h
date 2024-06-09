@@ -1,7 +1,5 @@
 #pragma once
 #include <glm/vec2.hpp>
-#include "Component.h"
-#include <string>
 
 class GameObject;
 class Renderer;
@@ -9,9 +7,6 @@ class Renderer;
 struct SDL_Texture;
 namespace dae
 {
-	/**
-	 * Simple RAII wrapper for an SDL_Texture
-	 */
 	class Texture2D final
 	{
 	public:

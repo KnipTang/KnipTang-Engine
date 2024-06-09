@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include "GameObject.h"
 
 namespace dae
@@ -23,7 +22,7 @@ namespace dae
 		GameObject* GetGameObject() const { return m_actor; }
 	public:
 		GameActorCommand(GameObject* actor) : m_actor{ actor } {}
-		virtual ~GameActorCommand() = default;
+		~GameActorCommand() override = default;
 
 		GameActorCommand(const GameActorCommand& other) = delete;
 		GameActorCommand(GameActorCommand&& other) = delete;

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
+#include <vector>
+#include "GameObject.h"
 #include "ResourceManager.h"
 
 HighScoreComponent::HighScoreComponent(dae::GameObject* gameObject, const std::string filePath, dae::TextObject* textObject) : Component(gameObject), m_FilePath(filePath), m_DisplayComponent(textObject)

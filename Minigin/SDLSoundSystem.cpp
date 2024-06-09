@@ -1,6 +1,9 @@
 #include "SDLSoundSystem.h"
+
+#include <cassert>
 #include <future>
 #include <mutex>
+#include <SDL_mixer.h>
 
 class dae::SDLSoundSystem::Impl final
 {

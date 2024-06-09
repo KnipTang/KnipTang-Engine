@@ -1,5 +1,5 @@
 #include "EndScreenComponent.h"
-
+#include "GameObject.h"
 #include "ScoreComponent.h"
 #include "TextObject.h"
 #include "TimerComponent.h"

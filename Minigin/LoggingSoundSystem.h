@@ -11,7 +11,7 @@ namespace dae
 		std::unique_ptr<SoundSystem> _real_ss;
 	public:
 		LoggingSoundSystem(std::unique_ptr<SoundSystem>&& ss) : _real_ss(std::move(ss)) {}
-		virtual ~LoggingSoundSystem() = default;
+		~LoggingSoundSystem() override = default;
 
 		LoggingSoundSystem(const LoggingSoundSystem& other) = delete;
 		LoggingSoundSystem(LoggingSoundSystem&& other) = delete;
@@ -30,6 +30,5 @@ namespace dae
 		void Stop() override { _real_ss->Stop(); };
 
 		void Mute() override { _real_ss->Mute(); };
-
 	};
 }

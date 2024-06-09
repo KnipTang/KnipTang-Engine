@@ -1,6 +1,4 @@
 #pragma once
-#include <memory>
-
 #include "SoundSystem.h"
 
 namespace dae
@@ -18,7 +16,7 @@ namespace dae
 
 		void Update() override {}
 		void play(const std::string name, const int, const int) override;
-		void Stop() override {};
-		void Mute() override {};
+		void Stop() override {}
+		void Mute() override {}
 	};
 }

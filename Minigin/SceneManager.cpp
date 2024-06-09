@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include <algorithm>
 #include <iostream>
-
+#include "GameObject.h"
 void dae::SceneManager::Update(float deltaTime)
 {
 	for(auto& scene : m_ActiveScenes)

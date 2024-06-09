@@ -3,8 +3,6 @@
 
 namespace dae
 {
-	//using SoundId = unsigned short;
-
 	struct PlayMessage
 	{
 		std::string name;

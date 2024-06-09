@@ -1,7 +1,5 @@
 #pragma once
-#include <cassert>
 #include <iostream>
-#include <SDL_mixer.h>
 
 #include "SoundSystem.h"
 

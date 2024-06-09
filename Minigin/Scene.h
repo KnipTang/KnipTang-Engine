@@ -34,15 +34,11 @@ namespace dae
 		GameObject* GetGameObjectWithTag(std::string tag);
 		GameObject* GetGameObjectWithLayer(std::string layer);
 
-
 	private: 
-		//std::vector<std::unique_ptr<GameObject>> GettonTegsObject;
-
 		std::string m_name;
 		std::vector<std::unique_ptr<GameObject>> m_objects{};
 		std::vector<std::unique_ptr<GameObject>> m_pendingAdditions{};
 
 		static unsigned int m_idCounter; 
 	};
-
 }

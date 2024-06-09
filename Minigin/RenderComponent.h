@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include <memory>
 #include <string>
 #include "Component.h"
@@ -15,16 +14,13 @@ namespace dae
 	{
 	public:
 		RenderComponent(GameObject* gameObject);
-		~RenderComponent() override {}
+		~RenderComponent() override = default;
 
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;
 		RenderComponent& operator=(const RenderComponent& other) = delete;
 		RenderComponent& operator=(RenderComponent&& other) = delete;
 
-		void Update(float /*deltaTime*/) override {}
-		void LateUpdate(float /*deltaTime*/) override {};
-		void FixedUpdate(float /*fixedTimeStep*/) override {};
 		void Render() const override;
 
 		void SetTexture(const std::string& filename);
