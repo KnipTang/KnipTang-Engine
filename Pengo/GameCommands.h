@@ -59,3 +59,33 @@ private:
 	size_t m_EnemiesSpawnAtStart = 3;
 	GameModes m_GameMode;
 };
+
+class NextLevel : public dae::Command {
+public:
+	NextLevel(dae::Scene* scene, std::vector<std::unique_ptr<Level>> levelLayouts)
+		: Command(), m_Scene(scene), m_LevelLayouts(std::move(levelLayouts))
+	{
+		//for (auto levelLayout : levelLayouts)
+		//{
+		//	m_LevelLayouts.emplace_back(levelLayout.get());
+		//}
+	}
+
+	void Execute(float /*deltaTime*/) override
+	{
+		m_CurrentLevelIndex++;
+		
+		m_Scene->RemoveAll();
+		
+		auto level = m_LevelLayouts.at(m_CurrentLevelIndex)->LoadLevel();
+		
+		for (auto& object : level)
+		{
+			m_Scene->Add(std::move(object));
+		}
+	}
+private:
+	int m_CurrentLevelIndex = 0;
+	std::vector<std::unique_ptr<Level>> m_LevelLayouts;
+	dae::Scene* m_Scene;
+};

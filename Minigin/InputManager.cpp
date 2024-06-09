@@ -100,20 +100,20 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
-		if (e.key.keysym.sym > SDL_NUM_SCANCODES)
+		if (e.key.keysym.scancode > SDL_NUM_SCANCODES)
 			continue;
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
 		if (e.type == SDL_KEYDOWN /* && !e.key.repeat*/)
 		{
-			keysPressedThisFrame[e.key.keysym.sym] = true;
+			keysPressedThisFrame[e.key.keysym.scancode] = true;
 		}
 		
 		if (e.type == SDL_KEYUP)
 		{
 			std::fill(std::begin(keysPressedThisFrame), std::end(keysPressedThisFrame), false);
-			keysReleasedThisFrame[e.key.keysym.sym] = true;
+			keysReleasedThisFrame[e.key.keysym.scancode] = true;
 		}
 
 		/*
@@ -184,7 +184,7 @@ void dae::InputManager::BindCommand(DWORD controllerIndex, WORD button, InputAct
 	m_Pimpl->BindCommand(controllerIndex, WORD(button), inputAction, std::move(command));
 }
 
-void dae::InputManager::BindCommand(int key, InputActionType inputAction, std::unique_ptr<Command> command)
+void dae::InputManager::BindCommand(SDL_Scancode key, InputActionType inputAction, std::unique_ptr<Command> command)
 {
 	keyBindings[key] = std::make_pair(inputAction, std::move(command));
 }

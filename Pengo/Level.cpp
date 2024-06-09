@@ -250,11 +250,11 @@ void Level::PlaceHardWall()
 
 void Level::Player1Bindings(dae::GameObject* player)
 {
-    dae::InputManager::GetInstance().BindCommand(SDLK_w, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
-    dae::InputManager::GetInstance().BindCommand(SDLK_s, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
-    dae::InputManager::GetInstance().BindCommand(SDLK_a, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
-    dae::InputManager::GetInstance().BindCommand(SDLK_d, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
-    dae::InputManager::GetInstance().BindCommand(SDLK_e, dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
+    dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_W, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
+    dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_S, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
+    dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_A, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
+    dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_D, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
+    dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_E, dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
 
     dae::InputManager::GetInstance().BindCommand(DWORD(0),WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
     dae::InputManager::GetInstance().BindCommand(DWORD(0),WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
@@ -265,11 +265,11 @@ void Level::Player1Bindings(dae::GameObject* player)
 
 void Level::Player2Bindings(dae::GameObject* player)
 {
-    dae::InputManager::GetInstance().BindCommand(SDLK_i, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
-    dae::InputManager::GetInstance().BindCommand(SDLK_k, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
-    dae::InputManager::GetInstance().BindCommand(SDLK_j, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
-    dae::InputManager::GetInstance().BindCommand(SDLK_l, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
-    dae::InputManager::GetInstance().BindCommand(SDLK_o, dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
+   // dae::InputManager::GetInstance().BindCommand(SDLK_i, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
+   // dae::InputManager::GetInstance().BindCommand(SDLK_k, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));
+   // dae::InputManager::GetInstance().BindCommand(SDLK_j, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::LEFT));
+   // dae::InputManager::GetInstance().BindCommand(SDLK_l, dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::RIGHT));
+   // dae::InputManager::GetInstance().BindCommand(SDLK_o, dae::InputActionType::IsPressed, std::make_unique<Attack>(player, Controlls::ATTACK));
 
     dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_DPAD_UP), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::UP));
     dae::InputManager::GetInstance().BindCommand(DWORD(1), WORD(XINPUT_GAMEPAD_DPAD_DOWN), dae::InputActionType::IsPressed, std::make_unique<Movement>(player, Controlls::DOWN));

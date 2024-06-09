@@ -24,7 +24,7 @@ namespace dae
 		InputManager();
 		~InputManager();
 
-		void BindCommand(int key, InputActionType inputAction, std::unique_ptr<Command> command);
+		void BindCommand(SDL_Scancode key, InputActionType inputAction, std::unique_ptr<Command> command);
 		void BindCommand(DWORD controllerIndex, WORD button, InputActionType inputAction, std::unique_ptr<Command> command);
 
 		bool ProcessInput(float deltaTime);
@@ -32,7 +32,7 @@ namespace dae
 		class ControllerPimpl;
 		std::unique_ptr<ControllerPimpl> m_Pimpl;
 
-		std::unordered_map<int, std::pair<InputActionType, std::unique_ptr<Command>>> keyBindings;
+		std::unordered_map<SDL_Scancode, std::pair<InputActionType, std::unique_ptr<Command>>> keyBindings;
 		bool keysPressedThisFrame[SDL_NUM_SCANCODES] = { false };
 		bool keysReleasedThisFrame[SDL_NUM_SCANCODES] = { false };
 	};

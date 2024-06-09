@@ -52,11 +52,11 @@ void load()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	backGroundStartScreen.get()->AddComponent(new dae::TextObject(backGroundStartScreen.get(), "STARTSCREEN", std::move(font)));
 
-	dae::InputManager::GetInstance().BindCommand(SDLK_1, dae::InputActionType::IsUp, std::make_unique<StartGameCommand>(GameModes::Single));
-	dae::InputManager::GetInstance().BindCommand(SDLK_2, dae::InputActionType::IsUp, std::make_unique<StartGameCommand>(GameModes::CoOp));
-	dae::InputManager::GetInstance().BindCommand(SDLK_3, dae::InputActionType::IsUp, std::make_unique<StartGameCommand>(GameModes::Versus));
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_1, dae::InputActionType::IsUp, std::make_unique<StartGameCommand>(GameModes::Single));
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_2, dae::InputActionType::IsUp, std::make_unique<StartGameCommand>(GameModes::CoOp));
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_3, dae::InputActionType::IsUp, std::make_unique<StartGameCommand>(GameModes::Versus));
 
-	dae::InputManager::GetInstance().BindCommand(SDLK_m, dae::InputActionType::IsUp, std::make_unique<SoundMuteCommand>());
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_M, dae::InputActionType::IsUp, std::make_unique<SoundMuteCommand>());
 
 
 
@@ -256,12 +256,19 @@ void load()
 	//
 	//dae::SceneManager::GetInstance().LoadScene("levelScene");
 
-	//dae::InputManager::GetInstance().BindCommand(SDLK_F1, dae::InputActionType::IsUp, std::make_unique<SkipLevel>(nullptr, levelScene, levelLayouts));
 	
 	dae::Scene* levelScene = dae::SceneManager::GetInstance().CreateScene("LevelScene");
-	Level m_Level{ "Resources/Level1.txt" };
-	std::vector<std::unique_ptr<dae::GameObject>> level = m_Level.LoadLevel();
+	std::vector<std::unique_ptr<Level>> levelLayouts;
 
+	levelLayouts.emplace_back(std::make_unique<Level>("Resources/Level1.txt"));
+	levelLayouts.emplace_back(std::make_unique<Level>("Resources/Level2.txt"));
+	levelLayouts.emplace_back(std::make_unique<Level>("Resources/Level3.txt"));
+	levelLayouts.emplace_back(std::make_unique<Level>("Resources/Level4.txt"));
+	levelLayouts.emplace_back(std::make_unique<Level>("Resources/Level5.txt"));
+
+	std::vector<std::unique_ptr<dae::GameObject>> level = levelLayouts.at(0)->LoadLevel();
+
+	dae::InputManager::GetInstance().BindCommand(SDL_SCANCODE_F1, dae::InputActionType::IsUp, std::make_unique<NextLevel>(levelScene, std::move(levelLayouts)));
 
 
 

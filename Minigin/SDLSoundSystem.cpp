@@ -67,14 +67,14 @@ dae::SDLSoundSystem::Impl::~Impl()
 
 void dae::SDLSoundSystem::Impl::Update()
 {
-	if (m_Head == m_Tail) return;
-
 	m_Future.wait();
 
 	PlayMessage localHead;
 
 	{
 		std::lock_guard<std::mutex> lock(m_Mutex);
+
+		if (m_Head == m_Tail) return;
 
 		localHead = pending_[m_Head];
 
