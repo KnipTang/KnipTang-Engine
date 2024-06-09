@@ -2,7 +2,6 @@
 #include <Component.h>
 #include <string>
 #include <vector>
-
 #include "TextObject.h"
 
 class HighScoreComponent : public dae::Component
@@ -50,4 +49,3 @@ private:
 
 	dae::TextObject* m_DisplayComponent;
 };
-

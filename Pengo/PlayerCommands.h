@@ -33,6 +33,7 @@ public:
 	}
 
 	~Movement() override = default;
+
 	Movement(const Movement& other) = delete;
 	Movement(Movement&& other) = delete;
 	Movement& operator=(const Movement& other) = delete;
@@ -69,11 +70,9 @@ private:
 
 class Attack : public dae::GameActorCommand {
 public:
-	Attack(dae::GameObject* actor, Controlls control) : GameActorCommand(actor), m_Control(control)
-	{
-	}
-
+	Attack(dae::GameObject* actor, Controlls control) : GameActorCommand(actor), m_Control(control) { }
 	~Attack() override = default;
+
 	Attack(const Attack& other) = delete;
 	Attack(Attack&& other) = delete;
 	Attack& operator=(const Attack& other) = delete;

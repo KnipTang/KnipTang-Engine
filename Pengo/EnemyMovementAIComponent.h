@@ -2,6 +2,7 @@
 #include <Component.h>
 #include "GameObject.h"
 #include "Scene.h"
+
 class EnemyMovementAIComponent : public dae::Component
 {
 public:
@@ -9,8 +10,12 @@ public:
 	{
 		m_CurrentScene = dae::SceneManager::GetInstance().GetSceneByName("LevelScene");
 		m_Player = m_CurrentScene->GetGameObjectsWithLayer("Player");
-	};
+		m_Moving = false;
+		m_TraveledElementLength = 0;
+		m_Stunned = false;
+	}
 	~EnemyMovementAIComponent() override = default;
+
 	EnemyMovementAIComponent(const EnemyMovementAIComponent& other) = delete;
 	EnemyMovementAIComponent(EnemyMovementAIComponent&& other) = delete;
 	EnemyMovementAIComponent& operator=(const EnemyMovementAIComponent& other) = delete;
@@ -18,7 +23,7 @@ public:
 
 	void FixedUpdate(float deltaTime) override;
 
-	void StopMoving() { m_Moving = false; };
+	void StopMoving() { m_Moving = false; }
 
 	void StunEnemy();
 

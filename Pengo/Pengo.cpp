@@ -64,7 +64,7 @@ void load()
 	auto FPS = std::make_unique<dae::GameObject>();
 	FPS.get()->SetGameObjectPosition(100, 16);
 	FPS.get()->AddComponent(new dae::TextObject(FPS.get(), "0FPS", std::move(font)));
-	FPS.get()->AddComponent(new dae::FpsComponent(FPS.get(), FPS.get()->GetComponent<dae::TextObject>()));
+	FPS.get()->AddComponent(new FpsComponent(FPS.get(), FPS.get()->GetComponent<dae::TextObject>()));
 
 	auto GameBackground = std::make_unique<dae::GameObject>();
 	GameBackground.get()->AddComponent(new dae::RenderComponent(GameBackground.get()));

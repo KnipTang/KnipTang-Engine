@@ -1,9 +1,10 @@
 #pragma once
 #include <Component.h>
+
 class TimerComponent : public dae::Component
 {
 public:
-	TimerComponent(dae::GameObject* gameObject) : dae::Component(gameObject) {}
+	TimerComponent(dae::GameObject* gameObject) : dae::Component(gameObject) { m_CurrentTime = 0; }
 	~TimerComponent() override = default;
 
 	TimerComponent(const TimerComponent& other) = delete;
@@ -18,4 +19,3 @@ public:
 private:
 	double m_CurrentTime;
 };
-

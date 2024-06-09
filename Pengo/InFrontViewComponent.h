@@ -14,4 +14,3 @@ public:
 
 	void UpdatePosition(glm::vec3 direction);
 };
-

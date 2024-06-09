@@ -7,27 +7,23 @@
 class EnemyComponent : public dae::Component
 {
 public:
+	EnemyComponent(dae::GameObject* gameObject);
+	~EnemyComponent() override = default;
+
+	EnemyComponent(const EnemyComponent& other) = delete;
+	EnemyComponent(EnemyComponent&& other) = delete;
+	EnemyComponent& operator=(const EnemyComponent& other) = delete;
+	EnemyComponent& operator=(EnemyComponent&& other) = delete;
+
 	void Update(float) override;
-	void LateUpdate(float) override {};
-	void FixedUpdate(float) override {}
-	void Render() const override {}
 
 	void SetHitByWallPos(glm::vec3 direction);
 	bool WasHitByWall() { return m_WasHitByWall; }
 
 	void Dies();
 
-	void SetState(std::unique_ptr<EnemyState> state)
-	{
-		m_State = std::move(state);
-	}
+	void SetState(std::unique_ptr<EnemyState> state) { m_State = std::move(state); }
 
-	EnemyComponent(dae::GameObject* gameObject);
-	virtual ~EnemyComponent() { }
-	EnemyComponent(const EnemyComponent& other) = delete;
-	EnemyComponent(EnemyComponent&& other) = delete;
-	EnemyComponent& operator=(const EnemyComponent& other) = delete;
-	EnemyComponent& operator=(EnemyComponent&& other) = delete;
 private:
 	dae::GameObject* GetEnemySpawnBlock();
 

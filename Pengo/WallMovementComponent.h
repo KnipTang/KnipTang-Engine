@@ -4,8 +4,14 @@
 class WallMovementComponent : public dae::Component
 {
 public:
-	WallMovementComponent(dae::GameObject* gameObject, float speed = 40.f) : dae::Component(gameObject), m_Speed(speed) { }
+	WallMovementComponent(dae::GameObject* gameObject, float speed = 40.f) : dae::Component(gameObject), m_Speed(speed)
+	{
+		m_HitWall = false;
+		m_Moving = false;
+		m_Vibrate = false;
+	}
 	~WallMovementComponent() override = default;
+
 	WallMovementComponent(const WallMovementComponent& other) = delete;
 	WallMovementComponent(WallMovementComponent&& other) = delete;
 	WallMovementComponent& operator=(const WallMovementComponent& other) = delete;
@@ -32,9 +38,9 @@ private:
 	glm::vec3 m_Direction;
 	float m_Speed;
 
-	bool m_HitWall = false;
+	bool m_HitWall;
+	bool m_Moving;
 
-	bool m_Moving = false;
 	float m_TraveledElementLength = 0;
 	float m_TraveledTotalLength = 0;
 	glm::vec3 m_StartPos;

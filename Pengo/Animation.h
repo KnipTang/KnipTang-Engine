@@ -5,26 +5,20 @@
 class Animation : public dae::Component
 {
 public:
+	Animation(dae::GameObject* gameObject, bool animationOn = false, int maxFrames = 1, bool loopAnimation = false, bool resetWhenDone = false, float flipTime = 0.25f);
+
+	~Animation() override = default;
+	Animation(const Animation& other) = delete;
+	Animation(Animation&& other) = delete;
+	Animation& operator=(const Animation& other) = delete;
+	Animation& operator=(Animation&& other) = delete;
+
 	void Update(float deltaTime) override;
 
-	void SetStartSourceRect(SDL_Rect startSourceRect)
-	{
-		m_StartSourceRect = startSourceRect;
-		SetCurrentSourceRect(m_StartSourceRect);
-	}
-	SDL_Rect GetStartSourceRect()
-	{
-		return m_StartSourceRect;
-	}
+	void SetStartSourceRect(SDL_Rect startSourceRect);
+	SDL_Rect GetStartSourceRect() { return m_StartSourceRect; }
 
-	void SetCurrentSourceRect(SDL_Rect currentSourceRect) 
-	{ 
-		m_CurrentSourceRect = currentSourceRect; 
-		if (m_RenderComp != nullptr)
-		{
-			m_RenderComp->SetSourceRect(m_CurrentSourceRect.x, m_CurrentSourceRect.y, m_CurrentSourceRect.w, m_CurrentSourceRect.h);
-		}
-	}
+	void SetCurrentSourceRect(SDL_Rect currentSourceRect);
 
 	SDL_Rect GetCurrentSourceRect() { return m_CurrentSourceRect; }
 
@@ -39,26 +33,6 @@ public:
 
 	void ToggleLooping(bool loopValue) { m_LoopAnimation = loopValue; }
 	void ToggleResetWhenDone(bool resetWhenDone) { m_ResetWhenDone = resetWhenDone; }
-
-	Animation(dae::GameObject* gameObject, bool animationOn = false, int maxFrames = 1, bool loopAnimation = false, bool resetWhenDone = false, float flipTime = 0.25f) : dae::Component(gameObject)
-	{ 
-		m_AnimationOn = animationOn;
-		m_MaxFrames = maxFrames;
-		m_LoopAnimation = loopAnimation;
-		m_ResetWhenDone = resetWhenDone;
-
-		m_FlipTime = flipTime;
-
-		m_RenderComp = GetOwner()->GetComponent<dae::RenderComponent>();
-		m_StartSourceRect = m_RenderComp->GetSourceRect();
-		m_CurrentSourceRect = m_StartSourceRect;
-	}
-
-	~Animation() override = default;
-	Animation(const Animation& other) = delete;
-	Animation(Animation&& other) = delete;
-	Animation& operator=(const Animation& other) = delete;
-	Animation& operator=(Animation&& other) = delete;
 
 private:
 	float m_CurrentTime = 0;
@@ -76,4 +50,3 @@ private:
 	SDL_Rect m_CurrentSourceRect;
 	dae::RenderComponent* m_RenderComp;
 };
-

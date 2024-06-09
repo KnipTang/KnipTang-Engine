@@ -15,6 +15,12 @@ class StartGameCommand : public dae::Command
 {
 public:
 	StartGameCommand(GameModes mode) : Command(), m_GameMode(mode) {}
+	~StartGameCommand() override = default;
+
+	StartGameCommand(const StartGameCommand& other) = delete;
+	StartGameCommand(StartGameCommand&& other) = delete;
+	StartGameCommand& operator=(const StartGameCommand& other) = delete;
+	StartGameCommand& operator=(StartGameCommand&& other) = delete;
 
 	void Execute(float /*deltaTime*/) override
 	{
@@ -66,6 +72,12 @@ public:
 	{
 
 	}
+	~NextLevel() override = default;
+
+	NextLevel(const NextLevel& other) = delete;
+	NextLevel(NextLevel&& other) = delete;
+	NextLevel& operator=(const NextLevel& other) = delete;
+	NextLevel& operator=(NextLevel&& other) = delete;
 
 	void Execute(float /*deltaTime*/) override
 	{

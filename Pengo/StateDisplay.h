@@ -1,8 +1,7 @@
 #pragma once
-
 #include "Component.h"
-#include "Subject.h"
 #include "TextObject.h"
+
 enum class PengoEvents {
 	PlayerHit,
 	PlayerDied,

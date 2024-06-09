@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include "Component.h"
-#include "HealthComponent.h"
 #include "PengoState.h"
 
 class PengoComponent : public dae::Component
@@ -45,4 +44,3 @@ private:
 
 	bool m_IsDead;
 };
-

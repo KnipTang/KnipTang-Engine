@@ -12,6 +12,7 @@ public:
 			m_CurrentLowestHighScore = m_HighScoreComp->GetLowestHighScore();
 	}
 	~ScoreComponent() override = default;
+
 	ScoreComponent(const ScoreComponent& other) = delete;
 	ScoreComponent(ScoreComponent&& other) = delete;
 	ScoreComponent& operator=(const ScoreComponent& other) = delete;

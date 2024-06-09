@@ -23,4 +23,3 @@ private:
 	bool m_Delete = false;
 	Animation* m_AnimationComp;
 };
-

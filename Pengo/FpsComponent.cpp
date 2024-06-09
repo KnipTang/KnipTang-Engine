@@ -3,12 +3,12 @@
 #include "FpsComponent.h"
 #include "GameObject.h"
 
-dae::FpsComponent::FpsComponent(GameObject* gameObject, TextObject* textObject)
+FpsComponent::FpsComponent(dae::GameObject* gameObject, dae::TextObject* textObject)
 	: Component(gameObject), m_TextObject(textObject)
 {
 }
 
-void dae::FpsComponent::Update(float deltaTime)
+void FpsComponent::Update(float deltaTime)
 {
 	m_FpsTimer += deltaTime;
 	m_FrameCount++;

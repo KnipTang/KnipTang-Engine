@@ -17,6 +17,11 @@ public:
 	EnemyState() = default;
 	virtual ~EnemyState() = default;
 
+	EnemyState(const EnemyState& other) = delete;
+	EnemyState(EnemyState&& other) = delete;
+	EnemyState& operator=(const EnemyState& other) = delete;
+	EnemyState& operator=(EnemyState&& other) = delete;
+
 	virtual void Enter(dae::GameObject*) {}
 	virtual void Update() {}
 };
@@ -31,6 +36,11 @@ public:
 		Enter(gameObject);
 	}
 	~IdleState() override = default;
+
+	IdleState(const IdleState& other) = delete;
+	IdleState(IdleState&& other) = delete;
+	IdleState& operator=(const IdleState& other) = delete;
+	IdleState& operator=(IdleState&& other) = delete;
 
 	void Enter(dae::GameObject* gameObject) override;
 private:
@@ -63,6 +73,11 @@ public:
 	}
 	~MovingState() override = default;
 
+	MovingState(const MovingState& other) = delete;
+	MovingState(MovingState&& other) = delete;
+	MovingState& operator=(const MovingState& other) = delete;
+	MovingState& operator=(MovingState&& other) = delete;
+
 	void Enter(dae::GameObject* gameObject) override;
 private:
 	Animation* m_AnimationComp;
@@ -80,6 +95,11 @@ public:
 		Enter(gameObject);
 	}
 	~SpawningState() override = default;
+
+	SpawningState(const SpawningState& other) = delete;
+	SpawningState(SpawningState&& other) = delete;
+	SpawningState& operator=(const SpawningState& other) = delete;
+	SpawningState& operator=(SpawningState&& other) = delete;
 
 	void Enter(dae::GameObject* gameObject) override;
 	void Update() override;

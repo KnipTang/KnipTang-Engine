@@ -17,5 +17,3 @@ public:
 private:
 	dae::GameObject* m_pOwner;
 };
-
-

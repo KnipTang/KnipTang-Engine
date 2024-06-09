@@ -1,6 +1,5 @@
 #pragma once
 #include <chrono>
-
 #include "Component.h"
 #include "GameObject.h"
 #include "CollisionComponent.h"
@@ -8,7 +7,14 @@
 class MovementComponent : public dae::Component
 {
 public:
-	MovementComponent(dae::GameObject* gameObject, float speed = 40.f) : Component(gameObject), m_Speed(speed) { }
+	MovementComponent(dae::GameObject* gameObject, float speed = 40.f) : Component(gameObject), m_Speed(speed)
+	{
+		m_HitWall = false;
+		m_Moving = false;
+		m_Stunned = false;
+
+		m_StunDuration = 0;
+	}
 	~MovementComponent() override = default;
 
 	MovementComponent(const MovementComponent& other) = delete;
@@ -33,9 +39,9 @@ private:
 	glm::vec3 m_Direction;
 	float m_Speed;
 
-	bool m_HitWall = false;
+	bool m_HitWall;
 
-	bool m_Moving = false;
+	bool m_Moving;
 	float m_TraveledElementLength = 0;
 
 	bool m_Stunned;
