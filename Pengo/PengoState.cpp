@@ -1,7 +1,6 @@
 #include "PengoState.h"
 #include "PengoComponent.h"
 #include "SceneManager.h"
-//#include "SceneManager.h"
 
 void DyingState::Enter(dae::GameObject* gameObject)
 {
@@ -33,8 +32,6 @@ void DyingState::Enter(dae::GameObject* gameObject)
 			m_Respawning = true;
 		}
 	}
-
-	//gameObject->RemoveComponent(gameObject->GetComponent<MovementComponent>());
 }
 
 std::unique_ptr<PengoState> DyingState::HandleInput(dae::GameObject*, Controlls)
@@ -69,13 +66,11 @@ std::unique_ptr<PengoState> DyingState::Update(float deltaTime)
 
 void MoveState::Enter(dae::GameObject* )
 {
-	//gameObject->GetComponent<Animation>()->ToggleAnimation(true);
+
 }
 
 void MoveState::Enter(dae::GameObject* gameObject, Controlls control)
 {
-	//Enter(gameObject);
-
 	Animation* animationComp = gameObject->GetComponent<Animation>();
 	if (animationComp != nullptr)
 	{
@@ -120,7 +115,6 @@ std::unique_ptr<PengoState> MoveState::HandleInput(dae::GameObject* gameObject, 
 {
 	return std::make_unique<MoveState>(gameObject);
 }
-
 
 
 void Idle::Enter(dae::GameObject* gameObject)

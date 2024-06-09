@@ -3,9 +3,9 @@
 #include "WallCollisionObserver.h"
 #include "WallComponent.h"
 #include "GameConfig.h"
-#include <iostream>
 #include <cmath>
 #include <SDL.h>
+
 void WallMovementComponent::Update(float deltaTime)
 {
 	if (m_Vibrate)
@@ -89,7 +89,6 @@ void WallMovementComponent::SetHitWall(bool hit)
 	{
 		GetOwner()->GetComponent<dae::CollisionComponent>()->RemoveObserver(GetOwner()->GetComponent<dae::CollisionComponent>()->GetObserverAt(i));
 	}
-	
 
 	if (m_TraveledTotalLength < Config::ELEMENT_SIZE && m_Moving)
 	{
@@ -103,14 +102,7 @@ void WallMovementComponent::SetHitWall(bool hit)
 	}
 	m_TraveledTotalLength = 0;
 
-	//for (int i = 0; i < GetOwner()->GetChildCount(); i++)
-	//{
-	//	GetOwner()->GetChildAt(i)->RemoveGameObject();
-	//}
-	//GetOwner()->RemoveAllChildren();
-
 	m_HitWall = hit;
-	//m_Moving = !hit;
 }
 
 void WallMovementComponent::RoundOffWallPos()

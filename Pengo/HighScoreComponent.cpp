@@ -1,11 +1,10 @@
 #include "HighScoreComponent.h"
 #include <fstream>
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 #include <sstream>
 #include <vector>
 #include "GameObject.h"
-#include "ResourceManager.h"
 
 HighScoreComponent::HighScoreComponent(dae::GameObject* gameObject, const std::string filePath, dae::TextObject* textObject) : Component(gameObject), m_FilePath(filePath), m_DisplayComponent(textObject)
 {
@@ -71,7 +70,7 @@ int HighScoreComponent::GetHighestHighScore(std::vector<int> highScoreList)
 {
 	if (highScoreList.empty())
 	{
-		return 0; // Or some other appropriate value or action
+		return 0;
 	}
 	return highScoreList.front();
 }
@@ -101,13 +100,6 @@ void HighScoreComponent::UpdateDisplayList()
 
 		childDisplayComp->SetText(std::to_string(m_HighScoreList.at(i)));
 	}
-		//std::ostringstream oss;
-		//for (const int score : m_HighScoreList)
-		//{
-		//	oss << score << '\n';
-		//}
-		//m_DisplayComponent->SetText(oss.str());
-	
 }
 
 void HighScoreComponent::NewHighScore(int highScore)

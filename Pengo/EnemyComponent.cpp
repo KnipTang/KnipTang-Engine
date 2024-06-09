@@ -1,11 +1,8 @@
 #include "EnemyComponent.h"
 #include "GameConfig.h"
-#include "EnemyCollisionObserver.h"
 #include "CollisionComponent.h"
-#include "Animation.h"
 #include <Scene.h>
 #include "EnemySpawnComponent.h"
-#include "ScoreComponent.h"
 #include "GameObject.h"
 #include "SoundServiceLocator.h"
 

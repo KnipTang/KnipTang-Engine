@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include "Command.h"
 #include "SceneManager.h"
 #include "Level.h"

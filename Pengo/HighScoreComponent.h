@@ -8,10 +8,13 @@
 class HighScoreComponent : public dae::Component
 {
 public:
-	void Update(float /*deltaTime*/) override { }
-	void LateUpdate(float /*deltaTime*/) override {}
-	void FixedUpdate(float /*fixedTimeStep*/) override {}
-	void Render() const override {}
+	HighScoreComponent(dae::GameObject* gameObject, const std::string filePath, dae::TextObject* textObject = nullptr);
+	~HighScoreComponent() override { WriteHighScore(); }
+
+	HighScoreComponent(const HighScoreComponent& other) = delete;
+	HighScoreComponent(HighScoreComponent&& other) = delete;
+	HighScoreComponent& operator=(const HighScoreComponent& other) = delete;
+	HighScoreComponent& operator=(HighScoreComponent&& other) = delete;
 
 	int GetHighScore() { return m_HighScore; }
 	void SetHighScore(int highScore);
@@ -30,13 +33,6 @@ public:
 
 	void UpdateDisplayList();
 
-	HighScoreComponent(dae::GameObject* gameObject, const std::string filePath, dae::TextObject* textObject = nullptr);
-	virtual ~HighScoreComponent() { WriteHighScore(); }
-	HighScoreComponent(const HighScoreComponent& other) = delete;
-	HighScoreComponent(HighScoreComponent&& other) = delete;
-	HighScoreComponent& operator=(const HighScoreComponent& other) = delete;
-	HighScoreComponent& operator=(HighScoreComponent&& other) = delete;
-
 private:
 	std::vector<int> ReadHighScore();
 	void WriteHighScore();
@@ -44,7 +40,6 @@ private:
 	int GetHighestHighScore(std::vector<int> highScoreList);
 
 	void UpdateDisplay();
-
 
 	std::string m_FilePath;
 

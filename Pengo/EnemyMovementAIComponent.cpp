@@ -1,7 +1,5 @@
 #include "EnemyMovementAIComponent.h"
-
 #include <algorithm>
-
 #include "EnemyState.h"
 #include "EnemyComponent.h"
 #include "PengoComponent.h"

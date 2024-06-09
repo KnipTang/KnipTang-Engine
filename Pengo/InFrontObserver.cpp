@@ -1,7 +1,5 @@
 #include "InFrontObserver.h"
 #include "CollisionComponent.h"
-#include <iostream>
-#include "InFrontViewComponent.h"
 #include "AttackComponent.h"
 #include "PengoComponent.h"
 

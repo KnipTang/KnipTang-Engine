@@ -2,21 +2,20 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include <glm/fwd.hpp>
 #include "GameObject.h"
 class Level
 {
 public:
 	Level(std::string filePath);
-	~Level(){}
-
-	std::vector<std::unique_ptr<dae::GameObject>> LoadLevel();
-
+	~Level() = default;
 
 	Level(const Level& other) = delete;
 	Level(Level&& other) = delete;
 	Level& operator=(const Level& other) = delete;
 	Level& operator=(Level&& other) = delete;
+
+	std::vector<std::unique_ptr<dae::GameObject>> LoadLevel();
+
 private:
 	void HandleLine(std::string line);
 	void HandleElement(std::string element);
@@ -46,4 +45,3 @@ private:
 
 	std::string m_FilePath;
 };
-

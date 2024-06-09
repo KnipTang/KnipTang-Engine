@@ -4,10 +4,15 @@
 class WallMovementComponent : public dae::Component
 {
 public:
+	WallMovementComponent(dae::GameObject* gameObject, float speed = 40.f) : dae::Component(gameObject), m_Speed(speed) { }
+	~WallMovementComponent() override = default;
+	WallMovementComponent(const WallMovementComponent& other) = delete;
+	WallMovementComponent(WallMovementComponent&& other) = delete;
+	WallMovementComponent& operator=(const WallMovementComponent& other) = delete;
+	WallMovementComponent& operator=(WallMovementComponent&& other) = delete;
+
 	void Update(float deltaTime) override;
 	void LateUpdate(float) override;
-	void FixedUpdate(float /*fixedTimeStep*/) override {}
-	void Render() const override {}
 
 	void Move(glm::vec3 direction, dae::GameObject* moverOwner);
 
@@ -23,15 +28,7 @@ public:
 	void Vibrate();
 	bool IsVibrating() { return m_Vibrate; }
 
-	WallMovementComponent(dae::GameObject* gameObject, float speed = 40.f) : dae::Component(gameObject), m_Speed(speed) { };
-	virtual ~WallMovementComponent() { }
-	WallMovementComponent(const WallMovementComponent& other) = delete;
-	WallMovementComponent(WallMovementComponent&& other) = delete;
-	WallMovementComponent& operator=(const WallMovementComponent& other) = delete;
-	WallMovementComponent& operator=(WallMovementComponent&& other) = delete;
-
 private:
-	//void StopMoving();
 	glm::vec3 m_Direction;
 	float m_Speed;
 
@@ -48,4 +45,3 @@ private:
 	float m_CurrentVibrationTime = 0;
 	float m_MaxVibrationTime = 1.f;
 };
-

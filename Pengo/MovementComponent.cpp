@@ -2,6 +2,7 @@
 #include "PengoComponent.h"
 #include "InFrontViewComponent.h"
 #include <memory>
+
 void MovementComponent::Update(float deltaTime)
 {
 	if (m_Stunned) 
@@ -70,7 +71,6 @@ void MovementComponent::Move(float , glm::vec3 direction)
 	m_Direction = direction;
 
 	m_StartPos = GetOwner()->GetTransform()->GetWorldPosition();
-
 }
 
 void MovementComponent::StunForSeconds(float seconds)

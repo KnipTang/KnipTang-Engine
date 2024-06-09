@@ -1,4 +1,3 @@
-#include <iostream>
 #include "EnemyState.h"
 #include "EnemyComponent.h"
 #include "GameObject.h"

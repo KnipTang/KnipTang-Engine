@@ -5,14 +5,15 @@
 class EndScreenComponent : public dae::Component
 {
 public:
-	void Update(float) override;
-
 	EndScreenComponent(dae::GameObject* gameObject);
-	virtual ~EndScreenComponent() = default;
+	~EndScreenComponent() override = default;
+
 	EndScreenComponent(const EndScreenComponent& other) = delete;
 	EndScreenComponent(EndScreenComponent&& other) = delete;
 	EndScreenComponent& operator=(const EndScreenComponent& other) = delete;
 	EndScreenComponent& operator=(EndScreenComponent&& other) = delete;
+
+	void Update(float) override;
 
 	void SetupEndScreen();
 

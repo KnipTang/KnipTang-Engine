@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Animation.h"
+
 enum class ActionState
 {
 	UP,
@@ -16,9 +17,8 @@ public:
 	EnemyState() = default;
 	virtual ~EnemyState() = default;
 
-	virtual void Enter(dae::GameObject*) {};
-	virtual void Update() {};
-private:
+	virtual void Enter(dae::GameObject*) {}
+	virtual void Update() {}
 };
 
 class IdleState : public EnemyState

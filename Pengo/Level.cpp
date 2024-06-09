@@ -2,30 +2,24 @@
 #include <fstream> 
 #include <iostream>
 #include <sstream> 
-#include "Wall.h"
 #include "RenderComponent.h"
 #include "CollisionComponent.h"
 #include "PengoComponent.h"
 #include "PengoCollisionObserver.h"
 #include "HealthComponent.h"
-#include "ScoreComponent.h"
 #include <InputManager.h>
 #include <Xinput.h>
-
 #include "PlayerCommands.h"
 #include "InFrontViewComponent.h"
 #include "InFrontObserver.h"
 #include "AttackComponent.h"
 #include "WallMovementComponent.h"
-#include "WallCollisionObserver.h"
 #include "EnemyComponent.h"
-#include "EnemyMovementAIComponent.h"
 #include "EnemyCollisionObserver.h"
 #include "WallComponent.h"
 #include "GameConfig.h"
 #include "EnemySpawnComponent.h"
 #include "SoundCommands.h"
-#include "StateDisplay.h"
 
 Level::Level(std::string filePath) : m_FilePath(filePath)
 {
@@ -71,13 +65,6 @@ void Level::HandleLine(std::string line)
         m_CurrentColum++;
     }
     m_CurrentColum = 0;
-    //Printing
-    {
-        for (const auto& elem : elements) {
-            std::cout << elem << " ";
-        }
-        std::cout << std::endl;
-    }
 }
 
 void Level::HandleElement(std::string element)
@@ -212,7 +199,6 @@ void Level::PlaceWall()
     wall.get()->AddComponent(new Animation(wall.get(), false, 5));
     wall.get()->AddComponent(new dae::CollisionComponent(wall.get(), 16, 16));
     wall.get()->AddComponent(new WallMovementComponent(wall.get()));
-    //wall.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new WallCollisionObserver(wall.get()));
     wall.get()->SetLayer("Wall");
     wall.get()->SetTag("NormalWall");
 

@@ -1,12 +1,7 @@
-#include <cmath>
 #include <string>
-#include <iostream>
 #include <format>
 #include "FpsComponent.h"
-#include "Renderer.h"
-#include "ResourceManager.h"
 #include "GameObject.h"
-#include "Transform.h"
 
 dae::FpsComponent::FpsComponent(GameObject* gameObject, TextObject* textObject)
 	: Component(gameObject), m_TextObject(textObject)
@@ -21,7 +16,6 @@ void dae::FpsComponent::Update(float deltaTime)
 	{
 		m_CurrentFps = m_FrameCount / m_FpsTimer;
 
-		//Is the SetText to expansive, does it update even if its the same text check if the new fps is not the same as the old one if so skip the settext
 		std::string fpsString{ std::format("{:.1f}",  m_CurrentFps) + " FPS" };
 		m_TextObject->SetText(fpsString);
 

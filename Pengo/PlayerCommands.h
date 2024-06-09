@@ -6,9 +6,6 @@
 #include "PengoComponent.h"
 #include "PengoState.h"
 #include "AttackComponent.h"
-#include "EnemySpawnComponent.h"
-#include "Scene.h"
-#include "Level.h"
 
 class Movement : public dae::GameActorCommand {
 public:
@@ -34,6 +31,12 @@ public:
 			break;
 		}
 	}
+
+	~Movement() override = default;
+	Movement(const Movement& other) = delete;
+	Movement(Movement&& other) = delete;
+	Movement& operator=(const Movement& other) = delete;
+	Movement& operator=(Movement&& other) = delete;
 
 	void Execute(float deltaTime) override
 	{
@@ -69,6 +72,12 @@ public:
 	Attack(dae::GameObject* actor, Controlls control) : GameActorCommand(actor), m_Control(control)
 	{
 	}
+
+	~Attack() override = default;
+	Attack(const Attack& other) = delete;
+	Attack(Attack&& other) = delete;
+	Attack& operator=(const Attack& other) = delete;
+	Attack& operator=(Attack&& other) = delete;
 
 	void Execute(float /*deltaTime*/) override
 	{

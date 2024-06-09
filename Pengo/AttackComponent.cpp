@@ -1,11 +1,9 @@
 #include "AttackComponent.h"
 #include "WallMovementComponent.h"
 #include "PengoComponent.h"
-#include <iostream>
 
 void AttackComponent::Attack()
 {
-	//m_ObjectInfront->SetGameObjectPosition(5, 5);
 	if (m_AttackReady && m_JoyStickPressed)
 	{
 		glm::vec3 direction{ 0,0,0 };
@@ -23,7 +21,4 @@ void AttackComponent::Attack()
 void AttackComponent::JoyStickPressed()
 {
 	m_JoyStickPressed = true;
-
-	//if (m_ObjectInfront->HasComponent<WallMovementComponent>())
-	//	m_ObjectInfront->GetComponent<WallMovementComponent>()->Vibrate();
 }

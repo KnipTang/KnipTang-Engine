@@ -5,23 +5,22 @@
 class EnemyMovementAIComponent : public dae::Component
 {
 public:
-	void FixedUpdate(float deltaTime) override;
-
 	EnemyMovementAIComponent(dae::GameObject* gameObject, float speed = 16.f) : dae::Component(gameObject), m_Speed(speed)
 	{
 		m_CurrentScene = dae::SceneManager::GetInstance().GetSceneByName("LevelScene");
 		m_Player = m_CurrentScene->GetGameObjectsWithLayer("Player");
 	};
-
-	void StopMoving() { m_Moving = false; };
-
-	void StunEnemy();
-
-	virtual ~EnemyMovementAIComponent() { }
+	~EnemyMovementAIComponent() override = default;
 	EnemyMovementAIComponent(const EnemyMovementAIComponent& other) = delete;
 	EnemyMovementAIComponent(EnemyMovementAIComponent&& other) = delete;
 	EnemyMovementAIComponent& operator=(const EnemyMovementAIComponent& other) = delete;
 	EnemyMovementAIComponent& operator=(EnemyMovementAIComponent&& other) = delete;
+
+	void FixedUpdate(float deltaTime) override;
+
+	void StopMoving() { m_Moving = false; };
+
+	void StunEnemy();
 
 private:
 	dae::GameObject* GetClosestPlayer();

@@ -1,14 +1,11 @@
 #pragma once
 #include "Component.h"
 #include "RenderComponent.h"
-#include <vector>
+
 class Animation : public dae::Component
 {
 public:
 	void Update(float deltaTime) override;
-	void LateUpdate(float /*deltaTime*/) override {}
-	void FixedUpdate(float /*fixedTimeStep*/) override {}
-	void Render() const override {};
 
 	void SetStartSourceRect(SDL_Rect startSourceRect)
 	{
@@ -28,6 +25,7 @@ public:
 			m_RenderComp->SetSourceRect(m_CurrentSourceRect.x, m_CurrentSourceRect.y, m_CurrentSourceRect.w, m_CurrentSourceRect.h);
 		}
 	}
+
 	SDL_Rect GetCurrentSourceRect() { return m_CurrentSourceRect; }
 
 	void ToggleAnimation(bool animation) { m_AnimationOn = animation; };
@@ -39,8 +37,8 @@ public:
 	void SetMaxFrames(int maxFrames) { m_MaxFrames = maxFrames; }
 	int GetMaxFrames() { return m_MaxFrames; }
 
-	void ToggleLooping(bool loopValue);
-	void ToggleResetWhenDone(bool resetWhenDone);
+	void ToggleLooping(bool loopValue) { m_LoopAnimation = loopValue; }
+	void ToggleResetWhenDone(bool resetWhenDone) { m_ResetWhenDone = resetWhenDone; }
 
 	Animation(dae::GameObject* gameObject, bool animationOn = false, int maxFrames = 1, bool loopAnimation = false, bool resetWhenDone = false, float flipTime = 0.25f) : dae::Component(gameObject)
 	{ 
@@ -56,7 +54,7 @@ public:
 		m_CurrentSourceRect = m_StartSourceRect;
 	}
 
-	virtual ~Animation() { }
+	~Animation() override = default;
 	Animation(const Animation& other) = delete;
 	Animation(Animation&& other) = delete;
 	Animation& operator=(const Animation& other) = delete;

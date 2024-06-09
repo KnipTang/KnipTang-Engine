@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include "Animation.h"
 #include "MovementComponent.h"
 
@@ -19,13 +18,17 @@ enum class Controlls
 class PengoState
 {
 public: 
-	PengoState() {};
-	virtual ~PengoState() {}
+	PengoState() = default;
+	virtual ~PengoState() = default;
+
+	PengoState(const PengoState& other) = delete;
+	PengoState(PengoState&& other) = delete;
+	PengoState& operator=(const PengoState& other) = delete;
+	PengoState& operator=(PengoState&& other) = delete;
 
 	virtual void Enter(dae::GameObject*) {};
 	virtual std::unique_ptr<PengoState> HandleInput(dae::GameObject*, Controlls) { return std::make_unique<PengoState>(); };
 	virtual std::unique_ptr<PengoState> Update(float) { return std::make_unique<PengoState>(); };
-private: 
 };
 
 class PengoComponent;
@@ -33,9 +36,14 @@ class Animation;
 class DyingState : public PengoState
 {
 public:
-	DyingState() {};
+	DyingState() = default;
 	DyingState(dae::GameObject* gameObject) { Enter(gameObject); }
-	~DyingState() override {};
+	~DyingState() override = default;
+
+	DyingState(const DyingState& other) = delete;
+	DyingState(DyingState&& other) = delete;
+	DyingState& operator=(const DyingState& other) = delete;
+	DyingState& operator=(DyingState&& other) = delete;
 
 	void Enter(dae::GameObject* gameObject) override;
 
@@ -54,8 +62,13 @@ private:
 class PushingState : public PengoState
 {
 public:
-	PushingState() {};
-	~PushingState() override {};
+	PushingState() = default;
+	~PushingState() override = default;
+
+	PushingState(const PushingState& other) = delete;
+	PushingState(PushingState&& other) = delete;
+	PushingState& operator=(const PushingState& other) = delete;
+	PushingState& operator=(PushingState&& other) = delete;
 
 	void Enter(dae::GameObject* /*gameObject*/) override {};
 
@@ -76,7 +89,12 @@ public:
 	MoveState() {};
 	MoveState(dae::GameObject* gameObject) { Enter(gameObject); }
 	MoveState(dae::GameObject* gameObject, Controlls control) { Enter(gameObject, control); }
-	~MoveState() override {};
+	~MoveState() override = default;
+
+	MoveState(const MoveState& other) = delete;
+	MoveState(MoveState&& other) = delete;
+	MoveState& operator=(const MoveState& other) = delete;
+	MoveState& operator=(MoveState&& other) = delete;
 
 	void Enter(dae::GameObject* gameObject) override;
 	void Enter(dae::GameObject* gameObject, Controlls control);
@@ -93,7 +111,11 @@ class Idle : public PengoState
 public:
 	Idle() {};
 	Idle(dae::GameObject* gameObject) { Enter(gameObject); }
-	~Idle() override {};
+	~Idle() override = default;
+	Idle(const Idle& other) = delete;
+	Idle(Idle&& other) = delete;
+	Idle& operator=(const Idle& other) = delete;
+	Idle& operator=(Idle&& other) = delete;
 
 	void Enter(dae::GameObject* gameObject) override;
 
@@ -103,5 +125,4 @@ public:
 	{
 		return std::make_unique<PushingState>();
 	}
-
 };

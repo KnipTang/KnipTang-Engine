@@ -1,5 +1,4 @@
 #include "Animation.h"
-#include <iostream>
 #include "InputManager.h"
 
 void Animation::Update(float deltaTime)
@@ -36,14 +35,4 @@ void Animation::Update(float deltaTime)
 
 		m_CurrentTime = 0;
 	}
-}
-
-void Animation::ToggleLooping(bool loopValue)
-{
-	m_LoopAnimation = loopValue;
-}
-
-void Animation::ToggleResetWhenDone(bool resetWhenDone)
-{
-	m_ResetWhenDone = resetWhenDone;
 }

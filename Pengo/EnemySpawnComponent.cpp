@@ -5,17 +5,11 @@
 #include "EnemyCollisionObserver.h"
 #include "Scene.h"
 #include "EnemyState.h"
-#include "WallComponent.h"
 #include "EnemyMovementAIComponent.h"
 #include "SoundServiceLocator.h"
 
 EnemySpawnComponent::EnemySpawnComponent(dae::GameObject* gameObject) : dae::Component(gameObject)
 {
-}
-
-void EnemySpawnComponent::Update(float)
-{
-  
 }
 
 void EnemySpawnComponent::SpawnEnemy()
@@ -39,6 +33,4 @@ void EnemySpawnComponent::SpawnEnemy()
 	dae::SceneManager::GetInstance().GetSceneByName("LevelScene")->Add(std::move(enemy));
 
 	dae::SoundServiceLocator::get_sound_system()->play("Snow-BeeSpawning.mp3", 10);
-
-	//GetOwner()->GetComponent<WallComponent>()->DeleteWall();
 }

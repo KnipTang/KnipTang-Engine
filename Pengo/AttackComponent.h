@@ -1,18 +1,15 @@
 #pragma once
 #include <Component.h>
-#include <iostream>
 #include "GameObject.h"
+
 class AttackComponent : public dae::Component
 {
 public:
-	void Update(float) override {};
 	void LateUpdate(float) override 
 	{ 
 		if (m_AttackReady) m_AttackReady = false;
 		if (m_JoyStickPressed) m_JoyStickPressed = false;
 	}
-	void FixedUpdate(float) override {}
-	void Render() const override {}
 
 	void Attack();
 
@@ -32,6 +29,7 @@ public:
 	{
 		m_ObjectInfront = nullptr;
 		m_AttackReady = false;
+		m_JoyStickPressed = false;
 	};
 	virtual ~AttackComponent() { }
 	AttackComponent(const AttackComponent& other) = delete;

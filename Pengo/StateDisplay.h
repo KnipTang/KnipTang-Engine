@@ -12,19 +12,15 @@ enum class PengoEvents {
 class StateDisplay : public dae::Component
 {
 public:
-	void Notify(PengoEvents event, dae::Component* actor);
-
-	void Update(float /*deltaTime*/) override { }
-	void LateUpdate(float /*deltaTime*/) override {}
-	void FixedUpdate(float /*fixedTimeStep*/) override {}
-	void Render() const override {}
-
 	StateDisplay(dae::GameObject* gameObject, std::string state, double startValue);
-	virtual ~StateDisplay() { }
+	~StateDisplay() override = default;
+
 	StateDisplay(const StateDisplay& other) = delete;
 	StateDisplay(StateDisplay&& other) = delete;
 	StateDisplay& operator=(const StateDisplay& other) = delete;
 	StateDisplay& operator=(StateDisplay&& other) = delete;
+
+	void Notify(PengoEvents event, dae::Component* actor);
 private:
 	std::string m_StateName;
 	dae::TextObject* m_TextObject;

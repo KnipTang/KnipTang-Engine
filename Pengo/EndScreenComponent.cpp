@@ -4,6 +4,11 @@
 #include "TextObject.h"
 #include "TimerComponent.h"
 
+EndScreenComponent::EndScreenComponent(dae::GameObject* gameObject) : Component(gameObject)
+{
+
+}
+
 void EndScreenComponent::Update(float)
 {
 	if (m_IsDateDirty)
@@ -11,11 +16,6 @@ void EndScreenComponent::Update(float)
 		SetupEndScreen();
 		m_IsDateDirty = false;
 	}
-}
-
-EndScreenComponent::EndScreenComponent(dae::GameObject* gameObject) : Component(gameObject)
-{
-
 }
 
 void EndScreenComponent::SetupEndScreen()
@@ -31,14 +31,12 @@ void EndScreenComponent::SetupEndScreen()
 
 	scoreComp->AddScore(CalculateBonusScore());
 
-
 	dae::GameObject* HighScoreObj = m_EndScene->GetGameObjectWithLayer("HighScore");
 	dae::TextObject* textHighScoreObject = HighScoreObj->GetComponent<dae::TextObject>();
 	HighScoreComponent* HighScoreComp = m_GameStatsScene->GetGameObjectWithLayer("HighScore")->GetComponent<HighScoreComponent>();
 
 	HighScoreComp->SetDisplayComponent(textHighScoreObject);
 	HighScoreComp->UpdateDisplayList();
-	//HighScoreComp->SetHighScore();
 }
 
 int EndScreenComponent::CalculateBonusScore()

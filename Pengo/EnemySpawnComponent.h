@@ -5,19 +5,13 @@ class EnemySpawnComponent : public dae::Component
 {
 public:
 	EnemySpawnComponent(dae::GameObject* gameObject);
-
-	virtual ~EnemySpawnComponent() { }
-
-	void Update(float deltaTime) override;
-
-	void SpawnEnemy();
+	~EnemySpawnComponent() override = default;
 
 	EnemySpawnComponent(const EnemySpawnComponent& other) = delete;
 	EnemySpawnComponent(EnemySpawnComponent&& other) = delete;
 	EnemySpawnComponent& operator=(const EnemySpawnComponent& other) = delete;
 	EnemySpawnComponent& operator=(EnemySpawnComponent&& other) = delete;
 
-private:
-
+	void SpawnEnemy();
 };
 

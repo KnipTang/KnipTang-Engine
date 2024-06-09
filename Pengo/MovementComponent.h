@@ -4,14 +4,20 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "CollisionComponent.h"
-#include <memory>
+
 class MovementComponent : public dae::Component
 {
 public:
+	MovementComponent(dae::GameObject* gameObject, float speed = 40.f) : Component(gameObject), m_Speed(speed) { }
+	~MovementComponent() override = default;
+
+	MovementComponent(const MovementComponent& other) = delete;
+	MovementComponent(MovementComponent&& other) = delete;
+	MovementComponent& operator=(const MovementComponent& other) = delete;
+	MovementComponent& operator=(MovementComponent&& other) = delete;
+
 	void Update(float deltaTime) override;
 	void LateUpdate(float deltaTime) override;
-	void FixedUpdate(float /*fixedTimeStep*/) override {}
-	void Render() const override {}
 
 	void Move(float deltaTime, glm::vec3 direction);
 
@@ -21,13 +27,6 @@ public:
 	void SetHitWall(bool hit) { m_HitWall = hit; StopMoving(); }
 
 	void StunForSeconds(float seconds);
-
-	MovementComponent(dae::GameObject* gameObject, float speed = 40.f) : dae::Component(gameObject), m_Speed(speed) { };
-	virtual ~MovementComponent() { }
-	MovementComponent(const MovementComponent& other) = delete;
-	MovementComponent(MovementComponent&& other) = delete;
-	MovementComponent& operator=(const MovementComponent& other) = delete;
-	MovementComponent& operator=(MovementComponent&& other) = delete;
 
 private:
 	void StopMoving();

@@ -7,6 +7,16 @@
 class HealthComponent : public dae::Component
 {
 public:
+	HealthComponent(dae::GameObject* gameObject, int startLives = 1) : Component(gameObject), m_StartLives(startLives)
+	{
+		m_CurrentLives = m_StartLives;
+	}
+	~HealthComponent() override = default;
+	HealthComponent(const HealthComponent& other) = delete;
+	HealthComponent(HealthComponent&& other) = delete;
+	HealthComponent& operator=(const HealthComponent& other) = delete;
+	HealthComponent& operator=(HealthComponent&& other) = delete;
+
 	int GetCurrentLives() { return m_CurrentLives; }
 	void SetCurrentLives(int lives) { m_CurrentLives = lives; }
 
@@ -32,15 +42,6 @@ public:
 			observer->Notify(event, this);
 	}
 
-	HealthComponent(dae::GameObject* gameObject, int startLives = 1) : Component(gameObject), m_StartLives(startLives)
-	{
-		m_CurrentLives = m_StartLives;
-	}
-	virtual ~HealthComponent() = default;
-	HealthComponent(const HealthComponent& other) = delete;
-	HealthComponent(HealthComponent&& other) = delete;
-	HealthComponent& operator=(const HealthComponent& other) = delete;
-	HealthComponent& operator=(HealthComponent&& other) = delete;
 
 private:
 	int m_CurrentLives;
