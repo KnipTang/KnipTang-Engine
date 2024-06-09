@@ -114,6 +114,7 @@ void Level::PlacePlayer()
     player.get()->SetGameObjectPosition(m_PosX, m_PosY);
     player.get()->AddComponent(new dae::CollisionComponent(player.get(), 4.f, 4.f, 6.f, 6.f));
     player.get()->AddComponent(new HealthComponent(player.get(), 4));
+    player.get()->GetComponent<HealthComponent>()->AddObserver(new StateDisplay(player.get(), "Lives: ", 0));
     player.get()->AddComponent(new MovementComponent(player.get()));
     player.get()->GetComponent<dae::CollisionComponent>()->AddObserver(new PengoCollisionObserver(player.get()));
     player.get()->SetLayer("Player");

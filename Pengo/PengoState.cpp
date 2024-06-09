@@ -1,4 +1,5 @@
 #include "PengoState.h"
+#include "HealthComponent.h"
 #include "PengoComponent.h"
 #include "SceneManager.h"
 
