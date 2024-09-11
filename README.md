@@ -10,7 +10,7 @@ The Engine uses a Game Object Component system. This makes it really easy for th
 
 Game Objects can be added to a scene. An endless amount of scenes can be easily created, loaded, and unloaded synchronically or asynchronically thanks to the Built-In SceneManager.
 
-It was a real journey trying to understand the complicated nature of what all of the main elements of a Game Engine entail. 
+It was a real journey trying to understand the complicated nature of what all of the main elements of a Game Engine entail. I improved my C++ knowledge significantly while programming this project. My resourcing skills developed greatly while trying to grasp and implement concepts like an AABB collision system that checks collision every fixed frame update without causing significant performance loss.
 
 # Goal
 
