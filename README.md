@@ -1,18 +1,25 @@
-# Minigin
+# KnipTang-Engine
 
-Minigin is a very small project using [SDL2](https://www.libsdl.org/) and [glm](https://github.com/g-truc/glm) for 2D c++ game projects. It is in no way a game engine, only a barebone start project where everything sdl related has been set up. It contains glm for vector math, to aleviate the need to write custom vector and matrix classes.
+KnipTang-Engine is a open source 2D C++ Game Engine made with [SDL2](https://www.libsdl.org/) and [glm](https://github.com/g-truc/glm) for vector math.
 
-[![Build Status](https://github.com/avadae/minigin/actions/workflows/msbuild.yml/badge.svg)](https://github.com/avadae/msbuild/actions)
-[![GitHub Release](https://img.shields.io/github/v/release/avadae/minigin?logo=github&sort=semver)](https://github.com/avadae/minigin/releases/latest)
+# Description
+
+KnipTang-Engine follows the same open source and freedom philosophy as C++, while still being user friendly. The level of complexatie is fully left to the user itself.
+
+The Engine uses a Game Object Component system. This makes it really easy for the user to implement new Game Objects and add Build In or Custom Components to the Objects. Because of the Open Source nature of this Engine, the Build In Components can be easely understood and customised to each user preferences.
+
+Game Objects can be added to a scene. Endless amount of scenes can be easly created, loaded and unloaded synchronically or asynchronically thanks to the build in SceneManager.
+
+It was a real journey trying to understand the complicated nature of what all of the main elements of a Game Engine entail. 
 
 # Goal
 
-Minigin can/may be used as a start project for the exam assignment in the course 'Programming 4' at DAE. In that assignment students need to recreate a popular 80's arcade game with a game engine they need to program themselves. During the course we discuss several game programming patterns, using the book '[Game Programming Patterns](https://gameprogrammingpatterns.com/)' by Robert Nystrom as reading material. 
-
-# Disclaimer
-
-Minigin is, despite perhaps the suggestion in its name, not a game engine. It is just a very simple sdl2 ready project with some of the scaffolding in place to get started. None of the patterns discussed in the course are used yet (except singleton which use we challenge during the course). It is up to the students to implement their own vision for their engine, apply patterns as they see fit, create their game as efficient as possible.
+The main focus of this project has been trying to make a Game Engine that is purely made in C++.
 
 # Use
 
-Download the latest release of this project and compile/run in visual studio. Since students need to have their work on github too, they can use this repository as a template.
+Download the latest release of this project and compile/run in visual studio.
+
+# Resources
+
+KnipTang-Engine was made following the [Game Programming Patterns](https://gameprogrammingpatterns.com/) and [Beautiful C++ guidelines](https://www.informit.com/store/beautiful-c-plus-plus-30-core-guidelines-for-writing-9780137647842) books.
