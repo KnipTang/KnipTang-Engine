@@ -4,13 +4,13 @@ KnipTang-Engine is an open-source 2D C++ Game Engine made with [SDL2](https://ww
 
 # Description
 
-KnipTang-Engine follows the same open-source and freedom philosophy as C++, while still being user-friendly. The level of complexity is fully left to the user itself.
+KnipTang-Engine follows the same open-source and freedom philosophy as C++, while still being user-friendly. The level of complexity is fully left to the user themself.
 
 The Engine uses a Game Object Component system. This makes it really easy for the user to implement new Game Objects and add Built-in or Custom Components to the Objects. Because of the Open Source nature of this Engine, the Built-In Components can be easily understood and customized to each user's preferences.
 
-Game Objects can be added to a scene. An endless amount of scenes can be easily created, loaded, and unloaded synchronically or asynchronically thanks to the Built-In SceneManager.
+Game Objects can be added to a scene. An endless amount of scenes can be easily created, loaded, and unloaded synchronously or asynchronously thanks to the Built-In SceneManager.
 
-It was a real journey trying to understand the complicated nature of what all of the main elements of a Game Engine entail. I improved my C++ knowledge significantly while programming this project. My resourcing skills developed greatly while trying to grasp and implement concepts like an AABB collision system that checks collision every fixed frame update without causing significant performance loss.
+It was a real journey trying to understand the complicated nature of what all of the main elements of a Game Engine entail. I improved my C++ knowledge significantly while programming this project. My researching skills developed greatly while trying to grasp and implement concepts like an AABB collision system that checks collision every fixed frame update without causing significant performance loss.
 
 # Goal
 
